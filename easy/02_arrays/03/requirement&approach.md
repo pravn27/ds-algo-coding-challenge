@@ -2,7 +2,8 @@
 
 ## 1. Problem statement
 
-- Write a function to find Largest element in an Array
+- Write a function to find the Largest element in an Array
+- Ref link: https://takeuforward.org/data-structure/find-the-largest-element-in-an-array/
 
 ## 2. Features / Use cases
 
