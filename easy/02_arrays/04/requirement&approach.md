@@ -2,8 +2,8 @@
 
 ## 1. Problem statement
 
-- Write a function to find the Largest element in an Array
-- Ref link: https://takeuforward.org/data-structure/find-the-largest-element-in-an-array/
+- Write a function to Check if an Array is Sorted (Ascending/Increasing Order) or not
+- Ref link: https://takeuforward.org/data-structure/check-if-an-array-is-sorted/
 
 ## 2. Features / Use cases
 
@@ -12,41 +12,41 @@
 ### Sample - 1
 
 - Input: [5, 3, 2, 4, 1]
-- Output: 5
+- Output: false
 
 ### Sample - 2
 
-- Input: [6, 10, 10, 11]
-- Output: 11
+- Input: [6, 10, 12, 20, 30]
+- Output: true
 
 ## 4. Approach
 
 <details>
-  <summary><b>Approach - 1 (Brute force)</b></summary>
+  <summary><b>Approach - 1 (Optimized)</b></summary>
 
-- Thought Process / Approach
+- Thought Process / Approach - one pass solution
 
-  - Sort Array in ascending order
-  - Return last element, Array[size - 1]
+  - We will check every element with its previous element if the previous element is smaller than or equal to the current element then we will move to the next index.
+  - if any element greater than next future element, return false
+  - else return true after traversed all element
 
 - Complexity
-  - Time Complexity: O(n \* log n)
-  - Space Complexity: O(n)
+  - Time Complexity: O(n)
+  - Space Complexity: O(1)
 
 </details>
 
 <details>
-  <summary><b>Approach - 2 (Optimized)</b></summary>
+  <summary><b>Approach - 2 (Brute force)</b></summary>
 
-- Thought Process / Approach - one pass solution
+- Thought Process / Approach
 
-  - Define & init max variable with A[0] first element
-  - Loop each element & compare with max variable
-    - If any element greater than max, update max variable with that element
-  - Return max variable
+  - Compare each element with rest of all element
+  - if any element greater than next future element, return false
+  - else return true after traversed all element
 
 - Complexity
-  - Time Complexity: O(n)
+  - Time Complexity: O(n ^ 2)
   - Space Complexity: O(1)
 
 </details>
