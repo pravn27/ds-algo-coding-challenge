@@ -2,7 +2,7 @@
 
 ## 1. Problem statement
 
-- Write a function to search element in an array and return index of that, if element is not present return -1
+- Write a JS function to count the negative numbers in an Array items, if nothing found return 0
 
 ## 2. Features / Use cases
 
@@ -10,13 +10,13 @@
 
 ### Sample - 1
 
-- Input: [5, 3, 2, 4, 1], 2
-- Output: 2
+- Input: [5, 3, -2, -4, -1]
+- Output: 3
 
 ### Sample - 2
 
-- Input: [6, 10, 12, 20, 30], 100
-- Output: -1
+- Input: [6, 10, 12, 20, 30]
+- Output: 0
 
 ## 4. Approach
 
@@ -26,10 +26,8 @@
 - Thought Process / Approach - one pass solution
 
   - Use for loop to traverse the array
-  - Loop each element (traverse / visit each element) & compare with search element
-  - if found return that index, or else return -1
-
-    ![alt text](./img/logic-1.png)
+  - Loop each element (traverse / visit each element) & compare with negative number condition checks
+  - if no found return 0
 
 - Complexity
   - Time Complexity: O(n)
