@@ -26,7 +26,7 @@
 - Thought Process / Approach - one pass solution
 
   - Use for loop to traverse the array
-  - Loop each element (traverse / visit each element) & compare with negative number condition checks
+  - Loop each element (traverse / visit each element) & compare with negative number condition checks, then return negative count
   - if no found return 0
 
 - Complexity
