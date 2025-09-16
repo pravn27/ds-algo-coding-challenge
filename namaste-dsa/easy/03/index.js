@@ -25,7 +25,7 @@ console.log(findLargestElement_A1([-5, -3, -1, 0, 2]));
 console.log(findLargestElement_A1([-2, 3, 1, 4]));
 console.log(findLargestElement_A1([1, -2, 3, 4, 2]));
 
-// Approach 1 - Brute force, one pass solution
+// Approach - 2 (Brute force with JS -Infinity)
 const findLargestElement_A2 = (arr) => {
   // define max variable, assign Largest as -Infinity
   let max = -Infinity;
