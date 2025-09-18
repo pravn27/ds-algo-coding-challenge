@@ -55,3 +55,7 @@
   - Space Complexity: O(1)
 
 </details>
+
+## 5. Implementation
+
+- [Coding solution in JS](./index.js)
