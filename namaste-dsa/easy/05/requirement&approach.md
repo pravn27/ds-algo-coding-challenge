@@ -2,7 +2,7 @@
 
 ## 1. Problem statement
 
-- Write a function to find Smallest / Min element number in an Array
+- Write a function to find Second Largest element number in an Array
 
 ## 2. Features / Use cases
 
@@ -11,12 +11,12 @@
 ### Sample - 1
 
 - Input: [50, 30, -2, -40, -1, 100]
-- Output: -1
+- Output: 50
 
 ### Sample - 2
 
 - Input: [6, 10, 12, 20, 30, 0]
-- Output: 0
+- Output: 20
 
 ## 4. Approach
 
