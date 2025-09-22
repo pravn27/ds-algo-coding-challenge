@@ -30,6 +30,8 @@
   - Loop each element (traverse / visit each element) & compare with Smallest variable condition checks & update Smallest variable
   - return Smallest variable value
 
+  ![alt text](./img/logic-A1.png)
+
 - Dry run with sample examples
 
 - Complexity
@@ -47,6 +49,8 @@
   - Use for loop to traverse the array elements
   - Loop each element (traverse / visit each element) & compare with Smallest value condition checks & update Smallest variable
   - return Smallest variable value
+
+  ![alt text](./img/logic-A2.png)
 
 - Dry run with sample examples
 
