@@ -2,7 +2,7 @@
 
 ## 1. Problem statement
 
-- Write a JS function to count the negative numbers in an Array items, if nothing found return 0
+- Write a function to count the negative numbers in an Array items, if nothing found return 0
 
 ## 2. Features / Use cases
 
@@ -28,6 +28,8 @@
   - Use for loop to traverse the array
   - Loop each element (traverse / visit each element) & compare with negative number condition checks, then return negative count
   - if no found return 0
+
+  ![alt text](./img/logic-1.png)
 
 - Complexity
   - Time Complexity: O(n)

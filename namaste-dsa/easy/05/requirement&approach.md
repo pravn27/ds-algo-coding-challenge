@@ -2,7 +2,7 @@
 
 ## 1. Problem statement
 
-- Write a function to find Second Largest element number in an Array
+- Write a function to find Second Largest element in an Array or List
 
 ## 2. Features / Use cases
 

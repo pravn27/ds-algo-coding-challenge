@@ -2,7 +2,7 @@
 
 ## 1. Problem statement
 
-- Write a JS function to find Largest / Max element number in an Array
+- Write a function to find Largest / Max element number in an Array
 
 ## 2. Features / Use cases
 
@@ -30,6 +30,9 @@
   - Loop each element (traverse / visit each element) & compare with Largest variable condition checks & update Largest variable
   - return Largest variable value
 
+  ![alt text](./img/js-numbers.png)
+  ![alt text](./img/logic-A1.png)
+
 - Dry run with sample examples
 
 - Complexity
@@ -47,6 +50,8 @@
   - Use for loop to traverse the array elements
   - Loop each element (traverse / visit each element) & compare with Largest value condition checks & update Largest variable
   - return Largest variable value
+
+  ![alt text](./img/logic-A2.png)
 
 - Dry run with sample examples
 
