@@ -3,10 +3,20 @@
 // Approach 1 - Brute force
 const getArrayIndex_A1 = (arr, searchElement) => {
   // define array SIZE
-  const SIZE = arr.length;
+  const ARRAY_LENGTH = arr.length;
+
+  /**
+   * Edge case covered
+   * 1. if not valid array type
+   * 2. array should not be empty
+   */
+  if (!Array.isArray(arr) || !ARRAY_LENGTH) {
+    console.error("Enter valid array elements, should not be empty");
+    throw new Error("Enter valid array elements, should not be empty");
+  }
 
   // traverse / visit each element in array & compare with search element, if found return that index, else return -1
-  for (let i = 0; i < SIZE; i++) {
+  for (let i = 0; i < ARRAY_LENGTH; i++) {
     if (arr[i] === searchElement) {
       return i;
     }
