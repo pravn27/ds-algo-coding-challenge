@@ -1,51 +1,44 @@
-// Write a JS function to find Smallest / Min element number in an Array
+// Write a function to find Second Largest element in an Array or List
 
-// Approach 1 - Brute force, one pass solution
-const findSmallestElement_A1 = (arr) => {
-  // define min variable, assign First element as Smallest
-  let min = arr[0];
+// Approach 1 - one pass solution
+const findSecondLargestElement_A1 = (arr) => {
   const ARRAY_LENGTH = arr.length;
 
-  // iterate each element & compare min condition check & update min variable
-  for (let i = 1; i < ARRAY_LENGTH; i++) {
-    if (arr[i] < min) {
-      // update min variable
-      min = arr[i];
+  // Edge cases covered
+  if (!Array.isArray(arr) || !ARRAY_LENGTH || ARRAY_LENGTH < 2) {
+    console.error(
+      "Enter valid array types, array length should contain minimum 2 elements"
+    );
+    throw new Error(
+      "Enter valid array types, array length should contain minimum 2 elements"
+    );
+  }
+
+  // define first, second largest variable, assign with -Infinity
+  let first_largest = -Infinity;
+  let second_largest = -Infinity;
+
+  // use for loop & iterate each element & compare
+  for (let i = 0; i < ARRAY_LENGTH; i++) {
+    // core, main logic
+    if (arr[i] > first_largest) {
+      second_largest = first_largest;
+      first_largest = arr[i];
+    } else if (arr[i] > second_largest && arr[i] !== first_largest) {
+      second_largest = arr[i];
     }
   }
-  // return min variable
-  return min;
+
+  return second_largest === -Infinity
+    ? "No second largest found"
+    : second_largest;
 };
 
 console.log("Approach 1 =======>");
-console.log(findSmallestElement_A1([5, 3, 2, 4, 1]));
-console.log(findSmallestElement_A1([-6, -10, -12, -20, -3]));
-console.log(findSmallestElement_A1([1, 3, 2, 4, 5]));
-console.log(findSmallestElement_A1([-5, -3, -1, 0, 2]));
-console.log(findSmallestElement_A1([-2, 3, 1, 4]));
-console.log(findSmallestElement_A1([1, -2, 3, 4, 2]));
-
-// Approach - 2 (Brute force with JS Infinity)
-const findSmallestElement_A2 = (arr) => {
-  // define min variable, assign smallest as Infinity
-  let min = Infinity;
-  const ARRAY_LENGTH = arr.length;
-
-  // iterate each element & compare min condition check & update min variable
-  for (let i = 0; i < ARRAY_LENGTH; i++) {
-    if (arr[i] < min) {
-      // update min variable
-      min = arr[i];
-    }
-  }
-  // return min variable
-  return min;
-};
-
-console.log("Approach 2 =======>");
-console.log(findSmallestElement_A2([5, 3, 2, 4, 1]));
-console.log(findSmallestElement_A2([-6, -10, -12, -20, -3]));
-console.log(findSmallestElement_A2([1, 3, 200, 4, 5]));
-console.log(findSmallestElement_A2([-5, -3, -1, 0, 2]));
-console.log(findSmallestElement_A2([-2, 300, 1, 4]));
-console.log(findSmallestElement_A2([1, -2, 3, 4, 2]));
+console.log(findSecondLargestElement_A1([50, 30, -2, -40, -1, 100]));
+console.log(findSecondLargestElement_A1([6, 10, 12, 20, 30, 30, 30]));
+console.log(findSecondLargestElement_A1([-6, -10, -12, -20, -30]));
+console.log(findSecondLargestElement_A1([-5, -3, -1, 0, 2]));
+console.log(findSecondLargestElement_A1([-2, 3, 1, 4, 1, 4, 4]));
+console.log(findSecondLargestElement_A1([1, -2, 3, -4, -2]));
+console.log(findSecondLargestElement_A1([]));

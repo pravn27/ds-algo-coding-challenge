@@ -15,22 +15,31 @@
 
 ### Sample - 2
 
-- Input: [6, 10, 12, 20, 30, 0]
+- Input: [6, 10, 12, 20, 30, 30, 30]
 - Output: 20
+
+### Sample - 3
+
+- Input: [-6, -10, -12, -20, -30]
+- Output: -10
 
 ## 4. Approach
 
 <details>
-  <summary><b>Approach - 1 (Brute force)</b></summary>
+  <summary><b>Approach - 1</b></summary>
 
 - Thought Process / Approach - one pass solution
 
-  - Assume / assign First element as Smallest variable value
-  - Use for loop to traverse the array elements
-  - Loop each element (traverse / visit each element) & compare with Smallest variable condition checks & update Smallest variable
-  - return Smallest variable value
+  - Similar like finding First largest elements
+    - Declare & assign First largest & Second largest variable to -Infinity
+  - Use for loop to iterate / traverse each array elements
+    - Compare with first largest
+    - Prior to first largest is Second largest
+    - Update first & second largest
+    - Compare with second largest & should not be equal to first largest
+  - return Second largest
 
-- Dry run with sample examples
+- Make sure dry run with sample examples with notebooks
 
 - Complexity
   - Time Complexity: O(n)
@@ -38,24 +47,18 @@
 
 </details>
 
-<details>
-  <summary><b>Approach - 2 (Brute force with JS Infinity)</b></summary>
-
-- Thought Process / Approach - one pass solution
-
-  - Assume / assign Smallest value as Infinity (which is very largest number in Javascript)
-  - Use for loop to traverse the array elements
-  - Loop each element (traverse / visit each element) & compare with Smallest value condition checks & update Smallest variable
-  - return Smallest variable value
-
-- Dry run with sample examples
-
-- Complexity
-  - Time Complexity: O(n)
-  - Space Complexity: O(1)
-
-</details>
-
-## 5. Implementation
+## 5. Implementation & Refactor
 
 - [Coding solution in JS](./index.js)
+
+## 6. (Good to ask) Edge / Corner case covered with refactor / improvements
+
+- What if, instead of array type if pass as other objects ?
+  - Check whether its array or not, should return error message
+- What if array is empty ?
+  - Should return error message
+- What if Array has less than 2 elements ?
+  - Should return error message
+- What if Array has negative numbers ?
+- What if Array has Duplicates numbers ?
+- What if Array has Infinity numbers ?
