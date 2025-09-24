@@ -29,9 +29,10 @@ const findSecondLargestElement_A1 = (arr) => {
     }
   }
 
-  return second_largest === -Infinity
-    ? "No second largest found"
-    : second_largest;
+  const result =
+    second_largest === -Infinity ? "No second largest found" : second_largest;
+
+  return result;
 };
 
 console.log("Approach 1 =======>");

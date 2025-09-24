@@ -11,8 +11,8 @@ const getArrayIndex_A1 = (arr, searchElement) => {
    * 2. array should not be empty
    */
   if (!Array.isArray(arr) || !ARRAY_LENGTH) {
-    console.error("Enter valid array elements, should not be empty");
-    throw new Error("Enter valid array elements, should not be empty");
+    console.error("Enter valid array types & should not be empty");
+    throw new Error("Enter valid array types & should not be empty");
   }
 
   // traverse / visit each element in array & compare with search element, if found return that index, else return -1
@@ -31,3 +31,5 @@ console.log(getArrayIndex_A1([1, 3, 2, 4, 5], 100));
 console.log(getArrayIndex_A1([-5, -3, -1, 0, 2], 200));
 console.log(getArrayIndex_A1([-2, 3, 1, 4], 4));
 console.log(getArrayIndex_A1([1, 2, 3, 4, 2], 1));
+console.log(getArrayIndex_A1([], 1));
+console.log(getArrayIndex_A1({}, 1));

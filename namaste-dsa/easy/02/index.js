@@ -6,6 +6,11 @@ const countNegativeNumbers_A1 = (arr) => {
   let negativeCount = 0;
   const ARRAY_LENGTH = arr.length;
 
+  if (!Array.isArray(arr) || !ARRAY_LENGTH) {
+    console.error("Enter valid array types & should not be empty");
+    throw new Error("Enter valid array types & should not be empty");
+  }
+
   // use for loop, iterate each item & compare / negative number condition checks
   for (let i = 0; i < ARRAY_LENGTH; i++) {
     if (arr[i] < 0) {
