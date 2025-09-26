@@ -2,9 +2,20 @@
 
 // Approach 1 - Brute force, one pass solution
 const findLargestElement_A1 = (arr) => {
+  const ARRAY_LENGTH = arr.length;
+
+  // Edge cases covered
+  if (!Array.isArray(arr) || !ARRAY_LENGTH) {
+    console.error(
+      "Enter valid array types, array should not be empty, minimum one element should be there"
+    );
+    throw new Error(
+      "Enter valid array types, array should not be empty, minimum one element should be there"
+    );
+  }
+
   // define max variable, assign First element as Largest
   let max = arr[0];
-  const ARRAY_LENGTH = arr.length;
 
   // iterate each element & compare max condition check & update max variable
   for (let i = 1; i < ARRAY_LENGTH; i++) {
@@ -27,9 +38,20 @@ console.log(findLargestElement_A1([1, -2, 3, 4, 2]));
 
 // Approach - 2 (Brute force with JS -Infinity)
 const findLargestElement_A2 = (arr) => {
+  const ARRAY_LENGTH = arr.length;
+
+  // Edge cases covered
+  if (!Array.isArray(arr) || !ARRAY_LENGTH) {
+    console.error(
+      "Enter valid array types, array should not be empty, minimum one element should be there"
+    );
+    throw new Error(
+      "Enter valid array types, array should not be empty, minimum one element should be there"
+    );
+  }
+
   // define max variable, assign Largest as -Infinity
   let max = -Infinity;
-  const ARRAY_LENGTH = arr.length;
 
   // iterate each element & compare max condition check & update max variable
   for (let i = 0; i < ARRAY_LENGTH; i++) {
