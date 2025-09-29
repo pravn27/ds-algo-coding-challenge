@@ -46,8 +46,12 @@
   - Time Complexity: O(n)
   - Space Complexity: O(1)
 
-- **Solution Notes**
-  - ![alt text](./img/solution.png)
+</details>
+
+<details>
+  <summary><b>Solution Notes</b></summary>
+
+- ![alt text](./img/solution.png)
 
 </details>
 
