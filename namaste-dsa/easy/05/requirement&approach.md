@@ -23,7 +23,7 @@
 - Input: [-6, -10, -12, -20, -30]
 - Output: -10
 
-## 4. Approach
+## 4. Approach & solution notes
 
 <details>
   <summary><b>Approach - 1</b></summary>
@@ -42,8 +42,12 @@
 - Make sure dry run with sample examples with notebooks
 
 - Complexity
+
   - Time Complexity: O(n)
   - Space Complexity: O(1)
+
+- **Solution Notes**
+  - ![alt text](./img/solution.png)
 
 </details>
 
