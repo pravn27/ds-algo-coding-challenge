@@ -1,4 +1,4 @@
-// Write a function to Print Star Pattern in n \* n, take n as input parameter
+// Write a function to Print Star Pattern in 1, 2, 3....n star rows, take n as input parameter
 
 // Approach 1 - 2 pass solution
 const printStar_A1 = (n) => {
@@ -15,8 +15,9 @@ const printStar_A1 = (n) => {
   // outer loop - how many rows required
   for (let i = 0; i < n; i++) {
     let row = "";
-    // inner loop - how many columns required
-    for (let j = 0; j < n; j++) {
+    // inner loop - how many columns required, j loop should run till i + 1 or j <= i
+    // for (let j = 0; j <= i; j++) same as for (let j = 0; j < i + 1; j++)
+    for (let j = 0; j < i + 1; j++) {
       // Append "*" in row creation
       row = row + " * ";
     }

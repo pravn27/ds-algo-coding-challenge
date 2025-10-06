@@ -2,9 +2,9 @@
 
 ## 1. Problem statement
 
-- Write a function to Print Star Pattern in n \* n, take n as input parameter
+- Write a function to Print Star Pattern in 1, 2, 3....n star rows, take n as input parameter
 - Reference
-  - https://pravn27.github.io/ds-algo-tech-doc/docs/ds-algo-course-tutorials/namaste-dsa/readerDoc/warm-up/star-pattern#star-pattern---1
+  - https://pravn27.github.io/ds-algo-tech-doc/docs/ds-algo-course-tutorials/namaste-dsa/readerDoc/warm-up/star-pattern#star-pattern---2
 
 ## 2. Understand the problem with sample inputs & outputs
 
@@ -13,9 +13,9 @@
 - Input: n = 4
 - Output:
 
-      * * * *
-      * * * *
-      * * * *
+      *
+      * *
+      * * *
       * * * *
 
 ### Sample - 2
@@ -23,8 +23,8 @@
 - Input: n = 3
 - Output:
 
-      * * *
-      * * *
+      *
+      * *
       * * *
 
 ## 3. Approach & solution notes
@@ -41,7 +41,7 @@
   - Outer loop, row as i
   - define starAppend variable to hold \*
     - starAppend = "";
-  - Inner loop, column as j
+  - Inner loop, column as j, will run till i+1 or j <= i
     - starAppend = starAppend + " \* ";
   - Print starAppend
 
