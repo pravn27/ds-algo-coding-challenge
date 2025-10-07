@@ -2,9 +2,9 @@
 
 ## 1. Problem statement
 
-- Write a function to (Right angled star triangle) Print Star Pattern in 1, 2, 3....n star rows, take n as input parameter
+- Write a function to (Right-Angled Triangle of Repeated Numbers) Print Number Pattern in 1 - 1 times 2 - 2 times, 3 - 3 times....n rows, take n as input parameter
 - Reference
-  - https://pravn27.github.io/ds-algo-tech-doc/docs/ds-algo-course-tutorials/namaste-dsa/readerDoc/warm-up/star-pattern#star-pattern---2
+  - https://pravn27.github.io/ds-algo-tech-doc/docs/ds-algo-course-tutorials/namaste-dsa/readerDoc/warm-up/star-pattern#star-pattern---4
 
 ## 2. Understand the problem with sample inputs & outputs
 
@@ -13,19 +13,19 @@
 - Input: n = 4
 - Output:
 
-      *
-      * *
-      * * *
-      * * * *
+      1
+      2 2
+      3 3 3
+      4 4 4 4
 
 ### Sample - 2
 
 - Input: n = 3
 - Output:
 
-      *
-      * *
-      * * *
+      1
+      2 2
+      3 3 3
 
 ## 3. Approach & solution notes
 
@@ -39,11 +39,11 @@
     - j (how many columns required)
   - 2 loops required - rows as i, columns as j
   - Outer loop, row as i
-  - define starAppend variable to hold \*
-    - starAppend = "";
+  - define append variable to hold number like 1 2 ...etc
+    - appendNum = "";
   - Inner loop, column as j, will run till i+1 or j <= i
-    - starAppend = starAppend + " \* ";
-  - Print starAppend
+    - appendNum = appendNum + i;
+  - Print appendNum
 
 - Make sure dry run with sample examples with notebooks
 
