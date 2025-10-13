@@ -52,7 +52,7 @@
 
 - Complexity
 
-  - Time Complexity: O(n<sup>2</sup>), since its nested loops with 2 loops i, j
+  - Time Complexity: O(n<sup>2</sup>), since its nested loops with 2 loops i, (j,k)
   - Space Complexity: O(1)
 
 </details>
