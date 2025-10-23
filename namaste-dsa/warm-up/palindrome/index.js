@@ -5,13 +5,13 @@ const isIntegerPalindrome_A1 = (n) => {
 
   const numCopy = n;
   let rev = 0;
-  let rem;
+  let lastDigit;
 
   while (n > 0) {
     // get last digit by n % 10
-    rem = n % 10;
-    // add remainder in reversed way
-    rev = rev * 10 + rem;
+    lastDigit = n % 10;
+    // add last digit or remainder in reversed way
+    rev = rev * 10 + lastDigit;
     // remove last digit in number
     n = Math.floor(n / 10);
   }
