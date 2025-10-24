@@ -4,8 +4,6 @@
 
 - Write a function reverseInteger(x) that takes a 32-bit signed integer and returns its digits reversed. If the reversed value overflows the 32-bit signed integer range, return 0.
 - https://leetcode.com/problems/reverse-integer/description/
-- Reference
-  - https://pravn27.github.io/ds-algo-tech-doc/docs/ds-algo-course-tutorials/namaste-dsa/readerDoc/warm-up/reverse-integer
 
 ## 2. Understand the problem with sample inputs & outputs
 
@@ -53,7 +51,7 @@
 
 - Complexity
 
-  - Time Complexity: O(length of number), which is O(1)
+  - Time Complexity: O(d), where d is number of digits
   - Space Complexity: O(1)
 
 </details>

@@ -54,7 +54,7 @@
 
 - Complexity
 
-  - Time Complexity: O(length of number), which is O(1)
+  - Time Complexity: O(d), where d is number of digits
   - Space Complexity: O(1)
 
 </details>
