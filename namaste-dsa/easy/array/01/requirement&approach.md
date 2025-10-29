@@ -7,7 +7,7 @@
 - Learn to use in-place techniques to eliminate duplicates from a sorted array, returning the length of the modified array.
 - <details>
 
-  <summary><b>Summary / Key Take away from problem statement</b></summary>
+  <summary><b>Summary / Take away from problem statement / Key Observation</b></summary>
 
   - While reading / understanding the problem, observe important key points which helps in solution approach
   - Integer can be both positive, negative number as well
@@ -28,13 +28,8 @@
 
 ### Sample - 2
 
-- Input: n = 34562
-- Output: 5
-
-### Sample - 3
-
-- Input: n = -34
-- Output: 2
+- Input: [0, 1, 1, 1, 2, 2]
+- Output: 3, [0, 1, 2, _, _, _]
 
 ## 3. Approach & solution notes
 
@@ -68,8 +63,9 @@
 <details>
   <summary><b>Solution Notes</b></summary>
 
-- ![alt text](./img/solution1.1.png)
-- ![alt text](./img/solution1.2.png)
+- ![alt text](./img/solution-1.1.png)
+- ![alt text](./img/solution-1.2.png)
+- ![alt text](./img/solution-1.3.png)
 
 </details>
 
