@@ -24,12 +24,14 @@
 ### Sample - 1
 
 - Input: [1, 1, 2]
-- Output: 2, [1, 2, _]
+- Output: 2
+- In place / Modified existing array [1, 2, _]
 
 ### Sample - 2
 
 - Input: [0, 1, 1, 1, 2, 2]
-- Output: 3, [0, 1, 2, _, _, _]
+- Output: 3
+- In place / Modified existing array [0, 1, 2, _, _, _]
 
 ## 3. Approach & solution notes
 
@@ -38,24 +40,21 @@
 
 - Thought Process / Approach
 
-  - Divide number by 10
-    - Why 10 ? All possible digits 0, 1, ..... 9 will occur, means 0 to 9 will get total count as 10
-  - define count variable
-  - use while loop, will run till getting less than or equal to 0
-    - num = Math.floor(num / 10)
-    - count++
-  - after exiting loop, return / print count
+  - use 2 pointer approach x, i
+    - x pointer to maintain index of unique elements placement
+    - i pointer to traverse / visit each elements in the array
+  - use for loop to traverse each element, use i pointer
+    - inside for loop, compare to find unique element & change / shift the position of unique element by updating x, array elements
+  - outside of loop, return (x + 1) are unique elements count
 
-- ![alt text](./img/approach.png)
+- ![alt text](./img/approach-1.1.png)
+- ![alt text](./img/approach-1.2.png)
 
 - Make sure dry run with sample examples with notebooks
-- Use javascript Math methods
-
-  - Check & explore - Math.floor(), Math.ceil(), Math.round(), Math.abs()
 
 - Complexity
 
-  - Time Complexity: O(d), where d is number of digits
+  - Time Complexity: O(n), where n is length of the array
   - Space Complexity: O(1)
 
 </details>
@@ -74,6 +73,3 @@
 - [Coding solution in JS](./index.js)
 
 ## 5. (Good to ask) Edge / Corner case covered with refactor / improvements
-
-- What if, n is 0, should return 1
-- What if, n is negative number, should return only digit count
