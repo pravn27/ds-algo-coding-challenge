@@ -22,5 +22,5 @@ console.log("Approach 1 =======>");
 console.log(removeDuplicates_A1([0, 1, 1, 2]));
 console.log(removeDuplicates_A1([0, 0, 1, 1, 1, 2, 2, 3, 3, 4]));
 console.log(removeDuplicates_A1([0, 0, 1, 1, 2, 3]));
-console.log(removeDuplicates_A1([0, 0, 1, 2, 2, 2, 4]));
+console.log(removeDuplicates_A1([1, 1, 2, 2, 2, 4]));
 console.log(removeDuplicates_A1([0, 1, 1, 1, 5, 5]));

@@ -2,26 +2,33 @@
 
 ## 1. Problem statement
 
-- Write a function countDigits(n) that takes an integer n and returns how many digits it contains.
-- Reference
-  - https://pravn27.github.io/ds-algo-tech-doc/docs/ds-algo-course-tutorials/namaste-dsa/readerDoc/warm-up/count-digit
+- Remove Element
+- https://leetcode.com/problems/remove-element/description/
+- Learn to remove elements matching a target value from an array using in-place operations and minimal extra space.
+- <details>
+
+  <summary><b>Summary / Take away from problem statement / Key Observation</b></summary>
+
+  - While reading / understanding the problem, observe important key points which helps in solution approach
+  - Integer can be both positive, negative number as well
+  - **in-place**, means should modify the existing data structure like Array, should not use extra
+  - Understanding problem
+    - ![alt text](./img/understaning-problem-1.1.png)
+    </details>
 
 ## 2. Understand the problem with sample inputs & outputs
 
 ### Sample - 1
 
-- Input: n = 256
-- Output: 3
+- Input: nums = [3, 2, 2, 3], val = 3
+- Output: 2
+- In place / Modified existing array nums [2, 2, _, _]
 
 ### Sample - 2
 
-- Input: n = 34562
+- Input: nums = [0, 1, 2, 2, 3, 0, 4, 2], val = 2
 - Output: 5
-
-### Sample - 3
-
-- Input: n = -34
-- Output: 2
+- In place / Modified existing array nums [0, 1, 4, 0, 3, _, _, _]
 
 ## 3. Approach & solution notes
 
@@ -30,24 +37,23 @@
 
 - Thought Process / Approach
 
-  - Divide number by 10
-    - Why 10 ? All possible digits 0, 1, ..... 9 will occur, means 0 to 9 will get total count as 10
-  - define count variable
-  - use while loop, will run till getting less than or equal to 0
-    - num = Math.floor(num / 10)
-    - count++
-  - after exiting loop, return / print count
+  - use 2 pointer approach x, i
+    - x pointer to count array elements which not equals to val and keep index of shifting element to left
+    - i pointer to traverse / visit each elements in the array
+  - use for loop to traverse each element, use i pointer
+    - inside for loop, condition compare to element not equal to val and
+      - update / shift element to x pointer index
+      - update x pointer, increment counting
+  - outside of loop, return x
 
-- ![alt text](./img/approach.png)
+- ![alt text](./img/approach-1.1.png)
+- ![alt text](./img/approach-1.2.png)
 
 - Make sure dry run with sample examples with notebooks
-- Use javascript Math methods
-
-  - Check & explore - Math.floor(), Math.ceil(), Math.round(), Math.abs()
 
 - Complexity
 
-  - Time Complexity: O(d), where d is number of digits
+  - Time Complexity: O(n), where n is length of the array
   - Space Complexity: O(1)
 
 </details>
@@ -55,8 +61,9 @@
 <details>
   <summary><b>Solution Notes</b></summary>
 
-- ![alt text](./img/solution1.1.png)
-- ![alt text](./img/solution1.2.png)
+- ![alt text](./img/solution-1.1.png)
+- ![alt text](./img/solution-1.2.png)
+- ![alt text](./img/solution-1.3.png)
 
 </details>
 
@@ -65,6 +72,3 @@
 - [Coding solution in JS](./index.js)
 
 ## 5. (Good to ask) Edge / Corner case covered with refactor / improvements
-
-- What if, n is 0, should return 1
-- What if, n is negative number, should return only digit count
