@@ -28,7 +28,7 @@
 
 - Input: nums = [0, 1, 2, 2, 3, 0, 4, 2], val = 2
 - Output: 5
-- In place / Modified existing array nums [0, 1, 4, 0, 3, _, _, _]
+- In place / Modified existing array nums [0, 1, 3, 0, 4, _, _, _]
 
 ## 3. Approach & solution notes
 
@@ -41,9 +41,9 @@
     - x pointer to count array elements which not equals to val and keep index of shifting element to left
     - i pointer to traverse / visit each elements in the array
   - use for loop to traverse each element, use i pointer
-    - inside for loop, condition compare to element not equal to val and
+    - inside for loop, condition compare to element not equal to val
       - update / shift element to x pointer index
-      - update x pointer, increment counting
+      - update x pointer, increment counting by 1
   - outside of loop, return x
 
 - ![alt text](./img/approach-1.1.png)

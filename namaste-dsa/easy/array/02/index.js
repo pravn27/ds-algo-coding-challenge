@@ -11,6 +11,7 @@ const removeElement_A1 = (nums, val) => {
   for (let i = 0; i < LENGTH; i++) {
     // shift element to left only if element not equal to val
     if (nums[i] !== val) {
+      // shift element
       nums[x] = nums[i];
       x = x + 1;
     }
@@ -20,8 +21,8 @@ const removeElement_A1 = (nums, val) => {
 };
 
 console.log("Approach 1 =======>");
-console.log(removeDuplicates_A1([0, 1, 1, 2]));
-console.log(removeDuplicates_A1([0, 0, 1, 1, 1, 2, 2, 3, 3, 4]));
-console.log(removeDuplicates_A1([0, 0, 1, 1, 2, 3]));
-console.log(removeDuplicates_A1([1, 1, 2, 2, 2, 4]));
-console.log(removeDuplicates_A1([0, 1, 1, 1, 5, 5]));
+console.log(removeElement_A1([0, 1, 1, 2], 1));
+console.log(removeElement_A1([0, 0, 1, 2, 3, 3, 4], 3));
+console.log(removeElement_A1([0, 0, 1, 1, 2, 3], 0));
+console.log(removeElement_A1([1, 1, 2, 2, 2, 4], 2));
+console.log(removeElement_A1([0, 1, 1, 1, 5, 3], 1));
