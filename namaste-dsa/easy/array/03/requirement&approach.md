@@ -34,17 +34,12 @@
 
 - Thought Process / Approach
 
-  - use 2 pointer approach x, i
-    - x pointer to count array elements which not equals to val and keep index of shifting element to left
-    - i pointer to traverse / visit each elements in the array
-  - use for loop to traverse each element, use i pointer
-    - inside for loop, condition compare to element not equal to val
-      - update / shift element to x pointer index
-      - update x pointer, increment counting by 1
-  - outside of loop, return x
+  - use for loop, till n/2 times
+    - swap(i, n-1-i), use temp variable
 
 - ![alt text](./img/approach-1.1.png)
 - ![alt text](./img/approach-1.2.png)
+- ![alt text](./img/dry-run.png)
 
 - Make sure dry run with sample examples with notebooks
 

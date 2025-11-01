@@ -10,7 +10,7 @@ const removeElement_A1 = (nums, val) => {
    * 1. if not valid array type
    * 2. array should not be empty
    */
-  if (!Array.isArray || !nums.length) {
+  if (!Array.isArray(nums) || !nums.length) {
     console.error("Enter valid array types & should not be empty");
     throw new Error("Enter valid array types & should not be empty");
   }

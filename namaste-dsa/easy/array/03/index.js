@@ -1,40 +1,35 @@
 // Approach 1
 /**
- * @param {number[]} nums
- * @param {number} val
- * @return {number}
+ * @param {character[]} charArr
+ * @return {void} Do not return anything, modify s in-place instead.
  */
-const removeElement_A1 = (nums, val) => {
+const reverseString_A1 = (charArr) => {
   /**
    * Edge case covered
    * 1. if not valid array type
    * 2. array should not be empty
    */
-  if (!Array.isArray || !nums.length) {
+  if (!Array.isArray(charArr) || !charArr.length) {
     console.error("Enter valid array types & should not be empty");
     throw new Error("Enter valid array types & should not be empty");
   }
 
-  const LENGTH = nums.length;
-  let x = 0;
-  // traverse each elements in array
-  for (let i = 0; i < LENGTH; i++) {
-    // shift element to left only if element not equal to val
-    if (nums[i] !== val) {
-      // shift element
-      nums[x] = nums[i];
-      x = x + 1;
-    }
+  const LENGTH = charArr.length;
+  const HALF_LENGTH = LENGTH / 2;
+
+  // loop till n/2 times, first half of the array
+  for (let i = 0; i < HALF_LENGTH; i++) {
+    // swap(i, n-1-i)
+    let temp = charArr[i];
+    charArr[i] = charArr[LENGTH - 1 - i];
+    charArr[LENGTH - 1 - i] = temp;
   }
-  console.log("In place/Existing modified array ", nums);
-  return x;
+  console.log("In place/Existing modified array ", charArr);
 };
 
 console.log("Approach 1 =======>");
-console.log(removeElement_A1([0, 1, 1, 2], 1));
-console.log(removeElement_A1([0, 0, 1, 2, 3, 3, 4], 3));
-console.log(removeElement_A1([0, 0, 1, 1, 2, 3], 0));
-console.log(removeElement_A1([1, 1, 2, 2, 2, 4], 2));
-console.log(removeElement_A1([0, 1, 1, 1, 5, 3], 1));
-console.log(removeElement_A1([], 2));
-console.log(removeElement_A1({}, 3));
+console.log(reverseString_A1(["h", "e", "l", "l", "o"]));
+console.log(reverseString_A1(["p", "r", "a", "v", "n"]));
+console.log(reverseString_A1(["a", "r", "u", "n"]));
+console.log(reverseString_A1([]));
+console.log(reverseString_A1({}));
