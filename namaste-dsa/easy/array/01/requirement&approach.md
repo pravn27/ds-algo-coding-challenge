@@ -73,3 +73,8 @@
 - [Coding solution in JS](./index.js)
 
 ## 5. (Good to ask) Edge / Corner case covered with refactor / improvements
+
+- What if, instead of array type if pass as other objects ?
+  - Check whether its array or not, should return error message
+- What if array is empty ?
+  - Should return error message

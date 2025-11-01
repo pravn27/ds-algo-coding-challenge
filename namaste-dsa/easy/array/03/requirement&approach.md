@@ -2,33 +2,30 @@
 
 ## 1. Problem statement
 
-- Remove Element
-- https://leetcode.com/problems/remove-element/description/
-- Learn to remove elements matching a target value from an array using in-place operations and minimal extra space.
+- Reverse String
+- https://leetcode.com/problems/reverse-string/description/
+- Learn how to reverse a string using simple iteration and swapping methods. An essential skill for manipulating text data.
 - <details>
 
   <summary><b>Summary / Take away from problem statement / Key Observation</b></summary>
 
-  - While reading / understanding the problem, observe important key points which helps in solution approach
-  - Integer can be both positive, negative number as well
-  - **in-place**, means should modify the existing data structure like Array, should not use extra
-  - Understanding problem
-    - ![alt text](./img/understaning-problem-1.1.png)
+  - **in-place**, means should modify the existing data structure like Array, should not use extra memory space
+
     </details>
 
 ## 2. Understand the problem with sample inputs & outputs
 
 ### Sample - 1
 
-- Input: nums = [3, 2, 2, 3], val = 3
-- Output: 2
-- In place / Modified existing array nums [2, 2, _, _]
+- Input: s = ["h","e","l","l","o"]
+- Output: s = ["o","l","l","e","h"]
+- In place / Modified existing array of characters s
 
 ### Sample - 2
 
-- Input: nums = [0, 1, 2, 2, 3, 0, 4, 2], val = 2
-- Output: 5
-- In place / Modified existing array nums [0, 1, 3, 0, 4, _, _, _]
+- Input: s = ["p","r","a","v","n"]
+- Output: s = ["n","v","a","r","p"]
+- In place / Modified existing array of characters s
 
 ## 3. Approach & solution notes
 
@@ -63,7 +60,6 @@
 
 - ![alt text](./img/solution-1.1.png)
 - ![alt text](./img/solution-1.2.png)
-- ![alt text](./img/solution-1.3.png)
 
 </details>
 
