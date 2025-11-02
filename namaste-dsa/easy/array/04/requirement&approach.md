@@ -9,7 +9,10 @@
 
   <summary><b>Summary / Take away from problem statement / Key Observation</b></summary>
 
-  - **in-place**, means should modify the existing data structure like Array, should not use extra memory space
+  - You can not able to Buy & Sell on same day / initial day
+  - Under problem
+
+    - ![alt text](./img/understand-problem.png)
 
     </details>
 
@@ -32,12 +35,18 @@
 
 - Thought Process / Approach
 
-  - use for loop, till n/2 times
-    - swap(i, n-1-i), use temp variable
+  - **Brute force approach**
+
+    - ![alt text](./img/bruteforce-approach-1.1.png)
+
+  - **Improved approach, time complexity O(n)**
+    - use for loop, traverse each item in Price Array
+      - if you want to sell specific day, find minValue before that by compare
+      - find max profit by compare
+    - return max profit
 
 - ![alt text](./img/approach-1.1.png)
 - ![alt text](./img/approach-1.2.png)
-- ![alt text](./img/dry-run.png)
 
 - Make sure dry run with sample examples with notebooks
 

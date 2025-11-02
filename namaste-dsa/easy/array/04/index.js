@@ -1,35 +1,83 @@
-// Approach 1
+// Improved Approach 1 - O(n) time complexity
 /**
- * @param {character[]} charArr
- * @return {void} Do not return anything, modify s in-place instead.
+ * @param {number[]} prices
+ * @return {number}
  */
-const reverseString_A1 = (charArr) => {
+const maxProfit_A1 = (pricesArr) => {
   /**
    * Edge case covered
    * 1. if not valid array type
    * 2. array should not be empty
    */
-  if (!Array.isArray(charArr) || !charArr.length) {
+  if (!Array.isArray(pricesArr) || !pricesArr.length) {
     console.error("Enter valid array types & should not be empty");
     throw new Error("Enter valid array types & should not be empty");
   }
 
-  const LENGTH = charArr.length;
-  const HALF_LENGTH = LENGTH / 2;
+  const LENGTH = pricesArr.length;
+  let minValue = pricesArr[0];
+  let maxProfit = 0;
 
-  // loop till n/2 times, first half of the array
-  for (let i = 0; i < HALF_LENGTH; i++) {
-    // swap(i, n-1-i)
-    let temp = charArr[i];
-    charArr[i] = charArr[LENGTH - 1 - i];
-    charArr[LENGTH - 1 - i] = temp;
+  // traverse each price array element
+  for (let i = 1; i < LENGTH; i++) {
+    // find minValue before selling day
+    if (pricesArr[i] < minValue) {
+      minValue = pricesArr[i];
+    }
+    // find maxProfit by current - minValue compare with existing maxProfit
+    if (pricesArr[i] - minValue > maxProfit) {
+      maxProfit = pricesArr[i] - minValue;
+    }
   }
-  console.log("In place/Existing modified array ", charArr);
+
+  return maxProfit;
 };
 
 console.log("Approach 1 =======>");
-console.log(reverseString_A1(["h", "e", "l", "l", "o"]));
-console.log(reverseString_A1(["p", "r", "a", "v", "n"]));
-console.log(reverseString_A1(["a", "r", "u", "n"]));
-console.log(reverseString_A1([]));
-console.log(reverseString_A1({}));
+console.log(maxProfit_A1([2, 3, 1, 6, 9, 10]));
+console.log(maxProfit_A1([1, 2, 5, 4, 3]));
+console.log(maxProfit_A1([7, 1, 5, 3, 6, 4]));
+console.log(maxProfit_A1([7, 6, 4, 3, 1]));
+// console.log(maxProfit_A1([]));
+// console.log(maxProfit_A1({}));
+
+// Brute force Approach 2 - O(n^2) time complexity
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+const maxProfit_A2 = (pricesArr) => {
+  /**
+   * Edge case covered
+   * 1. if not valid array type
+   * 2. array should not be empty
+   */
+  if (!Array.isArray(pricesArr) || !pricesArr.length) {
+    console.error("Enter valid array types & should not be empty");
+    throw new Error("Enter valid array types & should not be empty");
+  }
+
+  const LENGTH = pricesArr.length;
+  let maxProfit = 0;
+
+  // traverse each price array element
+  for (let i = 0; i < LENGTH; i++) {
+    // keep one item, compare with rest all
+    for (let j = i + 1; j < LENGTH; j++) {
+      // profit = current price - prev, compare with maxProfit
+      if (pricesArr[j] - pricesArr[i] > maxProfit) {
+        maxProfit = pricesArr[j] - pricesArr[i];
+      }
+    }
+  }
+
+  return maxProfit;
+};
+
+console.log("Approach 2 =======>");
+console.log(maxProfit_A2([2, 3, 1, 6, 9, 10]));
+console.log(maxProfit_A2([1, 2, 5, 4, 3]));
+console.log(maxProfit_A2([7, 1, 5, 3, 6, 4]));
+console.log(maxProfit_A2([7, 6, 4, 3, 1]));
+console.log(maxProfit_A2([]));
+console.log(maxProfit_A2({}));
