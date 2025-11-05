@@ -36,6 +36,8 @@ class Stack {
   }
 }
 
+export default Stack;
+
 const s1 = new Stack();
 console.log("s1.isEmpty() ", s1.isEmpty());
 
