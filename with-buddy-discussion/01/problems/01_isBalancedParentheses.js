@@ -1,5 +1,6 @@
-import Stack from "../index";
+import Stack from "../index.js";
 
+// create instance of Stack Object
 const stack = new Stack();
 
 const isBalancedParentheses = (str) => {
@@ -30,4 +31,12 @@ const isBalancedParentheses = (str) => {
   return stack.size() === 0 ? "Balanced" : "UnBalanced";
 };
 
+stack.clear();
 console.log(isBalancedParentheses("[()()]{}"));
+stack.clear();
+console.log(isBalancedParentheses("[(){}"));
+stack.clear();
+console.log(isBalancedParentheses("()()"));
+stack.clear();
+console.log(isBalancedParentheses("[]{"));
+stack.clear();
