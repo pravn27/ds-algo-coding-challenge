@@ -5,15 +5,6 @@
 - Move Zeros
 - https://leetcode.com/problems/move-zeroes/description/
 - Learn to manipulate arrays to shift zeros to the end while preserving the relative order of other elements. A must-know for array handling.
-- <details>
-
-  <summary><b>Summary / Take away from problem statement / Key Observation</b></summary>
-
-  - Under problem
-
-    - ![alt text](./img/understand-problem.png)
-
-    </details>
 
 ## 2. Understand the problem with sample inputs & outputs
 
@@ -41,18 +32,15 @@
 
 - Thought Process / Approach
 
-  - **Brute force approach**
-
-    - ![alt text](./img/bruteforce-approach-1.1.png)
-
-  - **Improved approach, time complexity O(n)**
-    - use for loop, traverse each item in Price Array
-      - if you want to sell specific day, find minValue before that by compare
-      - find max profit by compare
-    - return max profit
-
-- ![alt text](./img/approach-1.1.png)
-- ![alt text](./img/approach-1.2.png)
+  - use 2 pointers i, x
+    - i pointer index to traverse elements of array
+    - x pointer index to place / shift non zero elements in array
+  - use for loop i pointer, traverse each item in array
+    - if non zero elements
+      - A[x] = A[i]
+      - x++, increment by 1
+  - fill all remaining elements with 0, from x to n, where n is length of array
+    - use for loop from x to n
 
 - Make sure dry run with sample examples with notebooks
 
@@ -76,8 +64,3 @@
 - [Coding solution in JS](./index.js)
 
 ## 5. (Good to ask) Edge / Corner case covered with refactor / improvements
-
-- What if, instead of array type if pass as other objects ?
-  - Check whether its array or not, should return error message
-- What if array is empty ?
-  - Should return error message
