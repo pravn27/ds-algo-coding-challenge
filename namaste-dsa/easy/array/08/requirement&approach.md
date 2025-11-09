@@ -2,9 +2,9 @@
 
 ## 1. Problem statement
 
-- Max Consecutive Ones
-- https://leetcode.com/problems/max-consecutive-ones/
-- Learn to use loops and counters to determine the longest consecutive sequence of 1s. Great for practicing array traversal and condition checking.
+- Missing Number
+- https://leetcode.com/problems/missing-number/description/
+- This episode covers mathematical and XOR-based approaches to finding the missing element from an array, a common interview question.
 
 ## 2. Understand the problem with sample inputs & outputs
 
@@ -31,12 +31,7 @@
     - else if encounter/visit zero, update maxCount compare with consOnesCount and reset consOnesCount to 0
   - return return max of maxCount or consOnesCount
 
-  - ![alt text](./img/approach-1.1.png)
-  - ![alt text](./img/approach-1.2.png)
-
 - Make sure dry run with sample examples with notebooks
-
-  - ![alt text](./img/dry-run.png)
 
 - Complexity
 
