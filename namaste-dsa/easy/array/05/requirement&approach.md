@@ -40,18 +40,11 @@
 
 - Thought Process / Approach
 
-  - **Brute force approach**
-
-    - ![alt text](./img/bruteforce-approach-1.1.png)
-
-  - **Improved approach, time complexity O(n)**
+  - **Improved approach, Time complexity O(m+n) and Space complexity O(m)**
     - use for loop, traverse each item in Price Array
-      - if you want to sell specific day, find minValue before that by compare
-      - find max profit by compare
-    - return max profit
 
-- ![alt text](./img/approach-1.1.png)
-- ![alt text](./img/approach-1.2.png)
+- ![alt text](./img/approach2-1.1.png)
+- ![alt text](./img/approach2-1.2.png)
 
 - Make sure dry run with sample examples with notebooks
 
@@ -67,6 +60,8 @@
 
 - ![alt text](./img/solution-1.1.png)
 - ![alt text](./img/solution-1.2.png)
+- ![alt text](./img/solution-1.3.png)
+- ![alt text](./img/solution-1.4.png)
 
 </details>
 
