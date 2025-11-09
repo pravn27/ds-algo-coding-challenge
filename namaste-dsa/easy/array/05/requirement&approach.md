@@ -48,10 +48,12 @@
 
 - Make sure dry run with sample examples with notebooks
 
+  - ![alt text](./img/approach-2-dry-run.png)
+
 - Complexity
 
-  - Time Complexity: O(n), where n is length of the array
-  - Space Complexity: O(1)
+  - Time Complexity: O(m+n), where m, n is length of the nums1, nums2 array
+  - Space Complexity: O(m), where m is length of nums1 array, due to extra space for copied nums1 array
 
 </details>
 
