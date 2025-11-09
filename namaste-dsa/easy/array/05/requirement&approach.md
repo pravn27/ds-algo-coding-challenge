@@ -65,17 +65,15 @@
 - Thought Process / Approach
 
   - **Improved approach, Time complexity O(m+n) and Space complexity O(1)**
-    - compare and fill in the reverse order from end
-    - use 2 pointer p1, p2
+    - compare and fill in the reverse order from the end
+    - use 2 pointer p1, p2 from last index
       - compare for large element, fill from end of nums1 array (m+n) length
-    - make sure handle array boundary case, after crossing for p1, p2
+    - make sure handle array boundary case, after crossing for p1, p2 less than 0 index
 
-- ![alt text](./img/approach2-1.1.png)
-- ![alt text](./img/approach2-1.2.png)
+- ![alt text](./img/approach3-1.1.png)
+- ![alt text](./img/approach3-1.2.png)
 
 - Make sure dry run with sample examples with notebooks
-
-  - ![alt text](./img/approach-2-dry-run.png)
 
 - Complexity
 
