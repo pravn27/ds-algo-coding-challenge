@@ -21,10 +21,13 @@
 ## 3. Approach & solution notes
 
 <details>
-  <summary><b>Approach - 1 Brute force</b></summary>
+  <summary><b>Approach - 1 Brute force (required improved)</b></summary>
   
 - Find all non zero elements, move / copy to new array
 - fill remaining with zeros at the end of new array
+- Brute force approach takes Extra Array, its not feasible
+
+- ![alt text](./img/approach-brute-force.png)
 
 </details>
 <details>
@@ -40,7 +43,11 @@
       - A[x] = A[i]
       - x++, increment by 1
   - fill all remaining elements with 0, from x to n, where n is length of array
+
     - use for loop from x to n
+
+  - ![alt text](./img/approach-1.1.png)
+  - ![alt text](./img/approach-1.2.png)
 
 - Make sure dry run with sample examples with notebooks
 
@@ -64,3 +71,8 @@
 - [Coding solution in JS](./index.js)
 
 ## 5. (Good to ask) Edge / Corner case covered with refactor / improvements
+
+- What if, instead of array type if pass as other objects ?
+  - Check whether its array or not, should return error message
+- What if array is empty ?
+  - Should return error message
