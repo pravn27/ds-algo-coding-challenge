@@ -2,43 +2,24 @@
  * @param {number[]} nums
  * @return {number}
  */
-var findMaxConsecutiveOnes_A1 = function (nums) {
-  /**
-   * Edge case covered
-   * 1. if not valid array type
-   * 2. array should not be empty
-   */
-  if (!Array.isArray(nums) || !nums.length) {
-    console.error("Enter valid array types & should not be empty");
-    throw new Error("Enter valid array types & should not be empty");
+const missingNumber_A1_BestCase = (nums) => {
+  const n = nums.length;
+
+  // get total sum count which range from 0 to n, 0+1+2+3+.....+n is (n*(n+1))/2
+  const totalSum = (n * (n + 1)) / 2;
+
+  // get partial sum in nums array
+  let partialSum = 0;
+  for (let i = 0; i < n; i++) {
+    partialSum = partialSum + nums[i];
   }
 
-  let consOnesCount = 0;
-  let maxCount = 0;
-
-  const LENGTH = nums.length;
-
-  for (let i = 0; i < LENGTH; i++) {
-    // if each consecutive one visit / traverse, increment consOnesCount by 1
-    if (nums[i] === 1) {
-      consOnesCount++;
-    }
-    // else if encounter/visit zero, update maxCount compare with consOnesCount and reset consOnesCount to 0
-    else {
-      maxCount = Math.max(maxCount, consOnesCount);
-      consOnesCount = 0;
-    }
-  }
-  // return max of maxCount or consOnesCount
-  return Math.max(maxCount, consOnesCount);
+  const missingNumber = totalSum - partialSum;
+  return missingNumber;
 };
 
 console.log("Approach 1 =======>");
-console.log(findMaxConsecutiveOnes_A1([0, 1, 1, 0, 1, 1, 1, 1]));
-console.log(findMaxConsecutiveOnes_A1([1, 1, 1, 0, 0, 1, 0, 1]));
-console.log(findMaxConsecutiveOnes_A1([1, 1, 0, 0, 0, 1, 1]));
-console.log(findMaxConsecutiveOnes_A1([0, 0, 1]));
-console.log(findMaxConsecutiveOnes_A1([0, 0, 0]));
-console.log(findMaxConsecutiveOnes_A1([1, 1, 1]));
-console.log(findMaxConsecutiveOnes_A1([]));
-console.log(findMaxConsecutiveOnes_A1({}));
+console.log(missingNumber_A1_BestCase([3, 0, 1]));
+console.log(missingNumber_A1_BestCase([1, 0, 2, 3, 5]));
+console.log(missingNumber_A1_BestCase([3, 2, 1]));
+console.log(missingNumber_A1_BestCase([3, 2, 0, 1]));
