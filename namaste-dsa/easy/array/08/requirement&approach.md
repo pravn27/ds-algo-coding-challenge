@@ -10,13 +10,13 @@
 
 ### Sample - 1
 
-- Input: nums = [0,1,1,0,1,1,1,1]
-- Output: 4
+- Input: nums = [3,0,1]
+- Output: 2
 
 ### Sample - 2
 
-- Input: nums = [1,1,0,0,0,1,1]
-- Output: 2
+- Input: nums = [1,0,2,3,5]
+- Output: 4
 
 ## 3. Approach & solution notes
 
@@ -45,6 +45,8 @@
 
 - ![alt text](./img/solution-1.1.png)
 - ![alt text](./img/solution-1.2.png)
+- ![alt text](./img/solution-1.3.png)
+- ![alt text](./img/solution-1.4.png)
 
 </details>
 
