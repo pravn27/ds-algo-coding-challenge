@@ -32,6 +32,9 @@
     - if exist, increment by value 1
   - Another for loop to check in Object which element has value 1 and return that
 
+- ![alt text](./img/approach-brute-force.png)
+- ![alt text](./img/approach-1.1.png)
+
 - Make sure dry run with sample examples with notebooks
 
 - Complexity
@@ -46,7 +49,11 @@
 
 - Thought Process / Approach
 
-  - use XOR bitwise operation on elements of nums array
+  - use XOR bitwise operator (^) on elements of nums array
+  - when ever problems statement having Appearing Twice, try to use logic of XOR bitwise operator
+
+  - ![alt text](./img/bitwise-xor-operator.png)
+  - ![alt text](./img/approach-1.2.png)
 
 - Make sure dry run with sample examples with notebooks
 
