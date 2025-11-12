@@ -42,6 +42,22 @@
 </details>
 
 <details>
+  <summary><b>Approach - 2 Brute force</b></summary>
+
+- Thought Process / Approach
+
+  - ![alt text](./img/approach-brute-force.png)
+
+- Make sure dry run with sample examples with notebooks
+
+- Complexity
+
+  - Time Complexity: O(n log n), where n is length of the array
+  - Space Complexity: O(1)
+
+</details>
+
+<details>
   <summary><b>Solution Notes</b></summary>
 
 - ![alt text](./img/solution-1.1.png)
