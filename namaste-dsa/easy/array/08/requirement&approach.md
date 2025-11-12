@@ -25,11 +25,12 @@
 
 - Thought Process / Approach
 
-  - for loop to visit each element in array
-    - if each consecutive one visit / traverse, increment consOnesCount by 1
-      - if(A[i] === 1) consOnesCount++;
-    - else if encounter/visit zero, update maxCount compare with consOnesCount and reset consOnesCount to 0
-  - return return max of maxCount or consOnesCount
+  - get totalSum from range 0 to n
+  - find the partial sum in nums array
+  - missingNum = totalSum - partialSum
+
+  - ![alt text](./img/approach-brute-force.png)
+  - ![alt text](./img/approach-1.1.png)
 
 - Make sure dry run with sample examples with notebooks
 
