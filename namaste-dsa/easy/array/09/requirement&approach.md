@@ -42,6 +42,22 @@
 </details>
 
 <details>
+  <summary><b>Approach - 2 Best case</b></summary>
+
+- Thought Process / Approach
+
+  - use XOR bitwise operation on elements of nums array
+
+- Make sure dry run with sample examples with notebooks
+
+- Complexity
+
+  - Time Complexity: O(n), where n is length of the array
+  - Space Complexity: O(1), No extra space used
+
+</details>
+
+<details>
   <summary><b>Solution Notes</b></summary>
 
 - ![alt text](./img/solution-1.1.png)
