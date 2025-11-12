@@ -29,7 +29,6 @@
   - find the partial sum in nums array
   - missingNum = totalSum - partialSum
 
-  - ![alt text](./img/approach-brute-force.png)
   - ![alt text](./img/approach-1.1.png)
 
 - Make sure dry run with sample examples with notebooks
