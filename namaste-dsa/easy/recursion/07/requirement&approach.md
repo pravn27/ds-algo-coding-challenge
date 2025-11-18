@@ -32,7 +32,7 @@
 
   - using Recursion
 
-    - Get the pattern, when keep divide number by 2, till we get 1 or less than 1
+    - Get the pattern, keep divide number n by 2, till we get 1 or less than 1
     - what is the base condition ?
       - if n == 1 return true
       - else if (n < 1 || n % 2 != 0) return false
@@ -40,7 +40,6 @@
       - return powerOfTwo(n / 2)
 
   - ![alt text](./img/approach-1.png)
-  - ![alt text](./img/approach-1.1.png)
 
 - Make sure dry run with sample examples with notebooks
 

@@ -16,3 +16,4 @@ console.log(isPowerOfTwo_A1(16));
 console.log(isPowerOfTwo_A1(6));
 console.log(isPowerOfTwo_A1(8));
 console.log(isPowerOfTwo_A1(1));
+console.log(isPowerOfTwo_A1(20));
