@@ -11,17 +11,17 @@
 ### Sample - 1
 
 - Input: n = 8
-- Output: true
+- Output: 21
 
 ### Sample - 2
 
-- Input: n = 16
-- Output: true
+- Input: n = 5
+- Output: 5
 
 ### Sample - 3
 
 - Input: n = 6
-- Output: false
+- Output: 8
 
 ## 3. Approach & solution notes
 
@@ -33,6 +33,7 @@
   - using Iterative approach
 
     - using for loop, works in forward thinking
+    - Time & Space Complexity: O(n)
     - ![alt text](./img/iterative-approach.png)
 
   - using Recursion approach, works in backward thinking
