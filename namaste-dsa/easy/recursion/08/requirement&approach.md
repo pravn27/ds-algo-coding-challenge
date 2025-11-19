@@ -71,3 +71,10 @@
 - [Coding solution in JS](./index.js)
 
 ## 5. (Good to ask) Edge / Corner case covered with refactor / improvements
+
+## 6. Similar like Fibonacci solution, can solve many other problem on same pattern
+
+- The classic problem describes how a pair of rabbits reproduces monthly, with a female producing a new pair each month starting from the second month. The question asks for the number of rabbit pairs after a given number of months, which corresponds to the Fibonacci sequence
+- https://share.google/aimode/9Rnk6vH1AIhscnj6Z
+- https://library.ethz.ch/en/locations-and-media/platforms/virtual-exhibitions/fibonacci-un-ponte-sul-mediterraneo/fibonaccis-significance-for-the-present-day/the-rabbit-problem.html
+- ![alt text](./img/rabbit-interview-question.png)
