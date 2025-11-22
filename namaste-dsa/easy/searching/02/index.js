@@ -6,6 +6,7 @@ const binarySearch = (arr, target) => {
   // since its not sequential element traversal, using while loop
   while (leftP <= rightP) {
     const midP = Math.floor((leftP + rightP) / 2);
+    // 3 possible in finding target
     if (target === arr[midP]) {
       return midP;
     } else if (target > arr[midP]) {

@@ -4,7 +4,7 @@
 
 - Binary Search, search target element in an array, if found return index of that, else return -1
 - Learn binary search, an efficient technique to find elements in a sorted array by dividing the search space in half.
-- Binary Search criteria, given array should be sorted increasing order
+- Binary Search criteria, its only applied to given array should be sorted increasing order
 - https://leetcode.com/problems/binary-search/
 
 ## 2. Understand the problem with sample inputs & outputs
@@ -26,6 +26,7 @@
 
 - Thought Process / Approach
 
+  - using While loop, while randomly moving in the array
   - finding mid element with left, right pointer
   - 3 possible, inside while loop (left <= right)
 
@@ -38,11 +39,18 @@
 
   - if while loop condition fails (right pointer > left pointer) means target element not found, return -1
 
+  - ![alt text](./img/approach-1.1.png)
+  - ![alt text](./img/approach-1.2.png)
+  - ![alt text](./img/approach-1.3.png)
+
 - Make sure dry run with sample examples with notebooks
+
+  - ![alt text](./img/dry-run.png)
+  - ![alt text](./img/time-complexity.png)
 
 - Complexity
 
-  - Time Complexity: O(log n), where n is length of array
+  - Time Complexity: O(log n), where n is length of array, since Binary search, on every while loop, divides/split the array into half 1/2
   - Space Complexity: O(1)
 
 </details>
