@@ -2,19 +2,21 @@
 
 ## 1. Problem statement
 
-- Linear Search, search target element in an array, if found return index of that, else return -1
-- Learn to traverse an array and check each element sequentially to find a match. Simple yet essential for unsorted arrays.
+- Binary Search, search target element in an array, if found return index of that, else return -1
+- Learn binary search, an efficient technique to find elements in a sorted array by dividing the search space in half.
+- Binary Search criteria, given array should be sorted increasing order
+- https://leetcode.com/problems/binary-search/
 
 ## 2. Understand the problem with sample inputs & outputs
 
 ### Sample - 1
 
-- Input: arr = [2, 3, 5, 0, 1], target = 3
-- Output: 1
+- Input: arr = [2, 3, 5, 10, 15], target = 15
+- Output: 4
 
 ### Sample - 2
 
-- Input: arr = [1, 2, 10, 8, 3], target = 4
+- Input: arr = [1, 2, 4, 8], target = 5
 - Output: -1
 
 ## 3. Approach & solution notes
@@ -24,16 +26,23 @@
 
 - Thought Process / Approach
 
-  - use for loop
-  - traverse each element in array & compare with target, if found return index of that
-    - if (arr[i] == target) return i
-  - if target element not found, return -1
+  - finding mid element with left, right pointer
+  - 3 possible, inside while loop (left <= right)
+
+    - find the mid element & compare with target
+      if found return mid index
+    - else if target > A[mid] update left pointer as mid + 1
+      - left = mid + 1
+    - else update right pointer as mid - 1
+      - right = mid - 1
+
+  - if while loop condition fails (right pointer > left pointer) means target element not found, return -1
 
 - Make sure dry run with sample examples with notebooks
 
 - Complexity
 
-  - Time Complexity: O(n), where n is length of array
+  - Time Complexity: O(log n), where n is length of array
   - Space Complexity: O(1)
 
 </details>
@@ -41,7 +50,8 @@
 <details>
   <summary><b>Solution Notes</b></summary>
 
-- ![alt text](./img/solution-1.png)
+- ![alt text](./img/solution-1.1.png)
+- ![alt text](./img/solution-1.2.png)
 
 </details>
 

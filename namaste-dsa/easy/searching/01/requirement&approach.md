@@ -4,6 +4,8 @@
 
 - Linear Search, search target element in an array, if found return index of that, else return -1
 - Learn to traverse an array and check each element sequentially to find a match. Simple yet essential for unsorted arrays.
+- Same problem solved earlier
+  - https://github.com/pravn27/ds-algo-coding-challenge/blob/master/namaste-dsa/easy/01/requirement%26approach.md
 
 ## 2. Understand the problem with sample inputs & outputs
 

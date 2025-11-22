@@ -1,16 +1,25 @@
-const linearSearch = (arr, target) => {
+const binarySearch = (arr, target) => {
   const ARRAY_LENGTH = arr.length;
+  let leftP = 0;
+  let rightP = ARRAY_LENGTH - 1;
 
-  // use for loop, traverse array element & compare with target
-  for (let i = 0; i < ARRAY_LENGTH; i++) {
-    if (arr[i] === target) return i;
+  // since its not sequential element traversal, using while loop
+  while (leftP <= rightP) {
+    const midP = Math.floor((leftP + rightP) / 2);
+    if (target === arr[midP]) {
+      return midP;
+    } else if (target > arr[midP]) {
+      leftP = midP + 1;
+    } else {
+      rightP = midP - 1;
+    }
   }
 
-  // if target element not found, return -1
+  // if target element not found in midP, return -1
   return -1;
 };
 
-console.log("Linear Search =======>");
-console.log(linearSearch([1, 2, 10, 8, 3], 5));
-console.log(linearSearch([20, 3, 10, 5, 3], 5));
-console.log(linearSearch([4, 6, 7, 9, 3], 7));
+console.log("Binary Search =======>");
+console.log(binarySearch([1, 2, 10, 20, 100], 20));
+console.log(binarySearch([3, 10, 15, 25], 5));
+console.log(binarySearch([4, 6, 7, 9, 20, 36, 67, 100], 67));
