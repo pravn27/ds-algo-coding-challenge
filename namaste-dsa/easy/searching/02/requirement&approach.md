@@ -4,7 +4,7 @@
 
 - Binary Search, search target element in an array, if found return index of that, else return -1
 - Learn binary search, an efficient technique to find elements in a sorted array by dividing the search space in half.
-- Binary Search criteria, its only applied to given array should be sorted increasing order
+- **Binary Search criteria, its only applied to given array should be sorted increasing order**
 - https://leetcode.com/problems/binary-search/
 
 ## 2. Understand the problem with sample inputs & outputs
