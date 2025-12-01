@@ -24,16 +24,31 @@
 
 - Thought Process / Approach
 
-  - use for loop
-  - traverse each element in array & compare with target, if found return index of that
-    - if (arr[i] == target) return i
-  - if target element not found, return -1
+  - using 2 for loop
+  - Outer iteration i, till n-1 times
+
+    - on every iteration end, will Bubble up largest element & place at the end right position
+    - Inner iteration j, compare current & next element
+      - if current > next element, Swap()
+
+  - ![alt text](./img/approach-1.1.png)
+  - ![alt text](./img/approach-1.2.png)
 
 - Make sure dry run with sample examples with notebooks
 
+  - ![alt text](./img/dry-run.png)
+  - ![alt text](./img/psuedo-code.png)
+
 - Complexity
 
-  - Time Complexity: O(n), where n is length of array
+  - Time Complexity: O(n^2), where n is length of array
+
+    - Can we improve better the time complexity ? Improvement scope in Bubble sort algo
+
+      - ![alt text](./img/BS-improvement.png)
+
+      - What if array is already is sorted ?
+
   - Space Complexity: O(1)
 
 </details>
