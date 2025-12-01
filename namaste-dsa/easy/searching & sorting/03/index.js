@@ -1,16 +1,29 @@
-const linearSearch = (arr, target) => {
+const bubbleSort = (arr) => {
   const ARRAY_LENGTH = arr.length;
 
-  // use for loop, traverse array element & compare with target
-  for (let i = 0; i < ARRAY_LENGTH; i++) {
-    if (arr[i] === target) return i;
+  // outer iteration n-1 times
+  for (let i = 0; i < ARRAY_LENGTH - 1; i++) {
+    let isSwapped = false;
+    // inner iteration to compare & swap element
+    for (let j = 0; j < ARRAY_LENGTH - 1 - i; j++) {
+      // compare current & next element to swap
+      if (arr[j] > arr[j + 1]) {
+        let temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+        isSwapped = true;
+      }
+    }
+
+    // if at least one iteration has 0 times swapped, then array is sorted, break the loop & don't compare rest of the iteration
+    if (!isSwapped) break;
   }
 
-  // if target element not found, return -1
-  return -1;
+  // sorted array
+  return arr;
 };
 
-console.log("Linear Search =======>");
-console.log(linearSearch([1, 2, 10, 8, 3], 5));
-console.log(linearSearch([20, 3, 10, 5, 3], 5));
-console.log(linearSearch([4, 6, 7, 9, 3], 7));
+console.log(bubbleSort([1, 2, 10, 8, 3]));
+console.log(bubbleSort([20, 3, 10, 5, 3]));
+console.log(bubbleSort([4, 6, 7, 9, 3]));
+console.log(bubbleSort([1, 2, 3, 4, 5, 6, 6]));
