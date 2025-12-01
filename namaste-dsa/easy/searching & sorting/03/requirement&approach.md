@@ -3,7 +3,7 @@
 ## 1. Problem statement
 
 - Bubble Sort, sorting in ascending order
-- Learn to traverse an array and check each element sequentially to find a match. Simple yet essential for unsorted arrays.
+- Learn the bubble sort algorithm, where adjacent elements are compared and swapped to move larger elements to the end of the list.
 
 ## 2. Understand the problem with sample inputs & outputs
 
