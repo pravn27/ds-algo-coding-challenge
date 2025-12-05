@@ -1,4 +1,4 @@
-import Stack from "../index.js";
+import Stack from "../../index.js";
 
 // create instance of Stack Object
 const stack = new Stack();
