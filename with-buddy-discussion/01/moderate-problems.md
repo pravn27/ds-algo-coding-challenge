@@ -1,0 +1,6 @@
+- Browser History (back/forward navigation)
+- Undo/Redo functionality (text editors, design tools)
+- Expression evaluation (calculator apps, formula parsers)
+- HTML/JSX tag validation (component rendering)
+- Function call stack (debugging, error boundaries)
+- Nested component rendering (React/Vue component trees)
