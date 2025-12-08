@@ -24,12 +24,14 @@
 
 - Thought Process / Approach
 
-  - using 2 for loop
-  - Outer iteration i, till n-1 times
+  - using for loop, start from 1, since compare current element & previous element index
 
-    - on every iteration, find the minimum element & place at the right position
-    - Inner iteration j, compare & find the min element
-    - swap the A[i], A[min] element
+    - curr = A[i], prev = i - 1
+    - Compare prev & curr element & shift prev to forward, use while loop
+      while(A[prev] > curr && prev >= 0)
+      - shift prev element to one step forward & move prev index to one step back
+      - A[prev + 1] = A[prev], prev --
+    - once come out of the while loop, place curr element in right place, A[prev + 1] = curr
 
   - ![alt text](./img/approach-1.1.png)
   - ![alt text](./img/approach-1.2.png)
