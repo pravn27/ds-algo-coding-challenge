@@ -2,9 +2,8 @@
 
 ## 1. Problem statement
 
-- Merge Sort, using recursion (sorting in ascending order)
-- This video breaks down the Merge Sort algorithm step-by-step, explaining how recursion and the divide-and-conquer strategy work together to sort arrays efficiently.
-- https://leetcode.com/problems/sort-an-array/description/
+- Insertion Sort, sorting in ascending order
+- Learn the insertion sort technique where each element is inserted at the correct position in the sorted part of the array.
 
 ## 2. Understand the problem with sample inputs & outputs
 
