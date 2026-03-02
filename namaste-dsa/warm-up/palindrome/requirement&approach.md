@@ -35,7 +35,6 @@
   <summary><b>Approach - 1</b></summary>
 
 - Thought Process / Approach
-
   - run While until n < 0
     - get last digit of num, by % operator as n % 10
     - create reverse num
@@ -53,7 +52,6 @@
 - Make sure dry run with sample examples with notebooks
 
 - Complexity
-
   - Time Complexity: O(d), where d is number of digits
   - Space Complexity: O(1)
 
