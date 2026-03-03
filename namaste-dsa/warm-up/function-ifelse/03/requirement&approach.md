@@ -21,15 +21,14 @@
 <details>
   <summary><b>Approach</b></summary>
 
-- Add if condition for Eligible
+- Add if else condition checks for Eligible / Not Eligible
   - if(age >= 18) return "You are eligible to vote."
-- Else for less than 18 Age, Not Eligible
-  - return "Not Eligible"
+  - Else, return "Not Eligible"
 
 - Make sure dry run with sample examples with notebooks
 
 - Complexity
-  - Time Complexity: O(1)
+  - Time Complexity: O(1), Constant
   - Space Complexity: O(1)
 
 </details>
