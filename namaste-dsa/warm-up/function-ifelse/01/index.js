@@ -1,6 +1,6 @@
-const addTwoNumbers = (a, b) => {
+const addTwoNumbers = (num1, num2) => {
   // add two numbers & return the result
-  return a + b;
+  return num1 + num2;
 };
 
 console.log(addTwoNumbers(1, 2));

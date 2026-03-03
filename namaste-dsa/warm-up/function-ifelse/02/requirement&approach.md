@@ -2,62 +2,35 @@
 
 ## 1. Problem statement
 
-- Write a function to (Right angled star triangle) Print Star Pattern in 1, 2, 3....n star rows, take n as input parameter
-- Reference
-  - https://pravn27.github.io/ds-algo-tech-doc/docs/ds-algo-course-tutorials/namaste-dsa/readerDoc/warm-up/star-pattern#star-pattern---2
+- Write a function that takes an integer and returns its square. Call this function and prints the result. Square(x) is a function that computes the square of a number. It returns the result instead of printing it.
 
 ## 2. Understand the problem with sample inputs & outputs
 
 ### Sample - 1
 
-- Input: n = 4
-- Output:
-
-      *
-      * *
-      * * *
-      * * * *
+- Input: 3
+- Output: 9
 
 ### Sample - 2
 
-- Input: n = 3
-- Output:
-
-      *
-      * *
-      * * *
+- Input: 5
+- Output: 25
 
 ## 3. Approach & solution notes
 
 <details>
-  <summary><b>Approach - 1</b></summary>
+  <summary><b>Approach</b></summary>
 
-- Thought Process / Approach - two pass / loops (i, j) solution
-
-  - Think as 2D matrix with
-    - i (how many rows required)
-    - j (how many columns required)
-  - 2 loops required - rows as i, columns as j
-  - Outer loop, row as i
-  - define starAppend variable to hold \*
-    - starAppend = "";
-  - Inner loop, column as j, will run till i+1 or j <= i
-    - starAppend = starAppend + " \* ";
-  - Print starAppend
+- Square the integer / number
+  - use num \* num
+  - Alernative use Math.pow(num, 2)
+- return the results
 
 - Make sure dry run with sample examples with notebooks
 
 - Complexity
-
-  - Time Complexity: O(n<sup>2</sup>), since its nested loops with 2 loops i, j
+  - Time Complexity: O(1), Constant
   - Space Complexity: O(1)
-
-</details>
-
-<details>
-  <summary><b>Solution Notes</b></summary>
-
-- ![alt text](./img/solution.png)
 
 </details>
 
@@ -66,6 +39,3 @@
 - [Coding solution in JS](./index.js)
 
 ## 5. (Good to ask) Edge / Corner case covered with refactor / improvements
-
-- What if, n is <= 0
-  - Should throw error, with proper message

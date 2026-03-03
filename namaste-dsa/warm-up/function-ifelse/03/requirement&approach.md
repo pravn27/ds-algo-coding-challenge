@@ -2,40 +2,40 @@
 
 ## 1. Problem statement
 
-- Write a Program that defines a function to calculate the sum of two integers and prints the result. Call this function by passing two integer values.
+- Write a program that accepts a number (age) and checks whether the person is eligible to vote. A person is eligible if their age is 18 or more.
 
 ## 2. Understand the problem with sample inputs & outputs
 
 ### Sample - 1
 
-- Input: 5, 3
-- Output: 8
+- Input: age = 20
+- Output: "You are eligible to vote."
 
 ### Sample - 2
 
-- Input: 2, 4
-- Output: 6
+- Input: age = 15
+- Output: "You are Not eligible to vote."
 
 ## 3. Approach & solution notes
 
 <details>
   <summary><b>Approach</b></summary>
 
-- Addition of 2 integer / number
-- returns the result
+- Add if condition for Eligible
+  - if(age >= 18) return "You are eligible to vote."
+- Else for less than 18 Age, Not Eligible
+  - return "Not Eligible"
 
 - Make sure dry run with sample examples with notebooks
 
 - Complexity
-  - Time Complexity: O(1), Constant
-  - Space Complexity: O(1), Constant
+  - Time Complexity: O(1)
+  - Space Complexity: O(1)
 
 </details>
 
 ## 4. Implementation & Refactor
 
 - [Coding solution in JS](./index.js)
-- [Coding solution in TS](./index.ts)
-- [Coding solution in Python](./index.py)
 
 ## 5. (Good to ask) Edge / Corner case covered with refactor / improvements
