@@ -2,7 +2,7 @@
 
 ## 1. Problem statement
 
-- Write a function to find Second Largest element in an Array or List
+- Write a function secondLargest(arr) that returns the second largest distinct number in an array.
 
 ## 2. Features / Use cases
 
@@ -33,10 +33,11 @@
     - Declare & assign First largest & Second largest variable to -Infinity
   - Use for loop to iterate / traverse each array elements
     - Compare with first largest
-    - Prior to first largest is Second largest
-    - Update first & second largest
-    - Compare with second largest & should not be equal to first largest
+    - Prior to first largest update, update Second largest as first largest
+    - Compare with second largest & should not be equal to first largest(for distinct check)
   - return Second largest
+
+- ![alt text](./img/approach.png)
 
 - Make sure dry run with sample examples with notebooks
 

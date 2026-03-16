@@ -2,7 +2,7 @@
 
 ## 1. Problem statement
 
-- Write a function to find Second Largest element in an Array or List
+- Write a function thirdLargest(arr) that returns the third largest distinct number in an array.
 
 ## 2. Features / Use cases
 
@@ -11,32 +11,34 @@
 ### Sample - 1
 
 - Input: [50, 30, -2, -40, -1, 100]
-- Output: 50
+- Output: 30
 
 ### Sample - 2
 
 - Input: [6, 10, 12, 20, 30, 30, 30]
-- Output: 20
+- Output: 12
 
 ### Sample - 3
 
 - Input: [-6, -10, -12, -20, -30]
-- Output: -10
+- Output: -12
 
 ## 4. Approach & solution notes
 
 <details>
   <summary><b>Approach - 1</b></summary>
 
+- Similar like finding the 2nd largest number
 - Thought Process / Approach - one pass solution
   - Similar like finding First largest elements
     - Declare & assign First largest & Second largest variable to -Infinity
   - Use for loop to iterate / traverse each array elements
     - Compare with first largest
-    - Prior to first largest is Second largest
-    - Update first & second largest
-    - Compare with second largest & should not be equal to first largest
+    - Prior to first largest update, update Second largest as first largest
+    - Compare with second largest & should not be equal to first largest(for distinct check)
   - return Second largest
+
+- ![alt text](./img/approach.png)
 
 - Make sure dry run with sample examples with notebooks
 

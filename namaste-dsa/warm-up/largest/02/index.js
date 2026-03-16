@@ -22,6 +22,7 @@ const findSecondLargestElement_A1 = (arr) => {
   for (let i = 0; i < ARRAY_LENGTH; i++) {
     // core, main logic
     if (arr[i] > first_largest) {
+      // before updating first_largest, update second_largest as first_largest
       second_largest = first_largest;
       first_largest = arr[i];
     } else if (arr[i] > second_largest && arr[i] !== first_largest) {
