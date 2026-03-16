@@ -30,13 +30,7 @@
 
 - Similar like finding the 2nd largest number
 - Thought Process / Approach - one pass solution
-  - Similar like finding First largest elements
-    - Declare & assign First largest & Second largest variable to -Infinity
-  - Use for loop to iterate / traverse each array elements
-    - Compare with first largest
-    - Prior to first largest update, update Second largest as first largest
-    - Compare with second largest & should not be equal to first largest(for distinct check)
-  - return Second largest
+  - Similar like finding First & Second largest elements
 
 - ![alt text](./img/approach.png)
 
@@ -45,13 +39,6 @@
 - Complexity
   - Time Complexity: O(n)
   - Space Complexity: O(1)
-
-</details>
-
-<details>
-  <summary><b>Solution Notes</b></summary>
-
-- ![alt text](./img/solution.png)
 
 </details>
 
@@ -65,7 +52,7 @@
   - Check whether its array or not, should return error message
 - What if array is empty ?
   - Should return error message
-- What if Array has less than 2 elements ?
+- What if Array has less than 3 elements ?
   - Should return error message
 - What if Array has negative numbers ?
 - What if Array has Duplicates numbers ?
