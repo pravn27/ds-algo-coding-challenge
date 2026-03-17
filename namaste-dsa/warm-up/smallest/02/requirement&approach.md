@@ -32,7 +32,7 @@
 - Thought Process / Approach - one pass solution
   - Similar like finding First & Second Smallest elements
 
-<!-- - ![alt text](./img/approach.png) -->
+- ![alt text](./img/approach.png)
 
 - Make sure dry run with sample examples with notebooks
 
