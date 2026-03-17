@@ -1,7 +1,7 @@
-// Write a function to find Third Largest element in an Array or List
+// Write a function to find Third Smallest element in an Array or List
 
 // Approach 1 - one pass solution
-const findThirdLargestElement_A1 = (arr) => {
+const findThirdSmallestElement_A1 = (arr) => {
   const ARRAY_LENGTH = arr.length;
 
   // Edge cases covered
@@ -14,47 +14,48 @@ const findThirdLargestElement_A1 = (arr) => {
     );
   }
 
-  // define first, second largest variable, assign with -Infinity
-  let first_largest = -Infinity;
-  let second_largest = -Infinity;
-  let third_largest = -Infinity;
+  // define first, second, third smallest variable, assign with Infinity
+  let first_smallest = Infinity;
+  let second_smallest = Infinity;
+  let third_smallest = Infinity;
 
   // use for loop & iterate each element & compare
-  for (let i = 0; i < ARRAY_LENGTH; i++) {
-    // core, main logic
-    if (arr[i] > first_largest) {
-      // before updating first, update second & third largest
-      third_largest = second_largest;
-      second_largest = first_largest;
-      first_largest = arr[i];
+  for (let num of arr) {
+    if (num < first_smallest) {
+      // before updating first, update second & third smallest
+      third_smallest = second_smallest;
+      second_smallest = first_smallest;
+      first_smallest = num;
     } else if (
-      arr[i] > second_largest &&
-      arr[i] !== first_largest &&
-      arr[i] !== third_largest
+      num < second_smallest &&
+      // condition to checks for distinct / unique numbers
+      num !== first_smallest &&
+      num !== third_smallest
     ) {
-      // before update second, update third largest
-      third_largest = second_largest;
-      second_largest = arr[i];
+      // before update second, update third smallest
+      third_smallest = second_smallest;
+      second_smallest = num;
     } else if (
-      arr[i] > third_largest &&
-      arr[i] !== second_largest &&
-      arr[i] !== first_largest
+      num < third_smallest &&
+      // condition to checks for distinct / unique numbers
+      num !== first_smallest &&
+      num !== second_smallest
     ) {
-      third_largest = arr[i];
+      third_smallest = num;
     }
   }
 
   const result =
-    third_largest === -Infinity ? "No third largest found" : third_largest;
+    third_smallest === Infinity ? "No third Smallest found" : third_smallest;
 
   return result;
 };
 
 console.log("Approach 1 =======>");
-console.log(findThirdLargestElement_A1([50, 30, -2, -40, -1, 100]));
-console.log(findThirdLargestElement_A1([6, 10, 12, 20, 30, 30, 30]));
-console.log(findThirdLargestElement_A1([-6, -10, -12, -20, -30]));
-console.log(findThirdLargestElement_A1([-5, -3, -1, 0, 2]));
-console.log(findThirdLargestElement_A1([-2, 3, 1, 4, 1, 4, 4]));
-console.log(findThirdLargestElement_A1([1, -2, 3, -4, -2]));
-console.log(findThirdLargestElement_A1([]));
+console.log(findThirdSmallestElement_A1([50, 30, -2, -2, -40, -1, 100]));
+console.log(findThirdSmallestElement_A1([6, 10, -12, 20, 30, 30, 30]));
+console.log(findThirdSmallestElement_A1([-6, -10, -12, -20, -30]));
+console.log(findThirdSmallestElement_A1([-5, -3, 1, 0, 0, 2]));
+console.log(findThirdSmallestElement_A1([-2, 3, 1, 4, 1, 4, 4]));
+console.log(findThirdSmallestElement_A1([1, -2, 3, -4, -2]));
+console.log(findThirdSmallestElement_A1([]));

@@ -37,7 +37,7 @@
     - Compare with second smallest & should not be equal to first smallest(for distinct/unique number check)
   - return Second Smallest
 
-- ![alt text](./img/approach.png)
+<!-- - ![alt text](./img/approach.png) -->
 
 - Make sure dry run with sample examples with notebooks
 

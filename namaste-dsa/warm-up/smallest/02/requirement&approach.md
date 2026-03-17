@@ -2,7 +2,7 @@
 
 ## 1. Problem statement
 
-- Write a function thirdLargest(arr) that returns the third largest distinct number in an array.
+- Write a function thirdSmallest(arr) that returns the Third Smallest distinct number in an array.
 
 ## 2. Features / Use cases
 
@@ -11,7 +11,7 @@
 ### Sample - 1
 
 - Input: [50, 30, -2, -40, -1, 100]
-- Output: 30
+- Output: -1
 
 ### Sample - 2
 
@@ -28,11 +28,11 @@
 <details>
   <summary><b>Approach - 1</b></summary>
 
-- Similar like finding the 2nd largest number
+- Similar like finding the 2nd smallest number
 - Thought Process / Approach - one pass solution
-  - Similar like finding First & Second largest elements
+  - Similar like finding First & Second Smallest elements
 
-- ![alt text](./img/approach.png)
+<!-- - ![alt text](./img/approach.png) -->
 
 - Make sure dry run with sample examples with notebooks
 
