@@ -33,7 +33,6 @@
   <summary><b>Approach - 1</b></summary>
 
 - Thought Process / Approach - two pass / loops (i, j) solution
-
   - Think as 2D matrix with
     - i (how many rows required)
     - j (how many columns required)
@@ -48,9 +47,8 @@
 - Make sure dry run with sample examples with notebooks
 
 - Complexity
-
   - Time Complexity: O(n<sup>2</sup>), since its nested loops with 2 loops i, j
-  - Space Complexity: O(1)
+  - Space Complexity: O(n), The row string is built for each row and can grow up to length n
 
 </details>
 
