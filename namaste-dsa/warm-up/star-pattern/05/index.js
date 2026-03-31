@@ -5,10 +5,10 @@ const printNum_A1 = (n) => {
   // Edge case covered, if n <= 0
   if (n <= 0) {
     console.error(
-      "Should enter valid n input as positive number greater than 0"
+      "Should enter valid n input as positive number greater than 0",
     );
     throw new Error(
-      "Should enter valid n input as positive number greater than 0"
+      "Should enter valid n input as positive number greater than 0",
     );
   }
 
@@ -32,3 +32,14 @@ console.log(printNum_A1(7));
 console.log(printNum_A1(3));
 console.log(printNum_A1(0));
 console.log(printNum_A1(-3));
+
+// Approach 2
+const printStars = (n) => {
+  for (let i = 1; i <= n; i++) {
+    let row = "";
+    for (let j = 1; j <= n - (i - 1); j++) {
+      row = row + " " + j;
+    }
+    console.log(row);
+  }
+};

@@ -53,7 +53,7 @@
 - Complexity
 
   - Time Complexity: O(n<sup>2</sup>), since its nested loops with 2 loops i, (j,k)
-  - Space Complexity: O(1)
+  - Space Complexity: O(n), The row string is built for each row and can grow up to length n
 
 </details>
 
