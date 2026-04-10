@@ -15,17 +15,18 @@ const removeDuplicates_A1 = (nums) => {
   }
 
   const LENGTH = nums.length;
-  let x = 0;
+  // unique count index
+  let uniqueCount = 0;
   // traverse each elements in array
   for (let i = 0; i < LENGTH; i++) {
     // find unique element by comparison
-    if (nums[i] > nums[x]) {
-      x = x + 1;
-      nums[x] = nums[i];
+    if (nums[i] > nums[uniqueCount]) {
+      uniqueCount = uniqueCount + 1;
+      nums[uniqueCount] = nums[i];
     }
   }
   console.log("In place/Existing modified array ", nums);
-  return x + 1;
+  return uniqueCount + 1;
 };
 
 console.log("Approach 1 =======>");
