@@ -4,20 +4,20 @@ const isIntegerPalindrome_A1 = (n) => {
   if (n < 0) return false;
 
   const numCopy = n;
-  let rev = 0;
+  let revNum = 0;
   let lastDigit;
 
   while (n > 0) {
     // get last digit by n % 10
     lastDigit = n % 10;
     // add last digit or remainder in reversed way
-    rev = rev * 10 + lastDigit;
+    revNum = revNum * 10 + lastDigit;
     // remove last digit in number
     n = Math.floor(n / 10);
   }
 
   // compare reversed number with actual number
-  return numCopy === rev;
+  return numCopy === revNum;
 };
 
 console.log("Approach 1 =======>");

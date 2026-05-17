@@ -35,10 +35,10 @@
   <summary><b>Approach - 1</b></summary>
 
 - Thought Process / Approach
-  - run While until n < 0
+  - run While until n > 0
     - get last digit of num, by % operator as n % 10
     - create reverse num
-      - rev = (rev \* 10) + rem;
+      - rev = (rev \* 10) + rem
     - remove last digit of num
       - Math.floor(n/10)
   - compare original num with reversed num, based on that return true / false
