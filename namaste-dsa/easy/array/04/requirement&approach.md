@@ -10,7 +10,7 @@
   <summary><b>Summary / Take away from problem statement / Key Observation</b></summary>
 
   - You can not able to Buy & Sell on same day / initial day
-  - Under problem
+  - Understand the problem
 
     - ![alt text](./img/understand-problem.png)
 
@@ -41,8 +41,10 @@
 
   - **Improved approach, time complexity O(n)**
     - use for loop, traverse each item in Price Array
-      - if you want to sell specific day, find minValue before that by compare
-      - find max profit by compare
+      - (Find Smallest element in price array) if you want to sell specific day, find minValue / smallest element before that by compare
+      - (Compare max profit with (P[i] - minValue) & update max profit) find max profit by compare
+        - if((P[i]-minValue) > maxProfit)
+            - maxProfit = P[i]-minValue
     - return max profit
 
 - ![alt text](./img/approach-1.1.png)
