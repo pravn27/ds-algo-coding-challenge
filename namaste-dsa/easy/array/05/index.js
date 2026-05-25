@@ -46,7 +46,7 @@ const mergeSort_A3 = (nums1, m, nums2, n) => {
   let p2 = n - 1;
 
   for (let i = m + n - 1; i >= 0; i--) {
-    // p2 pointer boundary cross check
+    // p2 pointer boundary cross check, once crossed p2 remaining all nums1 array same as it it
     if (p2 < 0) break;
 
     // compare for large element & place from end of array
