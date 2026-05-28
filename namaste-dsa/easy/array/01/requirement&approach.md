@@ -68,6 +68,36 @@
 
 </details>
 
+## 3.1 Visual flow (spaced repetition)
+
+**Interactive:** [Open visual-flow.html](./visual-flow.html) — step through `x` / `i` with Play · Next · presets.
+
+**Mnemonic:** `i` scans · `x` = last unique index · write only if `nums[i] > nums[x]` · return `x + 1`.
+
+```text
+[ unique 0…x ] | i scans → | tail (duplicates / unprocessed)
+   green          blue i         gray
+   orange x
+```
+
+```mermaid
+flowchart LR
+  subgraph loop["for each i"]
+    C{"nums[i] > nums[x] ?"}
+    C -->|yes| W["x++; nums[x] = nums[i]"]
+    C -->|no| S["skip — duplicate"]
+  end
+  W --> loop
+  S --> loop
+  loop --> R["return x + 1"]
+```
+
+| Pointer | Role |
+|--------|------|
+| `x` (`uniqueCount`) | Index of last placed unique value |
+| `i` | Scans every element once |
+| Compare | Strict `>` because array is **sorted** — equal means duplicate |
+
 ## 4. Implementation & Refactor
 
 - [Coding solution in JS](./index.js)

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Remove Duplicates — Two Pointer Visual</title>
+    <style>
+      :root {
+        --bg: #0f1419;
+        --surface: #1a2332;
+        --border: #2d3a4f;
+        --text: #e7ecf3;
+        --muted: #8b9cb3;
+        --unique: #1e3a2f;
+        --unique-border: #3d9970;
+        --ptr-x: #e8a838;
+        --ptr-i: #5b9fd4;
+        --skip: #6b7a8f;
+        --write: #3d9970;
+        --accent: #7eb8ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      .wrap {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 1.5rem 1.25rem 2.5rem;
+      }
+
+      header h1 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0 0 0.25rem;
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      .mnemonic {
+        margin: 1rem 0;
+        padding: 0.65rem 0.85rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-size: 0.78rem;
+        color: var(--accent);
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      label {
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+
+      select,
+      button {
+        font: inherit;
+        font-size: 0.78rem;
+        border-radius: 5px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        padding: 0.4rem 0.65rem;
+        cursor: pointer;
+      }
+
+      button:hover:not(:disabled) {
+        border-color: var(--accent);
+      }
+
+      button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      button.primary {
+        background: #243044;
+        border-color: var(--accent);
+      }
+
+      .step-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 0.75rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+
+      #step-label {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .array-stage {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.25rem 1rem 1rem;
+        margin-bottom: 1rem;
+        overflow-x: auto;
+      }
+
+      .cells {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        min-width: min-content;
+      }
+
+      .cell-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .cell {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border: 2px solid var(--border);
+        border-radius: 6px;
+        background: #121a24;
+        transition: background 0.2s, border-color 0.2s;
+      }
+
+      .cell.unique {
+        background: var(--unique);
+        border-color: var(--unique-border);
+      }
+
+      .cell.ptr-x {
+        border-color: var(--ptr-x);
+        box-shadow: 0 0 0 2px rgba(232, 168, 56, 0.35);
+      }
+
+      .cell.ptr-i {
+        border-color: var(--ptr-i);
+        box-shadow: 0 0 0 2px rgba(91, 159, 212, 0.35);
+      }
+
+      .cell.ptr-both {
+        border-color: #c9a0ff;
+        box-shadow: 0 0 0 2px rgba(201, 160, 255, 0.4);
+      }
+
+      .idx {
+        font-size: 0.65rem;
+        color: var(--muted);
+      }
+
+      .pointers-row {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        margin-top: 0.35rem;
+        min-height: 1.1rem;
+      }
+
+      .ptr-tag {
+        width: 48px;
+        text-align: center;
+        font-size: 0.62rem;
+        font-weight: 600;
+      }
+
+      .ptr-tag.x {
+        color: var(--ptr-x);
+      }
+
+      .ptr-tag.i {
+        color: var(--ptr-i);
+      }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1rem;
+        font-size: 0.68rem;
+        color: var(--muted);
+      }
+
+      .legend span::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        margin-right: 4px;
+        vertical-align: middle;
+      }
+
+      .legend .lu::before {
+        background: var(--unique-border);
+      }
+
+      .legend .lx::before {
+        background: var(--ptr-x);
+      }
+
+      .legend .li::before {
+        background: var(--ptr-i);
+      }
+
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.85rem 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .panel h2 {
+        margin: 0 0 0.5rem;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      #action-text {
+        margin: 0;
+        font-size: 0.85rem;
+      }
+
+      #action-text.skip {
+        color: var(--skip);
+      }
+
+      #action-text.write {
+        color: var(--write);
+      }
+
+      #action-text.done {
+        color: var(--accent);
+      }
+
+      .compare {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 0.35rem;
+      }
+
+      .compare code {
+        color: var(--text);
+      }
+
+      .result-bar {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
+        background: #121a24;
+        border-radius: 5px;
+        border: 1px dashed var(--border);
+      }
+
+      .result-bar strong {
+        color: var(--accent);
+      }
+
+      .speed {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      input[type="range"] {
+        width: 72px;
+        accent-color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Remove Duplicates from Sorted Array</h1>
+        <p>Two-pointer dry run — matches <code>index.js</code> (x = uniqueCount, i = loop)</p>
+      </header>
+
+      <p class="mnemonic">
+        <strong>Mnemonic:</strong> i scans every index · x marks last unique · write only when
+        <code>nums[i] &gt; nums[x]</code> · return <code>x + 1</code>
+      </p>
+
+      <div class="controls">
+        <label for="preset">Input</label>
+        <select id="preset"></select>
+        <button type="button" id="btn-prev">◀ Prev</button>
+        <button type="button" class="primary" id="btn-play">▶ Play</button>
+        <button type="button" id="btn-next">Next ▶</button>
+        <button type="button" id="btn-reset">↺ Reset</button>
+        <div class="speed">
+          <label for="speed">Speed</label>
+          <input type="range" id="speed" min="300" max="1600" value="900" step="100" />
+        </div>
+      </div>
+
+      <div class="step-meta">
+        <span id="step-label">Step 0 / 0</span>
+        <span id="ptr-state">x = 0 · i = —</span>
+      </div>
+
+      <div class="array-stage">
+        <div class="cells" id="cells"></div>
+        <div class="pointers-row" id="pointers"></div>
+        <div class="legend">
+          <span class="lu">Unique zone [0…x]</span>
+          <span class="lx">x (write head)</span>
+          <span class="li">i (scanner)</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>This step</h2>
+        <p id="action-text">—</p>
+        <p class="compare" id="compare-line"></p>
+      </div>
+
+      <div class="result-bar" id="result-bar">
+        Unique count: <strong id="unique-count">—</strong>
+        · Prefix: <span id="unique-prefix">—</span>
+      </div>
+    </div>
+
+    <script>
+      const PRESETS = [
+        { label: "[1, 1, 2]", nums: [1, 1, 2] },
+        { label: "[0, 1, 1, 1, 2, 2]", nums: [0, 1, 1, 1, 2, 2] },
+        { label: "[0, 0, 1, 1, 2, 3]", nums: [0, 0, 1, 1, 2, 3] },
+        { label: "[0, 1, 1, 2]", nums: [0, 1, 1, 2] },
+        { label: "[0, 0, 1, 1, 1, 2, 2, 3, 3, 4]", nums: [0, 0, 1, 1, 1, 2, 2, 3, 3, 4] },
+      ];
+
+      /** Mirrors removeDuplicates_A1 in index.js */
+      function buildSteps(initial) {
+        const nums = initial.slice();
+        const steps = [];
+
+        steps.push({
+          kind: "init",
+          nums: nums.slice(),
+          x: 0,
+          i: null,
+          text: "Start: x = 0 (first element is always unique). Loop i from 0 to n−1.",
+          compare: null,
+        });
+
+        let x = 0;
+        for (let i = 0; i < nums.length; i++) {
+          const left = nums[i];
+          const right = nums[x];
+          const isNew = left > right;
+
+          if (isNew) {
+            const prevX = x;
+            x += 1;
+            nums[x] = left;
+            steps.push({
+              kind: "write",
+              nums: nums.slice(),
+              x,
+              i,
+              left,
+              right,
+              text: `New unique: nums[${i}] (${left}) > nums[${prevX}] (${right}) — x → ${x}, nums[${x}] = ${left}`,
+              compare: `${left} > ${right} ✓`,
+            });
+          } else {
+            steps.push({
+              kind: "skip",
+              nums: nums.slice(),
+              x,
+              i,
+              left,
+              right,
+              text: `Duplicate: nums[${i}] (${left}) ≤ nums[${x}] (${right}) — skip, no write`,
+              compare: `${left} > ${right} ✗`,
+            });
+          }
+        }
+
+        const result = x + 1;
+        steps.push({
+          kind: "done",
+          nums: nums.slice(),
+          x,
+          i: null,
+          result,
+          prefix: nums.slice(0, result),
+          text: `Done. Return x + 1 = ${result}. In-place prefix: [${nums.slice(0, result).join(", ")}]`,
+          compare: null,
+        });
+
+        return steps;
+      }
+
+      const presetEl = document.getElementById("preset");
+      const cellsEl = document.getElementById("cells");
+      const pointersEl = document.getElementById("pointers");
+      const stepLabel = document.getElementById("step-label");
+      const ptrState = document.getElementById("ptr-state");
+      const actionText = document.getElementById("action-text");
+      const compareLine = document.getElementById("compare-line");
+      const uniqueCountEl = document.getElementById("unique-count");
+      const uniquePrefixEl = document.getElementById("unique-prefix");
+      const btnPrev = document.getElementById("btn-prev");
+      const btnNext = document.getElementById("btn-next");
+      const btnPlay = document.getElementById("btn-play");
+      const btnReset = document.getElementById("btn-reset");
+      const speedEl = document.getElementById("speed");
+
+      let steps = [];
+      let stepIndex = 0;
+      let playTimer = null;
+
+      PRESETS.forEach((p, idx) => {
+        const opt = document.createElement("option");
+        opt.value = idx;
+        opt.textContent = p.label;
+        presetEl.appendChild(opt);
+      });
+
+      function loadPreset(index) {
+        stopPlay();
+        steps = buildSteps(PRESETS[Number(index)].nums);
+        stepIndex = 0;
+        render();
+      }
+
+      function stopPlay() {
+        if (playTimer) {
+          clearInterval(playTimer);
+          playTimer = null;
+        }
+        btnPlay.textContent = "▶ Play";
+      }
+
+      function render() {
+        const step = steps[stepIndex];
+        const n = step.nums.length;
+
+        cellsEl.innerHTML = "";
+        pointersEl.innerHTML = "";
+
+        for (let j = 0; j < n; j++) {
+          const wrap = document.createElement("div");
+          wrap.className = "cell-wrap";
+
+          const cell = document.createElement("div");
+          cell.className = "cell";
+          cell.textContent = step.nums[j];
+
+          if (j <= step.x) cell.classList.add("unique");
+          if (step.i !== null) {
+            if (j === step.x && j === step.i) cell.classList.add("ptr-both");
+            else if (j === step.x) cell.classList.add("ptr-x");
+            else if (j === step.i) cell.classList.add("ptr-i");
+          } else if (step.kind === "init" && j === 0) {
+            cell.classList.add("ptr-x");
+          }
+
+          const idx = document.createElement("span");
+          idx.className = "idx";
+          idx.textContent = j;
+
+          wrap.appendChild(cell);
+          wrap.appendChild(idx);
+          cellsEl.appendChild(wrap);
+
+          const tag = document.createElement("div");
+          tag.className = "ptr-tag";
+          if (step.i !== null) {
+            if (j === step.x) {
+              tag.textContent = "x";
+              tag.classList.add("x");
+            } else if (j === step.i) {
+              tag.textContent = "i";
+              tag.classList.add("i");
+            }
+          } else if (step.kind === "init" && j === 0) {
+            tag.textContent = "x";
+            tag.classList.add("x");
+          }
+          pointersEl.appendChild(tag);
+        }
+
+        stepLabel.textContent = `Step ${stepIndex} / ${steps.length - 1}`;
+        ptrState.textContent =
+          step.i === null
+            ? `x = ${step.x}${step.kind === "done" ? " · finished" : " · i = —"}`
+            : `x = ${step.x} · i = ${step.i}`;
+
+        actionText.textContent = step.text;
+        actionText.className = step.kind;
+
+        if (step.compare) {
+          compareLine.innerHTML = `Check: <code>nums[i] &gt; nums[x]</code> → <code>${step.compare}</code>`;
+        } else {
+          compareLine.textContent = "";
+        }
+
+        const liveCount = step.kind === "done" ? step.result : step.x + 1;
+        const prefix =
+          step.kind === "done"
+            ? step.prefix
+            : step.nums.slice(0, step.x + 1);
+
+        uniqueCountEl.textContent = liveCount;
+        uniquePrefixEl.textContent = `[${prefix.join(", ")}]`;
+
+        btnPrev.disabled = stepIndex === 0;
+        btnNext.disabled = stepIndex >= steps.length - 1;
+      }
+
+      btnPrev.addEventListener("click", () => {
+        stopPlay();
+        if (stepIndex > 0) {
+          stepIndex -= 1;
+          render();
+        }
+      });
+
+      btnNext.addEventListener("click", () => {
+        stopPlay();
+        if (stepIndex < steps.length - 1) {
+          stepIndex += 1;
+          render();
+        }
+      });
+
+      btnReset.addEventListener("click", () => {
+        loadPreset(presetEl.value);
+      });
+
+      btnPlay.addEventListener("click", () => {
+        if (playTimer) {
+          stopPlay();
+          return;
+        }
+        btnPlay.textContent = "⏸ Pause";
+        const delay = () => 1700 - Number(speedEl.value);
+        playTimer = setInterval(() => {
+          if (stepIndex >= steps.length - 1) {
+            stopPlay();
+            return;
+          }
+          stepIndex += 1;
+          render();
+        }, delay());
+        speedEl.addEventListener(
+          "input",
+          () => {
+            if (!playTimer) return;
+            clearInterval(playTimer);
+            playTimer = setInterval(() => {
+              if (stepIndex >= steps.length - 1) {
+                stopPlay();
+                return;
+              }
+              stepIndex += 1;
+              render();
+            }, delay());
+          },
+          { once: true }
+        );
+      });
+
+      presetEl.addEventListener("change", () => loadPreset(presetEl.value));
+
+      loadPreset(0);
+    </script>
+  </body>
+</html>
