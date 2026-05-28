@@ -70,7 +70,28 @@
 
 ## 3.1 Visual flow (spaced repetition)
 
-**Interactive:** [Open visual-flow.html](./visual-flow.html) — step through `x` / `i` with Play · Next · presets.
+![Two-pointer dry run animation — auto loops on GitHub](./img/visual-flow.svg)
+
+> Auto-loops on GitHub (animated SVG, ~16s cycle). Watch `x` (orange) hold the last unique, while `i` (blue) scans; green cells = unique zone; values flash green when overwritten in-place.
+
+**Interactive — with Play · Prev / Next · presets:**
+
+- [Open on GitHub Pages](https://pravn27.github.io/ds-algo-coding-challenge/namaste-dsa/easy/array/01/visual-flow.html) — live, public, works on any device
+- [Open local file](./visual-flow.html) — for IDE / offline use
+
+<details>
+  <summary><b>One-time GitHub Pages setup</b> (only needed once for the whole repo)</summary>
+
+1. Push the repo to GitHub (`git push origin master`)
+2. On github.com → repo → **Settings → Pages**
+3. **Source:** `Deploy from a branch`
+4. **Branch:** `master`, **Folder:** `/ (root)` → **Save**
+5. Wait ~30–60s. GitHub will show: *“Your site is live at …”*
+6. The interactive link above will then work for everyone.
+
+> Tip: After enabling, any new HTML you add under any folder is auto-served at the same path. No rebuild step.
+
+</details>
 
 **Mnemonic:** `i` scans · `x` = last unique index · write only if `nums[i] > nums[x]` · return `x + 1`.
 

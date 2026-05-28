@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 310" width="480" height="310" role="img" aria-label="Remove Duplicates from Sorted Array - two pointer animation, input 0 0 1 1 2 3">
+  <defs>
+    <style>
+      .bg { fill: #0f1419; }
+      .title { font: 600 14px ui-monospace, "SF Mono", Menlo, monospace; fill: #7eb8ff; }
+      .sub   { font: 11px ui-monospace, "SF Mono", Menlo, monospace; fill: #8b9cb3; }
+      .step  { font: 11px ui-monospace, "SF Mono", Menlo, monospace; fill: #8b9cb3; }
+      .val   { font: 600 18px ui-monospace, "SF Mono", Menlo, monospace; fill: #e7ecf3; }
+      .val-overwritten { font: 600 18px ui-monospace, "SF Mono", Menlo, monospace; fill: #3d9970; }
+      .idx   { font: 10px ui-monospace, "SF Mono", Menlo, monospace; fill: #8b9cb3; }
+      .ptr-x { font: 700 11px ui-monospace, "SF Mono", Menlo, monospace; fill: #e8a838; }
+      .ptr-i { font: 700 11px ui-monospace, "SF Mono", Menlo, monospace; fill: #5b9fd4; }
+      .compare { font: 12px ui-monospace, "SF Mono", Menlo, monospace; fill: #8b9cb3; }
+      .cmp-ok { fill: #3d9970; font-weight: 600; }
+      .cmp-no { fill: #e87a7a; font-weight: 600; }
+      .act-skip  { font: 500 13px ui-monospace, "SF Mono", Menlo, monospace; fill: #6b7a8f; }
+      .act-write { font: 600 13px ui-monospace, "SF Mono", Menlo, monospace; fill: #3d9970; }
+      .act-init  { font: 600 13px ui-monospace, "SF Mono", Menlo, monospace; fill: #7eb8ff; }
+      .act-done  { font: 600 13px ui-monospace, "SF Mono", Menlo, monospace; fill: #7eb8ff; }
+      .result    { font: 11px ui-monospace, "SF Mono", Menlo, monospace; fill: #8b9cb3; }
+      .cell-normal { fill: #121a24; stroke: #2d3a4f; stroke-width: 2; }
+      .cell-unique { fill: #1e3a2f; stroke: #3d9970; stroke-width: 2; }
+      .ovl-x { fill: none; stroke: #e8a838; stroke-width: 3; }
+      .ovl-i { fill: none; stroke: #5b9fd4; stroke-width: 3; }
+      .ovl-both { fill: none; stroke: #c9a0ff; stroke-width: 3; }
+      .arr-x { fill: #e8a838; }
+      .arr-i { fill: #5b9fd4; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="480" height="310"/>
+  <text class="title" x="240" y="22" text-anchor="middle">Remove Duplicates &#183; Two Pointer (in-place)</text>
+  <text class="sub"   x="240" y="40" text-anchor="middle">input: [0, 0, 1, 1, 2, 3]  &#183;  auto-loops</text>
+
+  <!-- ========== FRAME 0  init  ========== -->
+  <g opacity="0">
+    <text class="step" x="240" y="58" text-anchor="middle">Step 0 / 7  &#183;  init</text>
+
+    <text class="ptr-x" x="70" y="76" text-anchor="middle">x</text>
+    <polygon class="arr-x" points="65,80 75,80 70,88"/>
+
+    <rect class="cell-unique" x="40"  y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="70"  y="128" text-anchor="middle">0</text>
+    <text class="idx" x="70"  y="170" text-anchor="middle">0</text>
+    <rect class="cell-normal" x="108" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="138" y="128" text-anchor="middle">0</text>
+    <text class="idx" x="138" y="170" text-anchor="middle">1</text>
+    <rect class="cell-normal" x="176" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="206" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="206" y="170" text-anchor="middle">2</text>
+    <rect class="cell-normal" x="244" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="274" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="274" y="170" text-anchor="middle">3</text>
+    <rect class="cell-normal" x="312" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="342" y="128" text-anchor="middle">2</text>
+    <text class="idx" x="342" y="170" text-anchor="middle">4</text>
+    <rect class="cell-normal" x="380" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="410" y="128" text-anchor="middle">3</text>
+    <text class="idx" x="410" y="170" text-anchor="middle">5</text>
+
+    <rect class="ovl-x" x="40" y="92" width="60" height="60" rx="6"/>
+
+    <text class="act-init" x="240" y="246" text-anchor="middle">Init: x = 0 &#183; first element is always unique</text>
+    <text class="result"   x="240" y="278" text-anchor="middle">unique so far = 1 &#183; prefix [0]</text>
+
+    <animate attributeName="opacity" values="1;0;0" keyTimes="0;0.09375;1" dur="16s" calcMode="discrete" repeatCount="indefinite"/>
+  </g>
+
+  <!-- ========== FRAME 1  i=0  skip  ========== -->
+  <g opacity="0">
+    <text class="step" x="240" y="58" text-anchor="middle">Step 1 / 7  &#183;  i = 0</text>
+
+    <text class="ptr-x" x="70" y="76" text-anchor="middle">x</text>
+    <polygon class="arr-x" points="65,80 75,80 70,88"/>
+
+    <rect class="cell-unique" x="40"  y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="70"  y="128" text-anchor="middle">0</text>
+    <text class="idx" x="70"  y="170" text-anchor="middle">0</text>
+    <rect class="cell-normal" x="108" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="138" y="128" text-anchor="middle">0</text>
+    <text class="idx" x="138" y="170" text-anchor="middle">1</text>
+    <rect class="cell-normal" x="176" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="206" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="206" y="170" text-anchor="middle">2</text>
+    <rect class="cell-normal" x="244" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="274" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="274" y="170" text-anchor="middle">3</text>
+    <rect class="cell-normal" x="312" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="342" y="128" text-anchor="middle">2</text>
+    <text class="idx" x="342" y="170" text-anchor="middle">4</text>
+    <rect class="cell-normal" x="380" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="410" y="128" text-anchor="middle">3</text>
+    <text class="idx" x="410" y="170" text-anchor="middle">5</text>
+
+    <rect class="ovl-both" x="40" y="92" width="60" height="60" rx="6"/>
+
+    <polygon class="arr-i" points="65,182 75,182 70,174"/>
+    <text class="ptr-i" x="70" y="198" text-anchor="middle">i</text>
+
+    <text class="compare" x="240" y="222" text-anchor="middle">nums[i] &gt; nums[x]  &#8594;  0 &gt; 0  <tspan class="cmp-no">&#10007;</tspan></text>
+    <text class="act-skip" x="240" y="246" text-anchor="middle">Skip &#8212; same cell, no duplicate yet</text>
+    <text class="result"   x="240" y="278" text-anchor="middle">unique so far = 1 &#183; prefix [0]</text>
+
+    <animate attributeName="opacity" values="0;1;0" keyTimes="0;0.09375;0.1875" dur="16s" calcMode="discrete" repeatCount="indefinite"/>
+  </g>
+
+  <!-- ========== FRAME 2  i=1  skip  ========== -->
+  <g opacity="0">
+    <text class="step" x="240" y="58" text-anchor="middle">Step 2 / 7  &#183;  i = 1</text>
+
+    <text class="ptr-x" x="70" y="76" text-anchor="middle">x</text>
+    <polygon class="arr-x" points="65,80 75,80 70,88"/>
+
+    <rect class="cell-unique" x="40"  y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="70"  y="128" text-anchor="middle">0</text>
+    <text class="idx" x="70"  y="170" text-anchor="middle">0</text>
+    <rect class="cell-normal" x="108" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="138" y="128" text-anchor="middle">0</text>
+    <text class="idx" x="138" y="170" text-anchor="middle">1</text>
+    <rect class="cell-normal" x="176" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="206" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="206" y="170" text-anchor="middle">2</text>
+    <rect class="cell-normal" x="244" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="274" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="274" y="170" text-anchor="middle">3</text>
+    <rect class="cell-normal" x="312" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="342" y="128" text-anchor="middle">2</text>
+    <text class="idx" x="342" y="170" text-anchor="middle">4</text>
+    <rect class="cell-normal" x="380" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="410" y="128" text-anchor="middle">3</text>
+    <text class="idx" x="410" y="170" text-anchor="middle">5</text>
+
+    <rect class="ovl-x" x="40"  y="92" width="60" height="60" rx="6"/>
+    <rect class="ovl-i" x="108" y="92" width="60" height="60" rx="6"/>
+
+    <polygon class="arr-i" points="133,182 143,182 138,174"/>
+    <text class="ptr-i" x="138" y="198" text-anchor="middle">i</text>
+
+    <text class="compare" x="240" y="222" text-anchor="middle">nums[i] &gt; nums[x]  &#8594;  0 &gt; 0  <tspan class="cmp-no">&#10007;</tspan></text>
+    <text class="act-skip" x="240" y="246" text-anchor="middle">Skip &#8212; duplicate of nums[x]</text>
+    <text class="result"   x="240" y="278" text-anchor="middle">unique so far = 1 &#183; prefix [0]</text>
+
+    <animate attributeName="opacity" values="0;1;0" keyTimes="0;0.1875;0.28125" dur="16s" calcMode="discrete" repeatCount="indefinite"/>
+  </g>
+
+  <!-- ========== FRAME 3  i=2  write  ========== -->
+  <g opacity="0">
+    <text class="step" x="240" y="58" text-anchor="middle">Step 3 / 7  &#183;  i = 2</text>
+
+    <text class="ptr-x" x="138" y="76" text-anchor="middle">x</text>
+    <polygon class="arr-x" points="133,80 143,80 138,88"/>
+
+    <rect class="cell-unique" x="40"  y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="70"  y="128" text-anchor="middle">0</text>
+    <text class="idx" x="70"  y="170" text-anchor="middle">0</text>
+    <rect class="cell-unique" x="108" y="92" width="60" height="60" rx="6"/>
+    <text class="val-overwritten" x="138" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="138" y="170" text-anchor="middle">1</text>
+    <rect class="cell-normal" x="176" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="206" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="206" y="170" text-anchor="middle">2</text>
+    <rect class="cell-normal" x="244" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="274" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="274" y="170" text-anchor="middle">3</text>
+    <rect class="cell-normal" x="312" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="342" y="128" text-anchor="middle">2</text>
+    <text class="idx" x="342" y="170" text-anchor="middle">4</text>
+    <rect class="cell-normal" x="380" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="410" y="128" text-anchor="middle">3</text>
+    <text class="idx" x="410" y="170" text-anchor="middle">5</text>
+
+    <rect class="ovl-x" x="108" y="92" width="60" height="60" rx="6"/>
+    <rect class="ovl-i" x="176" y="92" width="60" height="60" rx="6"/>
+
+    <polygon class="arr-i" points="201,182 211,182 206,174"/>
+    <text class="ptr-i" x="206" y="198" text-anchor="middle">i</text>
+
+    <text class="compare" x="240" y="222" text-anchor="middle">nums[i] &gt; nums[x]  &#8594;  1 &gt; 0  <tspan class="cmp-ok">&#10003;</tspan></text>
+    <text class="act-write" x="240" y="246" text-anchor="middle">Write: x &#8594; 1, nums[1] = 1</text>
+    <text class="result"    x="240" y="278" text-anchor="middle">unique so far = 2 &#183; prefix [0, 1]</text>
+
+    <animate attributeName="opacity" values="0;1;0" keyTimes="0;0.28125;0.375" dur="16s" calcMode="discrete" repeatCount="indefinite"/>
+  </g>
+
+  <!-- ========== FRAME 4  i=3  skip  ========== -->
+  <g opacity="0">
+    <text class="step" x="240" y="58" text-anchor="middle">Step 4 / 7  &#183;  i = 3</text>
+
+    <text class="ptr-x" x="138" y="76" text-anchor="middle">x</text>
+    <polygon class="arr-x" points="133,80 143,80 138,88"/>
+
+    <rect class="cell-unique" x="40"  y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="70"  y="128" text-anchor="middle">0</text>
+    <text class="idx" x="70"  y="170" text-anchor="middle">0</text>
+    <rect class="cell-unique" x="108" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="138" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="138" y="170" text-anchor="middle">1</text>
+    <rect class="cell-normal" x="176" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="206" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="206" y="170" text-anchor="middle">2</text>
+    <rect class="cell-normal" x="244" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="274" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="274" y="170" text-anchor="middle">3</text>
+    <rect class="cell-normal" x="312" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="342" y="128" text-anchor="middle">2</text>
+    <text class="idx" x="342" y="170" text-anchor="middle">4</text>
+    <rect class="cell-normal" x="380" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="410" y="128" text-anchor="middle">3</text>
+    <text class="idx" x="410" y="170" text-anchor="middle">5</text>
+
+    <rect class="ovl-x" x="108" y="92" width="60" height="60" rx="6"/>
+    <rect class="ovl-i" x="244" y="92" width="60" height="60" rx="6"/>
+
+    <polygon class="arr-i" points="269,182 279,182 274,174"/>
+    <text class="ptr-i" x="274" y="198" text-anchor="middle">i</text>
+
+    <text class="compare" x="240" y="222" text-anchor="middle">nums[i] &gt; nums[x]  &#8594;  1 &gt; 1  <tspan class="cmp-no">&#10007;</tspan></text>
+    <text class="act-skip" x="240" y="246" text-anchor="middle">Skip &#8212; duplicate of nums[x]</text>
+    <text class="result"   x="240" y="278" text-anchor="middle">unique so far = 2 &#183; prefix [0, 1]</text>
+
+    <animate attributeName="opacity" values="0;1;0" keyTimes="0;0.375;0.46875" dur="16s" calcMode="discrete" repeatCount="indefinite"/>
+  </g>
+
+  <!-- ========== FRAME 5  i=4  write  ========== -->
+  <g opacity="0">
+    <text class="step" x="240" y="58" text-anchor="middle">Step 5 / 7  &#183;  i = 4</text>
+
+    <text class="ptr-x" x="206" y="76" text-anchor="middle">x</text>
+    <polygon class="arr-x" points="201,80 211,80 206,88"/>
+
+    <rect class="cell-unique" x="40"  y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="70"  y="128" text-anchor="middle">0</text>
+    <text class="idx" x="70"  y="170" text-anchor="middle">0</text>
+    <rect class="cell-unique" x="108" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="138" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="138" y="170" text-anchor="middle">1</text>
+    <rect class="cell-unique" x="176" y="92" width="60" height="60" rx="6"/>
+    <text class="val-overwritten" x="206" y="128" text-anchor="middle">2</text>
+    <text class="idx" x="206" y="170" text-anchor="middle">2</text>
+    <rect class="cell-normal" x="244" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="274" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="274" y="170" text-anchor="middle">3</text>
+    <rect class="cell-normal" x="312" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="342" y="128" text-anchor="middle">2</text>
+    <text class="idx" x="342" y="170" text-anchor="middle">4</text>
+    <rect class="cell-normal" x="380" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="410" y="128" text-anchor="middle">3</text>
+    <text class="idx" x="410" y="170" text-anchor="middle">5</text>
+
+    <rect class="ovl-x" x="176" y="92" width="60" height="60" rx="6"/>
+    <rect class="ovl-i" x="312" y="92" width="60" height="60" rx="6"/>
+
+    <polygon class="arr-i" points="337,182 347,182 342,174"/>
+    <text class="ptr-i" x="342" y="198" text-anchor="middle">i</text>
+
+    <text class="compare" x="240" y="222" text-anchor="middle">nums[i] &gt; nums[x]  &#8594;  2 &gt; 1  <tspan class="cmp-ok">&#10003;</tspan></text>
+    <text class="act-write" x="240" y="246" text-anchor="middle">Write: x &#8594; 2, nums[2] = 2</text>
+    <text class="result"    x="240" y="278" text-anchor="middle">unique so far = 3 &#183; prefix [0, 1, 2]</text>
+
+    <animate attributeName="opacity" values="0;1;0" keyTimes="0;0.46875;0.5625" dur="16s" calcMode="discrete" repeatCount="indefinite"/>
+  </g>
+
+  <!-- ========== FRAME 6  i=5  write  ========== -->
+  <g opacity="0">
+    <text class="step" x="240" y="58" text-anchor="middle">Step 6 / 7  &#183;  i = 5</text>
+
+    <text class="ptr-x" x="274" y="76" text-anchor="middle">x</text>
+    <polygon class="arr-x" points="269,80 279,80 274,88"/>
+
+    <rect class="cell-unique" x="40"  y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="70"  y="128" text-anchor="middle">0</text>
+    <text class="idx" x="70"  y="170" text-anchor="middle">0</text>
+    <rect class="cell-unique" x="108" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="138" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="138" y="170" text-anchor="middle">1</text>
+    <rect class="cell-unique" x="176" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="206" y="128" text-anchor="middle">2</text>
+    <text class="idx" x="206" y="170" text-anchor="middle">2</text>
+    <rect class="cell-unique" x="244" y="92" width="60" height="60" rx="6"/>
+    <text class="val-overwritten" x="274" y="128" text-anchor="middle">3</text>
+    <text class="idx" x="274" y="170" text-anchor="middle">3</text>
+    <rect class="cell-normal" x="312" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="342" y="128" text-anchor="middle">2</text>
+    <text class="idx" x="342" y="170" text-anchor="middle">4</text>
+    <rect class="cell-normal" x="380" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="410" y="128" text-anchor="middle">3</text>
+    <text class="idx" x="410" y="170" text-anchor="middle">5</text>
+
+    <rect class="ovl-x" x="244" y="92" width="60" height="60" rx="6"/>
+    <rect class="ovl-i" x="380" y="92" width="60" height="60" rx="6"/>
+
+    <polygon class="arr-i" points="405,182 415,182 410,174"/>
+    <text class="ptr-i" x="410" y="198" text-anchor="middle">i</text>
+
+    <text class="compare" x="240" y="222" text-anchor="middle">nums[i] &gt; nums[x]  &#8594;  3 &gt; 2  <tspan class="cmp-ok">&#10003;</tspan></text>
+    <text class="act-write" x="240" y="246" text-anchor="middle">Write: x &#8594; 3, nums[3] = 3</text>
+    <text class="result"    x="240" y="278" text-anchor="middle">unique so far = 4 &#183; prefix [0, 1, 2, 3]</text>
+
+    <animate attributeName="opacity" values="0;1;0" keyTimes="0;0.5625;0.65625" dur="16s" calcMode="discrete" repeatCount="indefinite"/>
+  </g>
+
+  <!-- ========== FRAME 7  done  ========== -->
+  <g opacity="0">
+    <text class="step" x="240" y="58" text-anchor="middle">Step 7 / 7  &#183;  done</text>
+
+    <text class="ptr-x" x="274" y="76" text-anchor="middle">x</text>
+    <polygon class="arr-x" points="269,80 279,80 274,88"/>
+
+    <rect class="cell-unique" x="40"  y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="70"  y="128" text-anchor="middle">0</text>
+    <text class="idx" x="70"  y="170" text-anchor="middle">0</text>
+    <rect class="cell-unique" x="108" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="138" y="128" text-anchor="middle">1</text>
+    <text class="idx" x="138" y="170" text-anchor="middle">1</text>
+    <rect class="cell-unique" x="176" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="206" y="128" text-anchor="middle">2</text>
+    <text class="idx" x="206" y="170" text-anchor="middle">2</text>
+    <rect class="cell-unique" x="244" y="92" width="60" height="60" rx="6"/>
+    <text class="val" x="274" y="128" text-anchor="middle">3</text>
+    <text class="idx" x="274" y="170" text-anchor="middle">3</text>
+    <rect class="cell-normal" x="312" y="92" width="60" height="60" rx="6" opacity="0.45"/>
+    <text class="val" x="342" y="128" text-anchor="middle" opacity="0.45">2</text>
+    <text class="idx" x="342" y="170" text-anchor="middle">4</text>
+    <rect class="cell-normal" x="380" y="92" width="60" height="60" rx="6" opacity="0.45"/>
+    <text class="val" x="410" y="128" text-anchor="middle" opacity="0.45">3</text>
+    <text class="idx" x="410" y="170" text-anchor="middle">5</text>
+
+    <rect class="ovl-x" x="244" y="92" width="60" height="60" rx="6"/>
+
+    <text class="act-done" x="240" y="246" text-anchor="middle">Return x + 1 = 4</text>
+    <text class="result"   x="240" y="278" text-anchor="middle">in-place prefix [0, 1, 2, 3]  &#183;  tail ignored</text>
+
+    <animate attributeName="opacity" values="0;1;1" keyTimes="0;0.65625;1" dur="16s" calcMode="discrete" repeatCount="indefinite"/>
+  </g>
+</svg>
