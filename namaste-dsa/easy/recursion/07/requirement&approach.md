@@ -35,7 +35,8 @@
     - Get the pattern, keep divide number n by 2, till we get 1 or less than 1
     - what is the base condition ?
       - if n == 1 return true
-      - else if (n < 1 || n % 2 != 0) return false
+      - else if n < 1 or n is odd number return false
+        - else if (n < 1 || n % 2 != 0) return false
     - what is the recursive case ?
       - return powerOfTwo(n / 2)
 
