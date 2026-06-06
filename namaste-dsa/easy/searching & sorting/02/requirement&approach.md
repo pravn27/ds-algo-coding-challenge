@@ -63,6 +63,44 @@
 
 </details>
 
+## 3.1 Visual flow (spaced repetition)
+
+**Interactive walkthrough — with Play · Prev / Next · presets · custom target:**
+
+- [Open on GitHub Pages](https://pravn27.github.io/ds-algo-coding-challenge/namaste-dsa/easy/searching%20%26%20sorting/02/visual-flow.html) — live, public, works on any device
+- [Open local file](./visual-flow.html) — for IDE / offline use
+
+**Mnemonic:** `L` & `R` sandwich `M` · compare `target` with `arr[M]` · `===` return · `>` shrink left half (`L = M + 1`) · `<` shrink right half (`R = M - 1`) · stop when `L > R`.
+
+```text
+[ eliminated | L  …  M  …  R | eliminated ]
+   gray         active window      gray
+   L mint        M orange       R pink
+```
+
+```mermaid
+flowchart TD
+  S["L = 0, R = n - 1"] --> W{"L &le; R ?"}
+  W -->|no| NF["return -1"]
+  W -->|yes| M["M = floor((L + R) / 2)"]
+  M --> C{"target vs arr[M]"}
+  C -->|"==="| F["return M"]
+  C -->|">"| GR["L = M + 1<br>(search right half)"]
+  C -->|"<"| GL["R = M - 1<br>(search left half)"]
+  GR --> W
+  GL --> W
+```
+
+| Pointer | Role |
+|--------|------|
+| `L` (left) | Left edge of the active search window |
+| `M` (mid) | `floor((L + R) / 2)` — element being compared with `target` |
+| `R` (right) | Right edge of the active search window |
+| Halving | Each iteration discards **half** of the remaining window → **O(log n)** |
+| Termination | `target` found at `M` (return `M`), or `L > R` (return `-1`) |
+
+> Tip: open the interactive page, hit **Play** on the *NOT found* preset first — the "L > R" termination is the trickiest part to internalize for spaced repetition.
+
 ## 4. Implementation & Refactor
 
 - [Coding solution in JS](./index.js)

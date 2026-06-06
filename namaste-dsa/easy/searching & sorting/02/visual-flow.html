@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Binary Search — Three Pointer Visual</title>
+    <style>
+      :root {
+        --bg: #0f1419;
+        --surface: #1a2332;
+        --border: #2d3a4f;
+        --text: #e7ecf3;
+        --muted: #8b9cb3;
+
+        --active-bg: #16243b;
+        --active-border: #3a5a8a;
+        --eliminated: #1a2332;
+        --found-bg: #1e3a2f;
+        --found-border: #3d9970;
+        --notfound: #4a2a2a;
+
+        --ptr-l: #7dd3a8;
+        --ptr-m: #e8a838;
+        --ptr-r: #d97aa8;
+
+        --accent: #7eb8ff;
+        --eq: #3d9970;
+        --gt: #e8a838;
+        --lt: #b48bff;
+        --err: #e87a7a;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 1.5rem 1.25rem 2.5rem;
+      }
+
+      header h1 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0 0 0.25rem;
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      .mnemonic {
+        margin: 1rem 0;
+        padding: 0.65rem 0.85rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-size: 0.78rem;
+        color: var(--accent);
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      label {
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+
+      select, button, input[type="number"] {
+        font: inherit;
+        font-size: 0.78rem;
+        border-radius: 5px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        padding: 0.4rem 0.65rem;
+      }
+
+      select, button { cursor: pointer; }
+
+      button:hover:not(:disabled) { border-color: var(--accent); }
+      button:disabled { opacity: 0.4; cursor: not-allowed; }
+      button.primary { background: #243044; border-color: var(--accent); }
+
+      .step-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 0.75rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      #step-label {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .ptr-state .tag {
+        display: inline-block;
+        padding: 1px 6px;
+        margin-left: 0.4rem;
+        border-radius: 3px;
+        font-size: 0.7rem;
+        font-weight: 600;
+      }
+      .tag.l { color: var(--ptr-l); border: 1px solid var(--ptr-l); }
+      .tag.m { color: var(--ptr-m); border: 1px solid var(--ptr-m); }
+      .tag.r { color: var(--ptr-r); border: 1px solid var(--ptr-r); }
+
+      .array-stage {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.25rem 1rem 1rem;
+        margin-bottom: 1rem;
+        overflow-x: auto;
+      }
+
+      .ptr-top-row {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        min-height: 1.5rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .cells {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        min-width: min-content;
+      }
+
+      .cell-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .cell {
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.05rem;
+        font-weight: 600;
+        border: 2px solid var(--border);
+        border-radius: 6px;
+        background: var(--eliminated);
+        transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+        opacity: 0.35;
+      }
+
+      .cell.active {
+        background: var(--active-bg);
+        border-color: var(--active-border);
+        opacity: 1;
+      }
+
+      .cell.mid {
+        border-color: var(--ptr-m);
+        box-shadow: 0 0 0 2px rgba(232, 168, 56, 0.3);
+      }
+
+      .cell.found {
+        background: var(--found-bg);
+        border-color: var(--found-border);
+        box-shadow: 0 0 0 3px rgba(61, 153, 112, 0.4);
+        animation: pulse 0.6s ease-out;
+      }
+
+      @keyframes pulse {
+        0%   { transform: scale(1); }
+        50%  { transform: scale(1.08); }
+        100% { transform: scale(1); }
+      }
+
+      .idx { font-size: 0.65rem; color: var(--muted); }
+
+      .ptr-bottom-row {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        margin-top: 0.35rem;
+        min-height: 1.4rem;
+      }
+
+      .ptr-slot {
+        width: 56px;
+        text-align: center;
+        font-size: 0.65rem;
+        font-weight: 700;
+        line-height: 1.1;
+      }
+
+      .ptr-slot .pair { display: flex; gap: 4px; justify-content: center; }
+      .ptr-slot .l { color: var(--ptr-l); }
+      .ptr-slot .m { color: var(--ptr-m); }
+      .ptr-slot .r { color: var(--ptr-r); }
+      .ptr-slot .arrow-up { font-size: 0.85rem; line-height: 1; }
+      .ptr-slot .arrow-down { font-size: 0.85rem; line-height: 1; }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1rem;
+        font-size: 0.68rem;
+        color: var(--muted);
+      }
+
+      .legend span::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        margin-right: 4px;
+        vertical-align: middle;
+      }
+
+      .legend .ll::before { background: var(--ptr-l); }
+      .legend .lm::before { background: var(--ptr-m); }
+      .legend .lr::before { background: var(--ptr-r); }
+      .legend .lw::before { background: var(--active-border); }
+      .legend .le::before { background: var(--eliminated); border: 1px solid var(--border); }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      @media (max-width: 700px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.85rem 1rem;
+      }
+
+      .panel h2 {
+        margin: 0 0 0.5rem;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      #action-text {
+        margin: 0;
+        font-size: 0.85rem;
+      }
+
+      #action-text.init   { color: var(--accent); }
+      #action-text.compare { color: var(--text); }
+      #action-text.shrink { color: var(--muted); }
+      #action-text.found  { color: var(--eq); font-weight: 600; }
+      #action-text.notfound { color: var(--err); font-weight: 600; }
+
+      .compare {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 0.4rem;
+        min-height: 1.2rem;
+      }
+
+      .compare code { color: var(--text); }
+      .compare .br-eq { color: var(--eq); font-weight: 700; }
+      .compare .br-gt { color: var(--gt); font-weight: 700; }
+      .compare .br-lt { color: var(--lt); font-weight: 700; }
+
+      .approach {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.78rem;
+      }
+
+      .approach li {
+        padding: 0.35rem 0.5rem;
+        border-radius: 4px;
+        margin-bottom: 0.2rem;
+        color: var(--muted);
+        border-left: 3px solid transparent;
+      }
+
+      .approach li.active {
+        background: rgba(126, 184, 255, 0.08);
+        border-left-color: var(--accent);
+        color: var(--text);
+      }
+
+      .approach li.eq.active   { background: rgba(61, 153, 112, 0.12);  border-left-color: var(--eq); }
+      .approach li.gt.active   { background: rgba(232, 168, 56, 0.12);  border-left-color: var(--gt); }
+      .approach li.lt.active   { background: rgba(180, 139, 255, 0.12); border-left-color: var(--lt); }
+      .approach li.nf.active   { background: rgba(232, 122, 122, 0.12); border-left-color: var(--err); }
+
+      .approach code {
+        font-size: 0.78rem;
+        background: rgba(255, 255, 255, 0.04);
+        padding: 1px 4px;
+        border-radius: 3px;
+      }
+
+      .approach .sub {
+        margin: 0.2rem 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .approach .sub li { padding: 0.25rem 0.5rem; margin-bottom: 0; font-size: 0.74rem; }
+
+      .result-bar {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.85rem;
+        background: #121a24;
+        border-radius: 5px;
+        border: 1px dashed var(--border);
+      }
+      .result-bar.found    { border-color: var(--found-border); }
+      .result-bar.notfound { border-color: var(--err); }
+      .result-bar strong { color: var(--accent); }
+      .result-bar .ok { color: var(--eq); font-weight: 700; }
+      .result-bar .no { color: var(--err); font-weight: 700; }
+
+      .speed { display: flex; align-items: center; gap: 0.4rem; }
+      input[type="range"] { width: 72px; accent-color: var(--accent); }
+
+      .target-input {
+        width: 4.5rem;
+        text-align: right;
+      }
+
+      .target-label { color: var(--ptr-m); font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Binary Search</h1>
+        <p>Three-pointer (L · M · R) divide-and-conquer — matches <code>index.js</code></p>
+      </header>
+
+      <p class="mnemonic">
+        <strong>Mnemonic:</strong> L &amp; R sandwich M · compare <code>target</code> with <code>arr[M]</code> ·
+        <span style="color: var(--eq)">===</span> return ·
+        <span style="color: var(--gt)">&gt;</span> shrink left half (L = M+1) ·
+        <span style="color: var(--lt)">&lt;</span> shrink right half (R = M−1) · stop when L &gt; R
+      </p>
+
+      <div class="controls">
+        <label for="preset">Input</label>
+        <select id="preset"></select>
+        <label for="target-input">Target</label>
+        <input type="number" id="target-input" class="target-input" />
+        <button type="button" id="btn-apply">Apply</button>
+        <button type="button" id="btn-prev">◀ Prev</button>
+        <button type="button" class="primary" id="btn-play">▶ Play</button>
+        <button type="button" id="btn-next">Next ▶</button>
+        <button type="button" id="btn-reset">↺ Reset</button>
+        <div class="speed">
+          <label for="speed">Speed</label>
+          <input type="range" id="speed" min="300" max="1600" value="900" step="100" />
+        </div>
+      </div>
+
+      <div class="step-meta">
+        <span id="step-label">Step 0 / 0</span>
+        <span class="ptr-state">
+          <span class="tag l" id="t-l">L = 0</span>
+          <span class="tag m" id="t-m">M = —</span>
+          <span class="tag r" id="t-r">R = 0</span>
+          <span class="target-label" id="t-target" style="margin-left: 0.6rem;">target = —</span>
+        </span>
+      </div>
+
+      <div class="array-stage">
+        <div class="ptr-top-row" id="ptr-top"></div>
+        <div class="cells" id="cells"></div>
+        <div class="ptr-bottom-row" id="ptr-bottom"></div>
+        <div class="legend">
+          <span class="lw">Active window [L…R]</span>
+          <span class="le">Eliminated</span>
+          <span class="ll">L</span>
+          <span class="lm">M</span>
+          <span class="lr">R</span>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="panel">
+          <h2>This step</h2>
+          <p id="action-text">—</p>
+          <p class="compare" id="compare-line"></p>
+        </div>
+
+        <div class="panel">
+          <h2>Thought process</h2>
+          <ol class="approach" id="approach-list">
+            <li data-key="init"><code>L = 0</code>, <code>R = n − 1</code></li>
+            <li data-key="mid">Compute <code>M = ⌊(L + R) / 2⌋</code></li>
+            <li data-key="cmp">Compare <code>target</code> with <code>arr[M]</code>
+              <ul class="sub">
+                <li class="eq" data-key="eq"><code>===</code> → return <code>M</code></li>
+                <li class="gt" data-key="gt"><code>&gt;</code>   → <code>L = M + 1</code> (right half)</li>
+                <li class="lt" data-key="lt"><code>&lt;</code>   → <code>R = M − 1</code> (left half)</li>
+              </ul>
+            </li>
+            <li class="nf" data-key="nf">If <code>L &gt; R</code> → return <code>−1</code></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="result-bar" id="result-bar">Searching…</div>
+    </div>
+
+    <script>
+      const PRESETS = [
+        { label: "[2, 3, 5, 10, 15]  ·  target 15  → found",            arr: [2, 3, 5, 10, 15],            target: 15 },
+        { label: "[1, 2, 4, 8]  ·  target 5  → NOT found (-1)",          arr: [1, 2, 4, 8],                 target: 5 },
+        { label: "[4, 6, 7, 9, 20, 36, 67, 100]  ·  target 67  (log n)", arr: [4, 6, 7, 9, 20, 36, 67, 100], target: 67 },
+        { label: "[1, 2, 10, 20, 100]  ·  target 20  (1-step hit)",       arr: [1, 2, 10, 20, 100],          target: 20 },
+        { label: "[3, 10, 15, 25]  ·  target 5  → NOT found",            arr: [3, 10, 15, 25],              target: 5 },
+      ];
+
+      /** Mirrors binarySearch in index.js */
+      function buildSteps(arr, target) {
+        const steps = [];
+
+        steps.push({
+          kind: "init",
+          L: 0, R: arr.length - 1, M: null,
+          arr, target,
+          text: `Initialize: L = 0, R = ${arr.length - 1}, target = ${target}. Window contains all ${arr.length} cells.`,
+          compare: null,
+          branch: null,
+          approach: "init",
+        });
+
+        let L = 0, R = arr.length - 1;
+        let iter = 0;
+        let resultIndex = -1;
+
+        while (L <= R) {
+          iter += 1;
+          const M = Math.floor((L + R) / 2);
+          const val = arr[M];
+
+          let branch, compareHTML;
+          if (target === val) {
+            branch = "eq";
+            compareHTML = `<code>target ?= arr[M]</code> &rarr; <code>${target} === ${val}</code> <span class="br-eq">match</span>`;
+          } else if (target > val) {
+            branch = "gt";
+            compareHTML = `<code>target ?= arr[M]</code> &rarr; <code>${target} &gt; ${val}</code> <span class="br-gt">go right</span>`;
+          } else {
+            branch = "lt";
+            compareHTML = `<code>target ?= arr[M]</code> &rarr; <code>${target} &lt; ${val}</code> <span class="br-lt">go left</span>`;
+          }
+
+          steps.push({
+            kind: "compare",
+            L, R, M,
+            arr, target,
+            text: `Iteration ${iter}: M = ⌊(${L} + ${R}) / 2⌋ = ${M}, arr[${M}] = ${val}`,
+            compare: compareHTML,
+            branch,
+            approach: "mid",
+            iter,
+          });
+
+          if (target === val) {
+            steps.push({
+              kind: "found",
+              L, R, M,
+              arr, target,
+              text: `Match at index ${M} → return ${M}.`,
+              compare: compareHTML,
+              branch: "eq",
+              approach: "eq",
+              result: M,
+            });
+            resultIndex = M;
+            break;
+          } else if (target > val) {
+            const newL = M + 1;
+            steps.push({
+              kind: "shrinkLeft",
+              L: newL, R, M: null,
+              prevL: L, prevM: M,
+              arr, target,
+              text: `Discard left half [${L} … ${M}]. New window: L = M + 1 = ${newL}, R = ${R}.`,
+              compare: compareHTML,
+              branch: "gt",
+              approach: "gt",
+            });
+            L = newL;
+          } else {
+            const newR = M - 1;
+            steps.push({
+              kind: "shrinkRight",
+              L, R: newR, M: null,
+              prevR: R, prevM: M,
+              arr, target,
+              text: `Discard right half [${M} … ${R}]. New window: L = ${L}, R = M − 1 = ${newR}.`,
+              compare: compareHTML,
+              branch: "lt",
+              approach: "lt",
+            });
+            R = newR;
+          }
+        }
+
+        if (resultIndex === -1) {
+          steps.push({
+            kind: "notFound",
+            L, R, M: null,
+            arr, target,
+            text: `L (${L}) > R (${R}). Window is empty → return -1.`,
+            compare: null,
+            branch: null,
+            approach: "nf",
+            result: -1,
+          });
+        }
+
+        return { steps, resultIndex };
+      }
+
+      const presetEl = document.getElementById("preset");
+      const targetInputEl = document.getElementById("target-input");
+      const ptrTopEl = document.getElementById("ptr-top");
+      const cellsEl = document.getElementById("cells");
+      const ptrBottomEl = document.getElementById("ptr-bottom");
+      const stepLabel = document.getElementById("step-label");
+      const tL = document.getElementById("t-l");
+      const tM = document.getElementById("t-m");
+      const tR = document.getElementById("t-r");
+      const tTarget = document.getElementById("t-target");
+      const actionText = document.getElementById("action-text");
+      const compareLine = document.getElementById("compare-line");
+      const approachItems = document.querySelectorAll("#approach-list [data-key]");
+      const resultBar = document.getElementById("result-bar");
+      const btnPrev = document.getElementById("btn-prev");
+      const btnNext = document.getElementById("btn-next");
+      const btnPlay = document.getElementById("btn-play");
+      const btnReset = document.getElementById("btn-reset");
+      const btnApply = document.getElementById("btn-apply");
+      const speedEl = document.getElementById("speed");
+
+      let currentArr = [];
+      let currentTarget = 0;
+      let currentResult = -1;
+      let steps = [];
+      let stepIndex = 0;
+      let playTimer = null;
+
+      PRESETS.forEach((p, idx) => {
+        const opt = document.createElement("option");
+        opt.value = idx;
+        opt.textContent = p.label;
+        presetEl.appendChild(opt);
+      });
+
+      function loadPreset(index) {
+        stopPlay();
+        const p = PRESETS[Number(index)];
+        currentArr = p.arr.slice();
+        currentTarget = p.target;
+        targetInputEl.value = p.target;
+        rebuildSteps();
+      }
+
+      function rebuildSteps() {
+        const { steps: s, resultIndex } = buildSteps(currentArr, currentTarget);
+        steps = s;
+        currentResult = resultIndex;
+        stepIndex = 0;
+        render();
+      }
+
+      function stopPlay() {
+        if (playTimer) { clearInterval(playTimer); playTimer = null; }
+        btnPlay.textContent = "▶ Play";
+      }
+
+      function setApproachActive(key) {
+        approachItems.forEach((el) => el.classList.remove("active"));
+        if (!key) return;
+        const item = document.querySelector(`#approach-list [data-key="${key}"]`);
+        if (item) item.classList.add("active");
+        if (key === "eq" || key === "gt" || key === "lt") {
+          const cmp = document.querySelector('#approach-list [data-key="cmp"]');
+          if (cmp) cmp.classList.add("active");
+        }
+      }
+
+      function render() {
+        const step = steps[stepIndex];
+        const arr = step.arr;
+        const n = arr.length;
+
+        ptrTopEl.innerHTML = "";
+        cellsEl.innerHTML = "";
+        ptrBottomEl.innerHTML = "";
+
+        for (let j = 0; j < n; j++) {
+          const topSlot = document.createElement("div");
+          topSlot.className = "ptr-slot";
+          if (j === step.M) {
+            topSlot.innerHTML = '<span class="m"><span class="arrow-down">▼</span><br>M</span>';
+          }
+          ptrTopEl.appendChild(topSlot);
+
+          const wrap = document.createElement("div");
+          wrap.className = "cell-wrap";
+
+          const cell = document.createElement("div");
+          cell.className = "cell";
+          cell.textContent = arr[j];
+
+          const inWindow = j >= step.L && j <= step.R;
+          if (inWindow) cell.classList.add("active");
+          if (j === step.M) cell.classList.add("mid");
+          if (step.kind === "found" && j === step.M) cell.classList.add("found");
+
+          const idx = document.createElement("span");
+          idx.className = "idx";
+          idx.textContent = j;
+
+          wrap.appendChild(cell);
+          wrap.appendChild(idx);
+          cellsEl.appendChild(wrap);
+
+          const bottomSlot = document.createElement("div");
+          bottomSlot.className = "ptr-slot";
+          const isL = j === step.L;
+          const isR = j === step.R;
+          if (isL && isR) {
+            bottomSlot.innerHTML = '<span class="pair"><span class="l">L</span><span class="r">R</span></span><span class="arrow-up">▲</span>';
+          } else if (isL) {
+            bottomSlot.innerHTML = '<span class="l">L</span><br><span class="l arrow-up">▲</span>';
+          } else if (isR) {
+            bottomSlot.innerHTML = '<span class="r">R</span><br><span class="r arrow-up">▲</span>';
+          }
+          ptrBottomEl.appendChild(bottomSlot);
+        }
+
+        stepLabel.textContent = `Step ${stepIndex} / ${steps.length - 1}`;
+        tL.textContent = `L = ${step.L}`;
+        tM.textContent = step.M === null ? "M = —" : `M = ${step.M}`;
+        tR.textContent = `R = ${step.R}`;
+        tTarget.textContent = `target = ${step.target}`;
+
+        actionText.textContent = step.text;
+        actionText.className =
+          step.kind === "init" ? "init" :
+          step.kind === "compare" ? "compare" :
+          step.kind === "found" ? "found" :
+          step.kind === "notFound" ? "notfound" : "shrink";
+
+        compareLine.innerHTML = step.compare || "";
+        setApproachActive(step.approach);
+
+        if (step.kind === "found") {
+          resultBar.className = "result-bar found";
+          resultBar.innerHTML = `Result: <strong>return ${step.result}</strong> · arr[${step.result}] = <span class="ok">${step.arr[step.result]}</span> matches target ${step.target}`;
+        } else if (step.kind === "notFound") {
+          resultBar.className = "result-bar notfound";
+          resultBar.innerHTML = `Result: <strong>return -1</strong> · target <span class="no">${step.target}</span> is not in the array`;
+        } else {
+          resultBar.className = "result-bar";
+          const windowSize = step.R - step.L + 1;
+          resultBar.innerHTML = `Searching… active window size = <strong>${windowSize}</strong> (indices [${step.L} … ${step.R}])`;
+        }
+
+        btnPrev.disabled = stepIndex === 0;
+        btnNext.disabled = stepIndex >= steps.length - 1;
+      }
+
+      btnPrev.addEventListener("click", () => {
+        stopPlay();
+        if (stepIndex > 0) { stepIndex -= 1; render(); }
+      });
+
+      btnNext.addEventListener("click", () => {
+        stopPlay();
+        if (stepIndex < steps.length - 1) { stepIndex += 1; render(); }
+      });
+
+      btnReset.addEventListener("click", () => loadPreset(presetEl.value));
+
+      btnApply.addEventListener("click", () => {
+        const t = Number(targetInputEl.value);
+        if (Number.isNaN(t)) return;
+        stopPlay();
+        currentTarget = t;
+        rebuildSteps();
+      });
+
+      btnPlay.addEventListener("click", () => {
+        if (playTimer) { stopPlay(); return; }
+        btnPlay.textContent = "⏸ Pause";
+        const delay = () => 1700 - Number(speedEl.value);
+        const tick = () => {
+          if (stepIndex >= steps.length - 1) { stopPlay(); return; }
+          stepIndex += 1;
+          render();
+        };
+        playTimer = setInterval(tick, delay());
+        speedEl.addEventListener("input", () => {
+          if (!playTimer) return;
+          clearInterval(playTimer);
+          playTimer = setInterval(tick, delay());
+        }, { once: true });
+      });
+
+      presetEl.addEventListener("change", () => loadPreset(presetEl.value));
+      targetInputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") btnApply.click();
+      });
+
+      loadPreset(0);
+    </script>
+  </body>
+</html>
