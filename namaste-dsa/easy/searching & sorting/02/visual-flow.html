@@ -388,8 +388,15 @@
         <button type="button" id="btn-next">Next ▶</button>
         <button type="button" id="btn-reset">↺ Reset</button>
         <div class="speed">
-          <label for="speed">Speed</label>
-          <input type="range" id="speed" min="300" max="1600" value="900" step="100" />
+          <label for="speed">Step duration</label>
+          <select id="speed">
+            <option value="10">10s (slowest)</option>
+            <option value="8">8s</option>
+            <option value="7">7s</option>
+            <option value="5" selected>5s</option>
+            <option value="3">3s</option>
+            <option value="2">2s (fastest)</option>
+          </select>
         </div>
       </div>
 
@@ -727,21 +734,24 @@
         rebuildSteps();
       });
 
+      const getDelayMs = () => Number(speedEl.value) * 1000;
+
+      const tick = () => {
+        if (stepIndex >= steps.length - 1) { stopPlay(); return; }
+        stepIndex += 1;
+        render();
+      };
+
       btnPlay.addEventListener("click", () => {
         if (playTimer) { stopPlay(); return; }
         btnPlay.textContent = "⏸ Pause";
-        const delay = () => 1700 - Number(speedEl.value);
-        const tick = () => {
-          if (stepIndex >= steps.length - 1) { stopPlay(); return; }
-          stepIndex += 1;
-          render();
-        };
-        playTimer = setInterval(tick, delay());
-        speedEl.addEventListener("input", () => {
-          if (!playTimer) return;
-          clearInterval(playTimer);
-          playTimer = setInterval(tick, delay());
-        }, { once: true });
+        playTimer = setInterval(tick, getDelayMs());
+      });
+
+      speedEl.addEventListener("change", () => {
+        if (!playTimer) return;
+        clearInterval(playTimer);
+        playTimer = setInterval(tick, getDelayMs());
       });
 
       presetEl.addEventListener("change", () => loadPreset(presetEl.value));
