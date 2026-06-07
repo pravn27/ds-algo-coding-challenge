@@ -80,15 +80,18 @@
 
 ```mermaid
 flowchart TD
-  S["L = 0, R = n - 1"] --> W{"L &le; R ?"}
-  W -->|no| NF["return -1"]
+  S["L = 0, R = n - 1<br>(window = n cells)"] --> W{"L &le; R ?"}
+  W -->|no| NF["return -1<br>(not found)"]
   W -->|yes| M["M = floor((L + R) / 2)"]
   M --> C{"target vs arr[M]"}
-  C -->|"==="| F["return M"]
-  C -->|">"| GR["L = M + 1<br>(search right half)"]
-  C -->|"<"| GL["R = M - 1<br>(search left half)"]
-  GR --> W
-  GL --> W
+  C -->|"==="| F["return M (found)"]
+  C -->|">"| GR["L = M + 1<br>(discard left half)"]
+  C -->|"<"| GL["R = M - 1<br>(discard right half)"]
+  GR -->|window halves| W
+  GL -->|window halves| W
+
+  CX["Time: O(log n) &middot; Space: O(1)<br>n &rarr; n/2 &rarr; n/4 &rarr; ... &rarr; 1 in ceil(log&#8322; n) iterations"]:::cx
+  classDef cx fill:#1a2332,stroke:#7eb8ff,color:#7eb8ff
 ```
 
 | Pointer | Role |
@@ -96,8 +99,19 @@ flowchart TD
 | `L` (left) | Left edge of the active search window |
 | `M` (mid) | `floor((L + R) / 2)` — element being compared with `target` |
 | `R` (right) | Right edge of the active search window |
-| Halving | Each iteration discards **half** of the remaining window → **O(log n)** |
 | Termination | `target` found at `M` (return `M`), or `L > R` (return `-1`) |
+
+### Complexity (and why binary search wins)
+
+| | Big-O | Why |
+|---|---|---|
+| **Time**  | `O(log n)` | each iteration **halves** the active window → `n → n/2 → n/4 → … → 1` in `⌈log₂ n⌉` steps |
+| **Space** | `O(1)`     | only 3 integer pointers (`L`, `M`, `R`) on the stack — no recursion, no extra structures |
+
+> Concrete intuition for spaced repetition:
+> - `n = 8`        → at most **3** steps (`log₂ 8 = 3`)
+> - `n = 1,024`    → at most **10** steps
+> - `n = 1,000,000` → at most **20** steps  ·  *linear search would need up to **500,000***
 
 > Tip: open the interactive page, hit **Play** on the *NOT found* preset first — the "L > R" termination is the trickiest part to internalize for spaced repetition.
 
