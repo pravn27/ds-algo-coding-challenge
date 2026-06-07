@@ -67,8 +67,8 @@
 
 **Interactive walkthrough — with Play · Prev / Next · presets · custom target:**
 
-- <a href="https://pravn27.github.io/ds-algo-coding-challenge/namaste-dsa/easy/searching%20%26%20sorting/02/visual-flow.html" target="_blank" rel="noopener noreferrer">Open on GitHub Pages ↗</a> — live, public, works on any device
-- <a href="./visual-flow.html" target="_blank" rel="noopener noreferrer">Open local file ↗</a> — for IDE / offline use
+- [Open on GitHub Pages](https://pravn27.github.io/ds-algo-coding-challenge/namaste-dsa/easy/searching%20%26%20sorting/02/visual-flow.html) — live, public, works on any device
+- [Open local file](./visual-flow.html) — for IDE / offline use
 
 **Mnemonic:** `L` & `R` sandwich `M` · compare `target` with `arr[M]` · `===` return · `>` shrink left half (`L = M + 1`) · `<` shrink right half (`R = M - 1`) · stop when `L > R`.
 
