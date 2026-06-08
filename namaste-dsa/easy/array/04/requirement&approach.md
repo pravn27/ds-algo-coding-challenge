@@ -67,6 +67,62 @@
 
 </details>
 
+## 3.1 Visual flow (spaced repetition)
+
+**Interactive walkthrough — with Play · Prev / Next · presets · step duration:**
+
+- [Open on GitHub Pages](https://pravn27.github.io/ds-algo-coding-challenge/namaste-dsa/easy/array/04/visual-flow.html) — live, public, works on any device
+- [Open local file](./visual-flow.html) — for IDE / offline use
+
+**Mnemonic:** Walk left → right · track lowest-so-far (`minValue`, the best buy candidate) · at each day compute `prices[i] − minValue` and keep the **max** · **never buy in the future, never sell in the past**.
+
+```text
+[ past days |  i (today, scan)  | future days ]
+              ▲ orange
+              ▼
+             min ▲ cyan  (running minimum — best buy candidate)
+
+   when maxProfit updates → lock the pair: BUY day (green tint) → SELL day (violet tint)
+```
+
+```mermaid
+flowchart TD
+  S["minValue = prices[0]<br>maxProfit = 0"] --> L{"i &lt; n ?"}
+  L -->|no| R["return maxProfit"]
+  L -->|yes| A{"prices[i] &lt; minValue ?"}
+  A -->|yes| UM["minValue = prices[i]<br>(new buy candidate)"]
+  A -->|no| B{"prices[i] - minValue &gt; maxProfit ?"}
+  UM --> B
+  B -->|yes| UP["maxProfit = prices[i] - minValue<br>(lock BUY / SELL pair)"]
+  B -->|no| N["i = i + 1"]
+  UP --> N
+  N --> L
+
+  CX["Time: O(n) &middot; Space: O(1)<br>single pass &middot; 2 running scalars (minValue, maxProfit)"]:::cx
+  classDef cx fill:#1a2332,stroke:#7eb8ff,color:#7eb8ff
+```
+
+| Variable / marker | Role |
+|--------|------|
+| `i` (scanner) | Current day being evaluated, scans left → right starting at `1` |
+| `minValue` | **Running minimum** of `prices[0…i]` — the best buy candidate so far |
+| `maxProfit` | Best profit found so far (the answer) — only ever increases |
+| BUY day / SELL day | When `maxProfit` updates, the pair locks in as `BUY = minIdx`, `SELL = i` |
+| Order matters | Update `minValue` **first**, then check profit — so today can both be the new buy *and* sell candidate without issue |
+
+### Complexity (and why greedy beats brute-force here)
+
+| | Big-O | Why |
+|---|---|---|
+| **Time**  | `O(n)`  | single forward pass — each day is visited once and does **constant work** (2 comparisons) |
+| **Space** | `O(1)`  | just 2 running scalars (`minValue`, `maxProfit`) plus the loop counter — no extra arrays, no recursion |
+
+> Concrete contrast for spaced repetition:
+> - Greedy `O(n)`     · `n = 1,000,000` → **1,000,000 ops** (one pass)
+> - Brute force `O(n²)` · `n = 1,000,000` → **~500,000,000,000 ops** (every i × every j) — *infeasible*
+
+> Tip: open the interactive page, hit **Play** on the *`[7, 6, 4, 3, 1]` · no profit* preset first — internalizing why `maxProfit` stays `0` for monotonically falling prices is the cleanest way to remember the greedy invariant.
+
 ## 4. Implementation & Refactor
 
 - [Coding solution in JS](./index.js)

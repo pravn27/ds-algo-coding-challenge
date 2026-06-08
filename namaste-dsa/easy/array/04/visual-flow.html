@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Best Time to Buy and Sell Stock — Greedy O(n) Visual</title>
+    <style>
+      :root {
+        --bg: #0f1419;
+        --surface: #1a2332;
+        --border: #2d3a4f;
+        --text: #e7ecf3;
+        --muted: #8b9cb3;
+
+        --cell-bg: #121a24;
+        --past-bg: #1a2332;
+        --future-bg: #121a24;
+        --i-border: #e8a838;
+        --min-border: #5cc8d6;
+        --buy-bg: #1e3a2f;
+        --buy-border: #3d9970;
+        --sell-bg: #2a1e3a;
+        --sell-border: #b48bff;
+        --pair-line: #b48bff;
+
+        --ptr-i: #e8a838;
+        --ptr-min: #5cc8d6;
+
+        --accent: #7eb8ff;
+        --update: #3d9970;
+        --keep: #6b7a8f;
+        --zero: #b48bff;
+        --err: #e87a7a;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 1.5rem 1.25rem 2.5rem;
+      }
+
+      header h1 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0 0 0.25rem;
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      .mnemonic {
+        margin: 1rem 0;
+        padding: 0.65rem 0.85rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-size: 0.78rem;
+        color: var(--accent);
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      label { font-size: 0.75rem; color: var(--muted); }
+
+      select, button {
+        font: inherit;
+        font-size: 0.78rem;
+        border-radius: 5px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        padding: 0.4rem 0.65rem;
+        cursor: pointer;
+      }
+
+      button:hover:not(:disabled) { border-color: var(--accent); }
+      button:disabled { opacity: 0.4; cursor: not-allowed; }
+      button.primary { background: #243044; border-color: var(--accent); }
+
+      .step-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 0.75rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      #step-label {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .ptr-state .tag {
+        display: inline-block;
+        padding: 1px 6px;
+        margin-left: 0.4rem;
+        border-radius: 3px;
+        font-size: 0.7rem;
+        font-weight: 600;
+      }
+      .tag.i  { color: var(--ptr-i);   border: 1px solid var(--ptr-i); }
+      .tag.mn { color: var(--ptr-min); border: 1px solid var(--ptr-min); }
+      .tag.mp { color: var(--update);  border: 1px solid var(--update); }
+
+      .array-stage {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.25rem 1rem 1rem;
+        margin-bottom: 1rem;
+        overflow-x: auto;
+      }
+
+      .ptr-top-row {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        min-height: 1.5rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .cells {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        min-width: min-content;
+      }
+
+      .cell-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .cell {
+        position: relative;
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.05rem;
+        font-weight: 600;
+        border: 2px solid var(--border);
+        border-radius: 6px;
+        background: var(--cell-bg);
+        transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .cell.past    { background: var(--past-bg); }
+      .cell.future  { opacity: 0.5; }
+
+      .cell.buy {
+        background: var(--buy-bg);
+        border-color: var(--buy-border);
+        box-shadow: 0 0 0 2px rgba(61, 153, 112, 0.25);
+      }
+      .cell.sell {
+        background: var(--sell-bg);
+        border-color: var(--sell-border);
+        box-shadow: 0 0 0 2px rgba(180, 139, 255, 0.25);
+      }
+
+      .cell.scan {
+        border-color: var(--i-border);
+        box-shadow: 0 0 0 3px rgba(232, 168, 56, 0.35);
+      }
+      .cell.runmin {
+        border-color: var(--min-border);
+        box-shadow: 0 0 0 3px rgba(92, 200, 214, 0.35);
+      }
+      /* if scan and runmin overlap, scan wins outer ring, add inner min hint */
+      .cell.scan.runmin {
+        box-shadow: 0 0 0 3px rgba(232, 168, 56, 0.45), inset 0 0 0 2px rgba(92, 200, 214, 0.55);
+      }
+
+      .cell.flash {
+        animation: flash 0.55s ease-out;
+      }
+      @keyframes flash {
+        0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(61, 153, 112, 0); }
+        40%  { transform: scale(1.08); box-shadow: 0 0 0 6px rgba(61, 153, 112, 0.35); }
+        100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(61, 153, 112, 0); }
+      }
+
+      .role-tag {
+        position: absolute;
+        bottom: -4px;
+        right: -4px;
+        font-size: 0.55rem;
+        padding: 1px 4px;
+        border-radius: 3px;
+        font-weight: 700;
+        background: var(--surface);
+        border: 1px solid var(--border);
+      }
+      .role-tag.b { color: var(--buy-border);  border-color: var(--buy-border); }
+      .role-tag.s { color: var(--sell-border); border-color: var(--sell-border); }
+
+      .idx { font-size: 0.65rem; color: var(--muted); }
+
+      .ptr-bottom-row {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        margin-top: 0.35rem;
+        min-height: 1.4rem;
+      }
+
+      .ptr-slot {
+        width: 56px;
+        text-align: center;
+        font-size: 0.65rem;
+        font-weight: 700;
+        line-height: 1.1;
+      }
+
+      .ptr-slot .i      { color: var(--ptr-i); }
+      .ptr-slot .mn     { color: var(--ptr-min); }
+      .ptr-slot .arrow  { font-size: 0.85rem; line-height: 1; }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1rem;
+        font-size: 0.68rem;
+        color: var(--muted);
+      }
+
+      .legend span::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        margin-right: 4px;
+        vertical-align: middle;
+      }
+
+      .legend .li::before  { background: var(--ptr-i); }
+      .legend .lm::before  { background: var(--ptr-min); }
+      .legend .lb::before  { background: var(--buy-border); }
+      .legend .ls::before  { background: var(--sell-border); }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      @media (max-width: 700px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.85rem 1rem;
+      }
+
+      .panel h2 {
+        margin: 0 0 0.5rem;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      #action-text { margin: 0; font-size: 0.85rem; }
+
+      #action-text.init   { color: var(--accent); }
+      #action-text.update { color: var(--update); font-weight: 600; }
+      #action-text.keep   { color: var(--keep); }
+      #action-text.done   { color: var(--accent); font-weight: 600; }
+
+      .compare {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 0.4rem;
+        min-height: 1.2rem;
+      }
+      .compare code { color: var(--text); }
+      .compare .ok { color: var(--update); font-weight: 700; }
+      .compare .no { color: var(--keep);   font-weight: 700; }
+
+      .approach {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.78rem;
+      }
+
+      .approach li {
+        padding: 0.35rem 0.5rem;
+        border-radius: 4px;
+        margin-bottom: 0.2rem;
+        color: var(--muted);
+        border-left: 3px solid transparent;
+      }
+
+      .approach li.active {
+        background: rgba(126, 184, 255, 0.08);
+        border-left-color: var(--accent);
+        color: var(--text);
+      }
+
+      .approach li.updateMin.active {
+        background: rgba(92, 200, 214, 0.12);
+        border-left-color: var(--ptr-min);
+      }
+      .approach li.updateMax.active {
+        background: rgba(61, 153, 112, 0.12);
+        border-left-color: var(--update);
+      }
+      .approach li.return.active {
+        background: rgba(126, 184, 255, 0.12);
+        border-left-color: var(--accent);
+      }
+
+      .approach code {
+        font-size: 0.78rem;
+        background: rgba(255, 255, 255, 0.04);
+        padding: 1px 4px;
+        border-radius: 3px;
+      }
+
+      .approach .sub {
+        margin: 0.2rem 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .approach .sub li { padding: 0.25rem 0.5rem; margin-bottom: 0; font-size: 0.74rem; }
+
+      .result-bar {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.85rem;
+        background: #121a24;
+        border-radius: 5px;
+        border: 1px dashed var(--border);
+      }
+
+      .result-bar.found { border-color: var(--buy-border); }
+      .result-bar.zero  { border-color: var(--zero); }
+      .result-bar strong { color: var(--accent); }
+      .result-bar .ok { color: var(--update); font-weight: 700; }
+      .result-bar .zr { color: var(--zero);   font-weight: 700; }
+
+      .speed { display: flex; align-items: center; gap: 0.4rem; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Best Time to Buy and Sell Stock — Greedy O(n)</h1>
+        <p>Single pass, track running min — matches <code>index.js</code> Approach 1</p>
+      </header>
+
+      <p class="mnemonic">
+        <strong>Mnemonic:</strong>
+        Walk left → right. Track lowest-so-far (best buy candidate).
+        At each day, compute today's profit = <code>price − minSoFar</code>.
+        Keep the max. <strong>Never buy in the future, never sell in the past.</strong>
+      </p>
+
+      <div class="controls">
+        <label for="preset">Input</label>
+        <select id="preset"></select>
+        <button type="button" id="btn-prev">◀ Prev</button>
+        <button type="button" class="primary" id="btn-play">▶ Play</button>
+        <button type="button" id="btn-next">Next ▶</button>
+        <button type="button" id="btn-reset">↺ Reset</button>
+        <div class="speed">
+          <label for="speed">Step duration</label>
+          <select id="speed">
+            <option value="10">10s (slowest)</option>
+            <option value="8">8s</option>
+            <option value="7">7s</option>
+            <option value="5" selected>5s</option>
+            <option value="3">3s</option>
+            <option value="2">2s (fastest)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="step-meta">
+        <span id="step-label">Step 0 / 0</span>
+        <span class="ptr-state">
+          <span class="tag i"  id="t-i">i = —</span>
+          <span class="tag mn" id="t-min">minValue = —</span>
+          <span class="tag mp" id="t-mp">maxProfit = 0</span>
+        </span>
+      </div>
+
+      <div class="array-stage">
+        <div class="ptr-top-row" id="ptr-top"></div>
+        <div class="cells" id="cells"></div>
+        <div class="ptr-bottom-row" id="ptr-bottom"></div>
+        <div class="legend">
+          <span class="li">i — current day (scan)</span>
+          <span class="lm">min — running minimum (buy candidate)</span>
+          <span class="lb">BUY of best pair</span>
+          <span class="ls">SELL of best pair</span>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="panel">
+          <h2>This step</h2>
+          <p id="action-text">—</p>
+          <p class="compare" id="compare-line"></p>
+        </div>
+
+        <div class="panel">
+          <h2>Thought process</h2>
+          <ol class="approach" id="approach-list">
+            <li data-key="init"><code>minValue = prices[0]</code>, <code>maxProfit = 0</code></li>
+            <li data-key="loop">For each day <code>i</code> from <code>1</code> to <code>n − 1</code>:
+              <ul class="sub">
+                <li class="updateMin" data-key="updateMin">If <code>prices[i] &lt; minValue</code> → <code>minValue = prices[i]</code></li>
+                <li class="updateMax" data-key="updateMax">If <code>prices[i] − minValue &gt; maxProfit</code> → <code>maxProfit = prices[i] − minValue</code> (lock BUY/SELL pair)</li>
+              </ul>
+            </li>
+            <li class="return" data-key="return">Return <code>maxProfit</code></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="result-bar" id="result-bar">Walking forward…</div>
+    </div>
+
+    <script>
+      const PRESETS = [
+        { label: "[2, 3, 1, 6, 9, 10]  ·  expected 9",            prices: [2, 3, 1, 6, 9, 10] },
+        { label: "[1, 2, 5, 4, 3]  ·  expected 4",                 prices: [1, 2, 5, 4, 3] },
+        { label: "[7, 1, 5, 3, 6, 4]  ·  expected 5  (LC classic)", prices: [7, 1, 5, 3, 6, 4] },
+        { label: "[7, 6, 4, 3, 1]  ·  expected 0  (no profit)",    prices: [7, 6, 4, 3, 1] },
+        { label: "[3, 2, 6, 5, 0, 3]  ·  expected 4  (min jumps)", prices: [3, 2, 6, 5, 0, 3] },
+      ];
+
+      /** Mirrors maxProfit_A1 in index.js */
+      function buildSteps(prices) {
+        const steps = [];
+        const n = prices.length;
+
+        steps.push({
+          kind: "init",
+          i: null, minIdx: 0, minValue: prices[0], maxProfit: 0,
+          bestBuy: null, bestSell: null,
+          prices: prices.slice(),
+          text: `Init: minValue = prices[0] = ${prices[0]}, maxProfit = 0. Start scanning from i = 1.`,
+          compare: null,
+          approach: "init",
+        });
+
+        let minValue = prices[0];
+        let minIdx = 0;
+        let maxProfit = 0;
+        let bestBuy = null, bestSell = null;
+
+        for (let i = 1; i < n; i++) {
+          const price = prices[i];
+
+          // ----- Frame A: min check -----
+          let minUpdated = false;
+          const prevMin = minValue;
+          if (price < minValue) {
+            minValue = price;
+            minIdx = i;
+            minUpdated = true;
+          }
+          steps.push({
+            kind: "minCheck",
+            i, minIdx, minValue, maxProfit, bestBuy, bestSell,
+            prices: prices.slice(),
+            text: minUpdated
+              ? `Day ${i}: prices[${i}] = ${price} < minValue (${prevMin}) → new minValue = ${price}, new min day = ${i}`
+              : `Day ${i}: prices[${i}] = ${price} ≥ minValue (${minValue}) → keep current min`,
+            compare: minUpdated
+              ? `<code>prices[i] &lt; minValue</code> &rarr; <code>${price} &lt; ${prevMin}</code> <span class="ok">update min</span>`
+              : `<code>prices[i] &lt; minValue</code> &rarr; <code>${price} &lt; ${minValue}</code> <span class="no">no — keep min</span>`,
+            approach: minUpdated ? "updateMin" : "loop",
+            minUpdated,
+            flashCell: minUpdated ? i : null,
+          });
+
+          // ----- Frame B: profit check -----
+          const profitToday = price - minValue;
+          let profitUpdated = false;
+          const prevMaxProfit = maxProfit;
+          const prevBuy = bestBuy, prevSell = bestSell;
+          if (profitToday > maxProfit) {
+            maxProfit = profitToday;
+            bestBuy = minIdx;
+            bestSell = i;
+            profitUpdated = true;
+          }
+          steps.push({
+            kind: "profitCheck",
+            i, minIdx, minValue, maxProfit, bestBuy, bestSell,
+            prices: prices.slice(),
+            text: profitUpdated
+              ? `Profit today = ${price} − ${minValue} = ${profitToday} > maxProfit (${prevMaxProfit}) → new maxProfit = ${profitToday}. Lock pair: BUY day ${bestBuy} ($${minValue}) → SELL day ${bestSell} ($${price}).`
+              : `Profit today = ${price} − ${minValue} = ${profitToday} ≤ maxProfit (${maxProfit}) → keep current pair${prevBuy === null ? "" : ` (BUY ${prevBuy} → SELL ${prevSell})`}`,
+            compare: profitUpdated
+              ? `<code>prices[i] − minValue &gt; maxProfit</code> &rarr; <code>${profitToday} &gt; ${prevMaxProfit}</code> <span class="ok">update maxProfit</span>`
+              : `<code>prices[i] − minValue &gt; maxProfit</code> &rarr; <code>${profitToday} &gt; ${prevMaxProfit}</code> <span class="no">no — keep</span>`,
+            approach: profitUpdated ? "updateMax" : "loop",
+            profitUpdated,
+            flashCell: profitUpdated ? i : null,
+          });
+        }
+
+        steps.push({
+          kind: "done",
+          i: null, minIdx, minValue, maxProfit, bestBuy, bestSell,
+          prices: prices.slice(),
+          text: maxProfit > 0
+            ? `Done. Return maxProfit = ${maxProfit}. Best trade: BUY day ${bestBuy} ($${prices[bestBuy]}) → SELL day ${bestSell} ($${prices[bestSell]}).`
+            : `Done. Return maxProfit = 0. Prices are monotonically non-increasing — no profitable trade.`,
+          compare: null,
+          approach: "return",
+        });
+
+        return { steps, result: maxProfit };
+      }
+
+      const presetEl   = document.getElementById("preset");
+      const ptrTopEl   = document.getElementById("ptr-top");
+      const cellsEl    = document.getElementById("cells");
+      const ptrBotEl   = document.getElementById("ptr-bottom");
+      const stepLabel  = document.getElementById("step-label");
+      const tI         = document.getElementById("t-i");
+      const tMin       = document.getElementById("t-min");
+      const tMP        = document.getElementById("t-mp");
+      const actionText = document.getElementById("action-text");
+      const compareLine = document.getElementById("compare-line");
+      const approachItems = document.querySelectorAll("#approach-list [data-key]");
+      const resultBar  = document.getElementById("result-bar");
+      const btnPrev    = document.getElementById("btn-prev");
+      const btnNext    = document.getElementById("btn-next");
+      const btnPlay    = document.getElementById("btn-play");
+      const btnReset   = document.getElementById("btn-reset");
+      const speedEl    = document.getElementById("speed");
+
+      let steps = [];
+      let stepIndex = 0;
+      let currentResult = 0;
+      let playTimer = null;
+
+      PRESETS.forEach((p, idx) => {
+        const opt = document.createElement("option");
+        opt.value = idx;
+        opt.textContent = p.label;
+        presetEl.appendChild(opt);
+      });
+
+      function loadPreset(index) {
+        stopPlay();
+        const p = PRESETS[Number(index)];
+        const { steps: s, result } = buildSteps(p.prices);
+        steps = s;
+        currentResult = result;
+        stepIndex = 0;
+        render();
+      }
+
+      function stopPlay() {
+        if (playTimer) { clearInterval(playTimer); playTimer = null; }
+        btnPlay.textContent = "▶ Play";
+      }
+
+      function setApproachActive(key) {
+        approachItems.forEach((el) => el.classList.remove("active"));
+        if (!key) return;
+        const item = document.querySelector(`#approach-list [data-key="${key}"]`);
+        if (item) item.classList.add("active");
+        if (key === "updateMin" || key === "updateMax") {
+          const loop = document.querySelector('#approach-list [data-key="loop"]');
+          if (loop) loop.classList.add("active");
+        }
+      }
+
+      function render() {
+        const step = steps[stepIndex];
+        const prices = step.prices;
+        const n = prices.length;
+
+        ptrTopEl.innerHTML = "";
+        cellsEl.innerHTML = "";
+        ptrBotEl.innerHTML = "";
+
+        for (let j = 0; j < n; j++) {
+          // top slot (i arrow)
+          const top = document.createElement("div");
+          top.className = "ptr-slot";
+          if (j === step.i) {
+            top.innerHTML = '<span class="i">i</span><br><span class="i arrow">▼</span>';
+          }
+          ptrTopEl.appendChild(top);
+
+          // cell
+          const wrap = document.createElement("div");
+          wrap.className = "cell-wrap";
+
+          const cell = document.createElement("div");
+          cell.className = "cell";
+          cell.textContent = prices[j];
+
+          // base state: past / current / future relative to i
+          const cmpI = step.i === null ? n - 1 : step.i;
+          if (j < cmpI) cell.classList.add("past");
+          else if (j > cmpI) cell.classList.add("future");
+
+          // persistent best pair backgrounds
+          if (step.bestBuy !== null  && j === step.bestBuy)  cell.classList.add("buy");
+          if (step.bestSell !== null && j === step.bestSell) cell.classList.add("sell");
+
+          // active markers (override visuals)
+          if (j === step.i)      cell.classList.add("scan");
+          if (j === step.minIdx) cell.classList.add("runmin");
+
+          if (step.flashCell !== null && step.flashCell !== undefined && j === step.flashCell) {
+            cell.classList.add("flash");
+          }
+
+          // role tag (small B / S corner badge for clarity)
+          if (step.bestBuy !== null && j === step.bestBuy) {
+            const tag = document.createElement("span");
+            tag.className = "role-tag b";
+            tag.textContent = "B";
+            cell.appendChild(tag);
+          } else if (step.bestSell !== null && j === step.bestSell) {
+            const tag = document.createElement("span");
+            tag.className = "role-tag s";
+            tag.textContent = "S";
+            cell.appendChild(tag);
+          }
+
+          const idx = document.createElement("span");
+          idx.className = "idx";
+          idx.textContent = j;
+
+          wrap.appendChild(cell);
+          wrap.appendChild(idx);
+          cellsEl.appendChild(wrap);
+
+          // bottom slot (min arrow)
+          const bot = document.createElement("div");
+          bot.className = "ptr-slot";
+          if (j === step.minIdx) {
+            bot.innerHTML = '<span class="mn arrow">▲</span><br><span class="mn">min</span>';
+          }
+          ptrBotEl.appendChild(bot);
+        }
+
+        stepLabel.textContent = `Step ${stepIndex} / ${steps.length - 1}`;
+        tI.textContent   = step.i === null ? "i = —" : `i = ${step.i}`;
+        tMin.textContent = `minValue = ${step.minValue} (day ${step.minIdx})`;
+        tMP.textContent  = `maxProfit = ${step.maxProfit}`;
+
+        actionText.textContent = step.text;
+        actionText.className =
+          step.kind === "init" ? "init" :
+          step.kind === "done" ? "done" :
+          (step.minUpdated || step.profitUpdated) ? "update" : "keep";
+
+        compareLine.innerHTML = step.compare || "";
+        setApproachActive(step.approach);
+
+        if (step.kind === "done") {
+          if (step.maxProfit > 0) {
+            resultBar.className = "result-bar found";
+            resultBar.innerHTML = `Result: <strong>maxProfit = ${step.maxProfit}</strong> · BUY day <span class="ok">${step.bestBuy}</span> ($${step.prices[step.bestBuy]}) → SELL day <span class="ok">${step.bestSell}</span> ($${step.prices[step.bestSell]})`;
+          } else {
+            resultBar.className = "result-bar zero";
+            resultBar.innerHTML = `Result: <strong>maxProfit = <span class="zr">0</span></strong> · prices never go up — no profitable trade`;
+          }
+        } else if (step.bestBuy !== null) {
+          resultBar.className = "result-bar";
+          resultBar.innerHTML = `Best so far: <strong>${step.maxProfit}</strong> (BUY day ${step.bestBuy} ($${step.prices[step.bestBuy]}) → SELL day ${step.bestSell} ($${step.prices[step.bestSell]}))`;
+        } else {
+          resultBar.className = "result-bar";
+          resultBar.innerHTML = `Best so far: <strong>0</strong> · no profitable pair yet`;
+        }
+
+        btnPrev.disabled = stepIndex === 0;
+        btnNext.disabled = stepIndex >= steps.length - 1;
+      }
+
+      // ---------- controls ----------
+      const getDelayMs = () => Number(speedEl.value) * 1000;
+
+      const tick = () => {
+        if (stepIndex >= steps.length - 1) { stopPlay(); return; }
+        stepIndex += 1;
+        render();
+      };
+
+      btnPrev.addEventListener("click", () => {
+        stopPlay();
+        if (stepIndex > 0) { stepIndex -= 1; render(); }
+      });
+
+      btnNext.addEventListener("click", () => {
+        stopPlay();
+        if (stepIndex < steps.length - 1) { stepIndex += 1; render(); }
+      });
+
+      btnReset.addEventListener("click", () => loadPreset(presetEl.value));
+
+      btnPlay.addEventListener("click", () => {
+        if (playTimer) { stopPlay(); return; }
+        btnPlay.textContent = "⏸ Pause";
+        playTimer = setInterval(tick, getDelayMs());
+      });
+
+      speedEl.addEventListener("change", () => {
+        if (!playTimer) return;
+        clearInterval(playTimer);
+        playTimer = setInterval(tick, getDelayMs());
+      });
+
+      presetEl.addEventListener("change", () => loadPreset(presetEl.value));
+
+      loadPreset(0);
+    </script>
+  </body>
+</html>
