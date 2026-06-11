@@ -99,7 +99,7 @@ flowchart TD
 | Variable | Role |
 |--------|------|
 | `i` (outer loop) | Pass number — after pass `i`, element at `n - 1 - i` is locked in its final sorted position |
-| `j` (inner loop) | Scans the unsorted region `[0 … n - 2 - i]`, comparing adjacent pairs |
+| `j` (inner loop) | Scans the unsorted region `[0 … n - 1 - i]`, comparing adjacent pairs |
 | `isSwapped` | Tracks if any swap occurred during the current pass — enables **early exit optimization** |
 | Sorted zone | After each pass, the rightmost cells turn green — they are locked and never compared again |
 

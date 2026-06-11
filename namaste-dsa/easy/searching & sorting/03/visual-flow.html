@@ -182,13 +182,25 @@
       .cell.swapped {
         border-color: var(--swap-glow);
         box-shadow: 0 0 0 3px rgba(180, 139, 255, 0.4);
-        animation: swapPulse 0.45s ease-out;
       }
 
-      @keyframes swapPulse {
-        0%   { transform: scale(1); }
-        50%  { transform: scale(1.08); }
-        100% { transform: scale(1); }
+      /* slide animation: cells visually exchange positions.
+         cell width 56 + gap 6 = 62px translate distance */
+      .cell.slide-from-right {
+        animation: slideFromRight 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .cell.slide-from-left {
+        animation: slideFromLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      @keyframes slideFromRight {
+        0%   { transform: translateX(62px) translateY(-10px) scale(1.05); }
+        50%  { transform: translateX(31px) translateY(-18px) scale(1.08); }
+        100% { transform: translateX(0)    translateY(0)     scale(1); }
+      }
+      @keyframes slideFromLeft {
+        0%   { transform: translateX(-62px) translateY(10px) scale(1.05); }
+        50%  { transform: translateX(-31px) translateY(18px) scale(1.08); }
+        100% { transform: translateX(0)     translateY(0)    scale(1); }
       }
 
       .cell.early-exit {
@@ -404,8 +416,8 @@
         <div class="panel">
           <h2>Thought process</h2>
           <ol class="approach" id="approach-list">
-            <li data-key="init">Outer loop: <code>i</code> from <code>0</code> to <code>n - 2</code></li>
-            <li data-key="inner">Inner loop: <code>j</code> from <code>0</code> to <code>n - 2 - i</code>
+            <li data-key="init">Outer loop: <code>i</code> from <code>0</code> to <code>n - 1</code> times</li>
+            <li data-key="inner">Inner loop: <code>j</code> from <code>0</code> to <code>n - 1 - i</code>
               <ul class="sub">
                 <li class="swapHL" data-key="swap">If <code>arr[j] &gt; arr[j+1]</code> &rarr; <strong>swap</strong> them</li>
                 <li class="noHL" data-key="noswap">Else &rarr; already in order, skip</li>
@@ -628,8 +640,16 @@
             if (k === step.j + 1) cell.classList.add("cmp-b");
           }
 
-          if (step.kind === "swap" && (k === step.j || k === step.j + 1)) {
-            cell.classList.add("swapped");
+          if (step.kind === "swap") {
+            if (k === step.j) {
+              // cell at j now holds the smaller value (came from j+1, slid in from the right)
+              cell.classList.add("swapped");
+              cell.classList.add("slide-from-right");
+            } else if (k === step.j + 1) {
+              // cell at j+1 now holds the larger value (came from j, slid in from the left)
+              cell.classList.add("swapped");
+              cell.classList.add("slide-from-left");
+            }
           }
 
           if (step.kind === "earlyexit" || step.kind === "done") {
