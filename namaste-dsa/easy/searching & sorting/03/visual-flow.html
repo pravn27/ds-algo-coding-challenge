@@ -8,21 +8,31 @@
       :root {
         --bg: #0f1419;
         --surface: #1a2332;
+        --surface-2: #121a24;
         --border: #2d3a4f;
         --text: #e7ecf3;
         --muted: #8b9cb3;
 
-        --cell-bg: #121a24;
-        --sorted-bg: #1e3a2f;
-        --sorted-border: #3d9970;
+        --bar-grad-top: #3a4a66;
+        --bar-grad-bot: #1c2638;
+        --sorted-grad-top: #3d9970;
+        --sorted-grad-bot: #1e3a2f;
+
         --compare-a: #e8a838;
         --compare-b: #5b9fd4;
         --swap-glow: #b48bff;
         --no-swap: #6b7a8f;
+        --sorted-border: #3d9970;
 
         --accent: #7eb8ff;
         --ok: #3d9970;
         --err: #e87a7a;
+
+        --code-kw: #7eb8ff;
+        --code-fn: #b48bff;
+        --code-nm: #e8a838;
+        --code-cm: #6b7a8f;
+        --code-str: #5cc8d6;
       }
 
       * { box-sizing: border-box; }
@@ -37,7 +47,7 @@
       }
 
       .wrap {
-        max-width: 960px;
+        max-width: 1100px;
         margin: 0 auto;
         padding: 1.5rem 1.25rem 2.5rem;
       }
@@ -48,7 +58,6 @@
         margin: 0 0 0.25rem;
         letter-spacing: -0.02em;
       }
-
       header p {
         margin: 0;
         color: var(--muted);
@@ -85,7 +94,6 @@
         padding: 0.4rem 0.65rem;
         cursor: pointer;
       }
-
       button:hover:not(:disabled) { border-color: var(--accent); }
       button:disabled { opacity: 0.4; cursor: not-allowed; }
       button.primary { background: #243044; border-color: var(--accent); }
@@ -100,11 +108,7 @@
         gap: 1rem;
         flex-wrap: wrap;
       }
-
-      #step-label {
-        color: var(--text);
-        font-weight: 600;
-      }
+      #step-label { color: var(--text); font-weight: 600; }
 
       .ptr-state .tag {
         display: inline-block;
@@ -118,117 +122,113 @@
       .tag.j-tag  { color: var(--compare-a); border: 1px solid var(--compare-a); }
       .tag.swaps  { color: var(--ok);        border: 1px solid var(--ok); }
 
-      .array-stage {
+      /* ===== BAR VISUALIZATION ===== */
+
+      .bars-stage {
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 8px;
-        padding: 1.25rem 1rem 1rem;
+        padding: 1rem 1rem 1.25rem;
         margin-bottom: 1rem;
         overflow-x: auto;
       }
 
       .ptr-top-row {
         display: flex;
-        gap: 6px;
+        gap: 8px;
         justify-content: center;
         min-height: 1.5rem;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.4rem;
       }
 
-      .cells {
+      .bars {
         display: flex;
-        gap: 6px;
+        gap: 8px;
         justify-content: center;
+        align-items: flex-end;
+        min-height: 200px;
         min-width: min-content;
       }
 
-      .cell-wrap {
+      .bar-wrap {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 4px;
+        position: relative;
       }
 
-      .cell {
-        width: 56px;
-        height: 56px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.1rem;
-        font-weight: 600;
+      .bar {
+        width: 60px;
         border: 2px solid var(--border);
-        border-radius: 6px;
-        background: var(--cell-bg);
-        transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+        border-radius: 6px 6px 2px 2px;
+        background: linear-gradient(to bottom, var(--bar-grad-top), var(--bar-grad-bot));
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: 6px;
+        transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
       }
 
-      .cell.sorted {
-        background: var(--sorted-bg);
+      .bar-value {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: 0.02em;
+      }
+
+      .bar.sorted {
+        background: linear-gradient(to bottom, var(--sorted-grad-top), var(--sorted-grad-bot));
         border-color: var(--sorted-border);
-        opacity: 0.75;
       }
 
-      .cell.cmp-a {
+      .bar.cmp-a {
         border-color: var(--compare-a);
         box-shadow: 0 0 0 3px rgba(232, 168, 56, 0.35);
       }
-
-      .cell.cmp-b {
+      .bar.cmp-b {
         border-color: var(--compare-b);
         box-shadow: 0 0 0 3px rgba(91, 159, 212, 0.35);
       }
-
-      .cell.swapped {
+      .bar.swapped {
         border-color: var(--swap-glow);
-        box-shadow: 0 0 0 3px rgba(180, 139, 255, 0.4);
+        box-shadow: 0 0 0 3px rgba(180, 139, 255, 0.5);
       }
 
-      /* slide animation: cells visually exchange positions.
-         cell width 56 + gap 6 = 62px translate distance */
-      .cell.slide-from-right {
-        animation: slideFromRight 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      /* Slide animation — bars visually cross paths during swap.
+         Bar moving LEFT-to-RIGHT (the "bubbling" larger value) arcs HIGH;
+         Bar moving RIGHT-to-LEFT (the smaller value) stays low and slides under.
+         Distance: bar width 60 + gap 8 = 68px. */
+      .bar-wrap.slide-from-left {
+        z-index: 5;
+        animation: slideFromLeft 0.9s cubic-bezier(0.4, 0, 0.2, 1);
       }
-      .cell.slide-from-left {
-        animation: slideFromLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-      @keyframes slideFromRight {
-        0%   { transform: translateX(62px) translateY(-10px) scale(1.05); }
-        50%  { transform: translateX(31px) translateY(-18px) scale(1.08); }
-        100% { transform: translateX(0)    translateY(0)     scale(1); }
+      .bar-wrap.slide-from-right {
+        z-index: 1;
+        animation: slideFromRight 0.9s cubic-bezier(0.4, 0, 0.2, 1);
       }
       @keyframes slideFromLeft {
-        0%   { transform: translateX(-62px) translateY(10px) scale(1.05); }
-        50%  { transform: translateX(-31px) translateY(18px) scale(1.08); }
-        100% { transform: translateX(0)     translateY(0)    scale(1); }
+        0%   { transform: translateX(-68px) translateY(0); }
+        45%  { transform: translateX(-34px) translateY(-55px); }
+        100% { transform: translateX(0)     translateY(0); }
       }
-
-      .cell.early-exit {
-        background: var(--sorted-bg);
-        border-color: var(--sorted-border);
-      }
-
-      .idx { font-size: 0.65rem; color: var(--muted); }
-
-      .ptr-bottom-row {
-        display: flex;
-        gap: 6px;
-        justify-content: center;
-        margin-top: 0.35rem;
-        min-height: 1.4rem;
+      @keyframes slideFromRight {
+        0%   { transform: translateX(68px); }
+        100% { transform: translateX(0); }
       }
 
       .ptr-slot {
-        width: 56px;
+        width: 60px;
         text-align: center;
         font-size: 0.65rem;
         font-weight: 700;
         line-height: 1.1;
       }
-
       .ptr-slot .j  { color: var(--compare-a); }
       .ptr-slot .j1 { color: var(--compare-b); }
       .ptr-slot .arrow { font-size: 0.85rem; line-height: 1; }
+
+      .idx { font-size: 0.65rem; color: var(--muted); }
 
       .legend {
         display: flex;
@@ -239,7 +239,6 @@
         font-size: 0.68rem;
         color: var(--muted);
       }
-
       .legend span::before {
         content: "";
         display: inline-block;
@@ -249,19 +248,22 @@
         margin-right: 4px;
         vertical-align: middle;
       }
+      .legend .lj::before  { background: var(--compare-a); }
+      .legend .lj1::before { background: var(--compare-b); }
+      .legend .lsw::before { background: var(--swap-glow); }
+      .legend .lsd::before { background: var(--sorted-border); }
 
-      .legend .lj::before   { background: var(--compare-a); }
-      .legend .lj1::before  { background: var(--compare-b); }
-      .legend .lsw::before  { background: var(--swap-glow); }
-      .legend .lsd::before  { background: var(--sorted-border); }
+      /* ===== DUAL PANEL: CODE + THOUGHT PROCESS ===== */
 
-      .grid {
+      .dual {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1rem;
         margin-bottom: 1rem;
       }
-      @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+      @media (max-width: 820px) {
+        .dual { grid-template-columns: 1fr; }
+      }
 
       .panel {
         background: var(--surface);
@@ -277,6 +279,157 @@
         letter-spacing: 0.06em;
         color: var(--muted);
         font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .panel h2 small {
+        color: var(--muted);
+        font-size: 0.65rem;
+        text-transform: none;
+        letter-spacing: 0;
+        font-weight: 400;
+      }
+
+      /* ===== CODE PANEL ===== */
+
+      .code-block {
+        font-size: 0.74rem;
+        line-height: 1.55;
+        background: var(--surface-2);
+        border-radius: 5px;
+        padding: 0.5rem 0;
+        overflow-x: auto;
+      }
+
+      .code-line {
+        display: flex;
+        gap: 0.6rem;
+        padding: 0 0.5rem 0 0.4rem;
+        white-space: pre;
+        border-left: 3px solid transparent;
+        transition: background 0.15s, border-left-color 0.15s;
+      }
+
+      .code-line.active {
+        background: rgba(126, 184, 255, 0.10);
+        border-left-color: var(--accent);
+      }
+      .code-line.active.swap-line {
+        background: rgba(180, 139, 255, 0.12);
+        border-left-color: var(--swap-glow);
+      }
+      .code-line.active.exit-line {
+        background: rgba(61, 153, 112, 0.12);
+        border-left-color: var(--ok);
+      }
+
+      .code-line .ln {
+        width: 1.6rem;
+        text-align: right;
+        color: var(--muted);
+        font-size: 0.68rem;
+        flex-shrink: 0;
+        user-select: none;
+      }
+      .code-line code {
+        color: var(--text);
+        background: transparent;
+        padding: 0;
+        font-size: 0.74rem;
+      }
+
+      .kw { color: var(--code-kw); }
+      .fn { color: var(--code-fn); }
+      .nm { color: var(--code-nm); }
+      .cm { color: var(--code-cm); font-style: italic; }
+      .str { color: var(--code-str); }
+
+      /* ===== THOUGHT PROCESS PANEL ===== */
+
+      .thought-section {
+        margin-bottom: 0.85rem;
+      }
+      .thought-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .thought-section h3 {
+        margin: 0 0 0.4rem;
+        font-size: 0.68rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+      }
+
+      .approach {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.76rem;
+      }
+      .approach li {
+        padding: 0.3rem 0.5rem;
+        border-radius: 4px;
+        margin-bottom: 0.15rem;
+        color: var(--muted);
+        border-left: 3px solid transparent;
+      }
+      .approach li.active {
+        background: rgba(126, 184, 255, 0.08);
+        border-left-color: var(--accent);
+        color: var(--text);
+      }
+      .approach li.swapHL.active  { background: rgba(180, 139, 255, 0.12); border-left-color: var(--swap-glow); }
+      .approach li.noHL.active    { background: rgba(107, 122, 143, 0.12); border-left-color: var(--no-swap); }
+      .approach li.earlyHL.active { background: rgba(61, 153, 112, 0.12);  border-left-color: var(--ok); }
+
+      .approach code {
+        font-size: 0.74rem;
+        background: rgba(255, 255, 255, 0.04);
+        padding: 1px 4px;
+        border-radius: 3px;
+      }
+      .approach .sub { margin: 0.15rem 0 0; padding: 0; list-style: none; }
+      .approach .sub li { padding: 0.22rem 0.5rem; margin-bottom: 0; font-size: 0.72rem; }
+
+      .core-logic {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.74rem;
+      }
+      .core-logic li {
+        padding: 0.28rem 0.5rem 0.28rem 1.2rem;
+        position: relative;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+      .core-logic li::before {
+        content: "•";
+        position: absolute;
+        left: 0.55rem;
+        color: var(--accent);
+        font-weight: 700;
+      }
+      .core-logic li strong { color: var(--text); font-weight: 600; }
+      .core-logic code {
+        font-size: 0.72rem;
+        background: rgba(255, 255, 255, 0.04);
+        padding: 1px 4px;
+        border-radius: 3px;
+        color: var(--text);
+      }
+
+      /* ===== ACTION + RESULT ===== */
+
+      .action-panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.85rem 1rem;
+        margin-bottom: 1rem;
       }
 
       #action-text { margin: 0; font-size: 0.85rem; }
@@ -288,7 +441,7 @@
       #action-text.done      { color: var(--accent); font-weight: 600; }
 
       .compare {
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         color: var(--muted);
         margin-top: 0.4rem;
         min-height: 1.2rem;
@@ -297,49 +450,10 @@
       .compare .ok  { color: var(--ok); font-weight: 700; }
       .compare .no  { color: var(--no-swap); font-weight: 700; }
 
-      .approach {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        font-size: 0.78rem;
-      }
-
-      .approach li {
-        padding: 0.35rem 0.5rem;
-        border-radius: 4px;
-        margin-bottom: 0.2rem;
-        color: var(--muted);
-        border-left: 3px solid transparent;
-      }
-
-      .approach li.active {
-        background: rgba(126, 184, 255, 0.08);
-        border-left-color: var(--accent);
-        color: var(--text);
-      }
-
-      .approach li.swapHL.active  { background: rgba(180, 139, 255, 0.12); border-left-color: var(--swap-glow); }
-      .approach li.noHL.active    { background: rgba(107, 122, 143, 0.12); border-left-color: var(--no-swap); }
-      .approach li.earlyHL.active { background: rgba(61, 153, 112, 0.12);  border-left-color: var(--ok); }
-
-      .approach code {
-        font-size: 0.78rem;
-        background: rgba(255, 255, 255, 0.04);
-        padding: 1px 4px;
-        border-radius: 3px;
-      }
-
-      .approach .sub {
-        margin: 0.2rem 0 0;
-        padding: 0;
-        list-style: none;
-      }
-      .approach .sub li { padding: 0.25rem 0.5rem; margin-bottom: 0; font-size: 0.74rem; }
-
       .result-bar {
         font-size: 0.85rem;
         padding: 0.6rem 0.85rem;
-        background: #121a24;
+        background: var(--surface-2);
         border-radius: 5px;
         border: 1px dashed var(--border);
       }
@@ -354,15 +468,15 @@
     <div class="wrap">
       <header>
         <h1>Bubble Sort — Ascending Order</h1>
-        <p>Nested loops: outer pass i · inner compare j vs j+1 · swap if out of order — matches <code>index.js</code></p>
+        <p>Nested loops &middot; outer pass <code>i</code> &middot; inner compare <code>j</code> vs <code>j+1</code> &middot; swap if out of order &mdash; matches <code>index.js</code></p>
       </header>
 
       <p class="mnemonic">
         <strong>Mnemonic:</strong>
-        Each pass <strong>bubbles the largest unsorted element</strong> to its final position at the right.
+        Each pass <strong>bubbles the largest unsorted element</strong> to the right end.
         Compare adjacent <code>arr[j]</code> vs <code>arr[j+1]</code>: if out of order, swap.
-        After pass <code>i</code>, the last <code>i+1</code> elements are sorted.
-        If a full pass makes <strong>0 swaps</strong> &rarr; already sorted &rarr; <strong>early exit</strong>.
+        After pass <code>i</code>, the last <code>i + 1</code> elements are <strong>locked</strong>.
+        If a full pass makes <strong>0 swaps</strong> &rarr; already sorted &rarr; <strong>break early</strong>.
       </p>
 
       <div class="controls">
@@ -388,58 +502,114 @@
       <div class="step-meta">
         <span id="step-label">Step 0 / 0</span>
         <span class="ptr-state">
-          <span class="tag pass" id="t-pass">Pass i = —</span>
-          <span class="tag j-tag" id="t-j">j = —</span>
+          <span class="tag pass" id="t-pass">Pass i = &mdash;</span>
+          <span class="tag j-tag" id="t-j">j = &mdash;</span>
           <span class="tag swaps" id="t-swaps">swaps = 0</span>
         </span>
       </div>
 
-      <div class="array-stage">
+      <!-- Bar visualization -->
+      <div class="bars-stage">
         <div class="ptr-top-row" id="ptr-top"></div>
-        <div class="cells" id="cells"></div>
-        <div class="ptr-bottom-row" id="ptr-bottom"></div>
+        <div class="bars" id="bars"></div>
         <div class="legend">
           <span class="lj">j (current)</span>
           <span class="lj1">j+1 (next)</span>
           <span class="lsw">Swapped pair</span>
-          <span class="lsd">Sorted (bubbled into place)</span>
+          <span class="lsd">Sorted &mdash; bubbled into place</span>
         </div>
       </div>
 
-      <div class="grid">
+      <!-- Code + Thought process side by side -->
+      <div class="dual">
         <div class="panel">
-          <h2>This step</h2>
-          <p id="action-text">—</p>
-          <p class="compare" id="compare-line"></p>
+          <h2>Code <small>index.js &middot; line follows current step</small></h2>
+          <div class="code-block" id="code-block"></div>
         </div>
 
         <div class="panel">
-          <h2>Thought process</h2>
-          <ol class="approach" id="approach-list">
-            <li data-key="init">Outer loop: <code>i</code> from <code>0</code> to <code>n - 1</code> times</li>
-            <li data-key="inner">Inner loop: <code>j</code> from <code>0</code> to <code>n - 1 - i</code>
-              <ul class="sub">
-                <li class="swapHL" data-key="swap">If <code>arr[j] &gt; arr[j+1]</code> &rarr; <strong>swap</strong> them</li>
-                <li class="noHL" data-key="noswap">Else &rarr; already in order, skip</li>
-              </ul>
-            </li>
-            <li data-key="passend">Pass <code>i</code> done &rarr; largest unsorted element bubbled to position <code>n - 1 - i</code></li>
-            <li class="earlyHL" data-key="early">If <code>isSwapped === false</code> &rarr; array sorted, <strong>break early</strong></li>
-          </ol>
+          <h2>Thought process &middot; core logic</h2>
+
+          <div class="thought-section">
+            <h3>Algorithm steps</h3>
+            <ol class="approach" id="approach-list">
+              <li data-key="init">Outer loop: <code>i</code> from <code>0</code> to <code>n - 1</code> times</li>
+              <li data-key="inner">Inner loop: <code>j</code> from <code>0</code> to <code>n - 1 - i</code>
+                <ul class="sub">
+                  <li class="swapHL" data-key="swap">If <code>arr[j] &gt; arr[j+1]</code> &rarr; <strong>swap</strong></li>
+                  <li class="noHL" data-key="noswap">Else &rarr; in order, skip</li>
+                </ul>
+              </li>
+              <li data-key="passend">Pass <code>i</code> done &rarr; largest bubbled to <code>n - 1 - i</code></li>
+              <li class="earlyHL" data-key="early">If <code>isSwapped === false</code> &rarr; <strong>break early</strong></li>
+            </ol>
+          </div>
+
+          <div class="thought-section">
+            <h3>Core logic &middot; why it works</h3>
+            <ul class="core-logic">
+              <li><strong>Bubbling invariant:</strong> each pass guarantees the largest unsorted element reaches its <strong>final sorted position</strong> at the right end of the unsorted region.</li>
+              <li><strong>Locked suffix:</strong> after pass <code>i</code>, the last <code>i + 1</code> elements are sorted and will never be touched again (inner loop stops at <code>n - 1 - i</code>).</li>
+              <li><strong>Early-exit (optimization):</strong> if a full pass makes <code>0</code> swaps, no two adjacent elements are out of order &mdash; so the entire array is sorted.</li>
+              <li><strong>Stable:</strong> equal values keep their relative order &mdash; we only swap on strict <code>&gt;</code>.</li>
+              <li><strong>In-place:</strong> just a <code>temp</code> variable &rarr; <code>O(1)</code> extra memory.</li>
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div class="result-bar" id="result-bar">Sorting...</div>
+      <!-- This step -->
+      <div class="action-panel">
+        <h2 style="margin: 0 0 0.4rem; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600;">This step</h2>
+        <p id="action-text">&mdash;</p>
+        <p class="compare" id="compare-line"></p>
+      </div>
+
+      <div class="result-bar" id="result-bar">Sorting&hellip;</div>
     </div>
 
     <script>
       const PRESETS = [
-        { label: "[4, 5, 1, 3, 9]  (Sample 1)",         arr: [4, 5, 1, 3, 9] },
-        { label: "[10, 2, 5, 1, 3]  (Sample 2)",         arr: [10, 2, 5, 1, 3] },
-        { label: "[1, 2, 10, 8, 3]  (from index.js)",    arr: [1, 2, 10, 8, 3] },
-        { label: "[1, 2, 3, 4, 5, 6, 6]  (early exit!)", arr: [1, 2, 3, 4, 5, 6, 6] },
-        { label: "[5, 4, 3, 2, 1]  (worst case, reversed)", arr: [5, 4, 3, 2, 1] },
+        { label: "[4, 5, 1, 3, 9]  (Sample 1)",              arr: [4, 5, 1, 3, 9] },
+        { label: "[10, 2, 5, 1, 3]  (Sample 2)",              arr: [10, 2, 5, 1, 3] },
+        { label: "[1, 2, 10, 8, 3]  (from index.js)",         arr: [1, 2, 10, 8, 3] },
+        { label: "[1, 2, 3, 4, 5, 6, 6]  (already sorted - early exit!)", arr: [1, 2, 3, 4, 5, 6, 6] },
+        { label: "[5, 4, 3, 2, 1]  (worst case, reversed)",   arr: [5, 4, 3, 2, 1] },
       ];
+
+      // ----- Code lines shown in the Code panel (faithful to index.js) -----
+      // Each line gets highlighted based on the step kind.
+      const CODE_LINES = [
+        { n: 1,  html: '<span class="kw">const</span> <span class="fn">bubbleSort</span> = (arr) =&gt; {' },
+        { n: 2,  html: '  <span class="kw">const</span> n = arr.length;' },
+        { n: 3,  html: '  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="nm">0</span>; i &lt; n - <span class="nm">1</span>; i++) {' },
+        { n: 4,  html: '    <span class="kw">let</span> isSwapped = <span class="kw">false</span>;' },
+        { n: 5,  html: '    <span class="kw">for</span> (<span class="kw">let</span> j = <span class="nm">0</span>; j &lt; n - <span class="nm">1</span> - i; j++) {' },
+        { n: 6,  html: '      <span class="kw">if</span> (arr[j] &gt; arr[j + <span class="nm">1</span>]) {' },
+        { n: 7,  html: '        <span class="kw">let</span> temp = arr[j];' },
+        { n: 8,  html: '        arr[j] = arr[j + <span class="nm">1</span>];' },
+        { n: 9,  html: '        arr[j + <span class="nm">1</span>] = temp;' },
+        { n: 10, html: '        isSwapped = <span class="kw">true</span>;' },
+        { n: 11, html: '      }' },
+        { n: 12, html: '    }' },
+        { n: 13, html: '    <span class="kw">if</span> (!isSwapped) <span class="kw">break</span>;' },
+        { n: 14, html: '  }' },
+        { n: 15, html: '  <span class="kw">return</span> arr;' },
+        { n: 16, html: '};' },
+      ];
+
+      // step kind -> array of line numbers to highlight, with optional flavor class
+      function linesForStep(kind) {
+        switch (kind) {
+          case "init":      return { lines: [2, 3], flavor: "" };
+          case "noswap":    return { lines: [5, 6], flavor: "" };
+          case "swap":      return { lines: [6, 7, 8, 9, 10], flavor: "swap-line" };
+          case "passend":   return { lines: [12, 13], flavor: "" };
+          case "earlyexit": return { lines: [13], flavor: "exit-line" };
+          case "done":      return { lines: [15], flavor: "exit-line" };
+          default:          return { lines: [], flavor: "" };
+        }
+      }
 
       /** Mirrors bubbleSort in index.js — records every comparison as a step */
       function buildSteps(initial) {
@@ -486,8 +656,8 @@
                 i, j,
                 a, b,
                 swapCount: totalSwaps,
-                text: `Pass ${i}, j=${j}: arr[${j}] (${a}) > arr[${j + 1}] (${b}) — swap them.`,
-                compare: `<code>arr[${j}] &gt; arr[${j + 1}]</code> &rarr; <code>${a} &gt; ${b}</code> <span class="ok">swap</span>`,
+                text: `Pass ${i}, j=${j}: arr[${j}] (${a}) > arr[${j + 1}] (${b}) \u2014 swap them.`,
+                compare: `<code>arr[${j}] &gt; arr[${j + 1}]</code> \u2192 <code>${a} &gt; ${b}</code> <span class="ok">swap</span>`,
                 approach: "swap",
               });
             } else {
@@ -498,8 +668,8 @@
                 i, j,
                 a, b,
                 swapCount: totalSwaps,
-                text: `Pass ${i}, j=${j}: arr[${j}] (${a}) <= arr[${j + 1}] (${b}) — already in order, skip.`,
-                compare: `<code>arr[${j}] &gt; arr[${j + 1}]</code> &rarr; <code>${a} &gt; ${b}</code> <span class="no">no swap</span>`,
+                text: `Pass ${i}, j=${j}: arr[${j}] (${a}) <= arr[${j + 1}] (${b}) \u2014 already in order, skip.`,
+                compare: `<code>arr[${j}] &gt; arr[${j + 1}]</code> \u2192 <code>${a} &gt; ${b}</code> <span class="no">no swap</span>`,
                 approach: "noswap",
               });
             }
@@ -525,7 +695,7 @@
               sortedIndices: Array.from({ length: n }, (_, k) => k),
               i, j: null,
               swapCount: totalSwaps,
-              text: `Pass ${i} had 0 swaps — array is already sorted! Early exit (isSwapped = false).`,
+              text: `Pass ${i} had 0 swaps \u2014 array already sorted! Early exit (isSwapped = false).`,
               compare: null,
               approach: "early",
             });
@@ -533,8 +703,8 @@
           }
         }
 
-        const lastStep = steps[steps.length - 1];
-        if (lastStep.kind !== "earlyexit") {
+        const last = steps[steps.length - 1];
+        if (last.kind !== "earlyexit") {
           steps.push({
             kind: "done",
             arr: arr.slice(),
@@ -550,10 +720,10 @@
         return { steps, sorted: arr.slice(), totalSwaps, totalComparisons };
       }
 
+      // ---------- DOM refs ----------
       const presetEl    = document.getElementById("preset");
       const ptrTopEl    = document.getElementById("ptr-top");
-      const cellsEl     = document.getElementById("cells");
-      const ptrBotEl    = document.getElementById("ptr-bottom");
+      const barsEl      = document.getElementById("bars");
       const stepLabel   = document.getElementById("step-label");
       const tPass       = document.getElementById("t-pass");
       const tJ          = document.getElementById("t-j");
@@ -561,12 +731,39 @@
       const actionText  = document.getElementById("action-text");
       const compareLine = document.getElementById("compare-line");
       const approachItems = document.querySelectorAll("#approach-list [data-key]");
+      const codeBlock   = document.getElementById("code-block");
       const resultBar   = document.getElementById("result-bar");
       const btnPrev     = document.getElementById("btn-prev");
       const btnNext     = document.getElementById("btn-next");
       const btnPlay     = document.getElementById("btn-play");
       const btnReset    = document.getElementById("btn-reset");
       const speedEl     = document.getElementById("speed");
+
+      // Render code panel once
+      function renderCodePanel() {
+        codeBlock.innerHTML = "";
+        for (const line of CODE_LINES) {
+          const row = document.createElement("div");
+          row.className = "code-line";
+          row.dataset.line = String(line.n);
+          row.innerHTML = `<span class="ln">${line.n}</span><code>${line.html}</code>`;
+          codeBlock.appendChild(row);
+        }
+      }
+      renderCodePanel();
+
+      function setCodeHighlight(kind) {
+        document.querySelectorAll(".code-line").forEach((el) => {
+          el.classList.remove("active", "swap-line", "exit-line");
+        });
+        const { lines, flavor } = linesForStep(kind);
+        for (const n of lines) {
+          const el = document.querySelector(`.code-line[data-line="${n}"]`);
+          if (!el) continue;
+          el.classList.add("active");
+          if (flavor) el.classList.add(flavor);
+        }
+      }
 
       let steps = [];
       let stepIndex = 0;
@@ -594,7 +791,7 @@
       }
 
       function setApproachActive(key) {
-        approachItems.forEach(el => el.classList.remove("active"));
+        approachItems.forEach((el) => el.classList.remove("active"));
         if (!key) return;
         const item = document.querySelector(`#approach-list [data-key="${key}"]`);
         if (item) item.classList.add("active");
@@ -604,15 +801,25 @@
         }
       }
 
+      // Bar geometry
+      const MAX_BAR_H = 180;
+      const MIN_BAR_H = 30;
+
+      function barHeightFor(value, maxVal) {
+        if (maxVal <= 0) return MIN_BAR_H;
+        const ratio = value / maxVal;
+        return Math.max(MIN_BAR_H, Math.round(ratio * MAX_BAR_H));
+      }
+
       function render() {
         const step = steps[stepIndex];
         const arr = step.arr;
         const n = arr.length;
+        const maxVal = Math.max(...arr);
         const sortedSet = new Set(step.sortedIndices);
 
         ptrTopEl.innerHTML = "";
-        cellsEl.innerHTML = "";
-        ptrBotEl.innerHTML = "";
+        barsEl.innerHTML = "";
 
         for (let k = 0; k < n; k++) {
           // top pointer
@@ -625,49 +832,45 @@
           }
           ptrTopEl.appendChild(top);
 
-          // cell
+          // bar wrapper
           const wrap = document.createElement("div");
-          wrap.className = "cell-wrap";
+          wrap.className = "bar-wrap";
 
-          const cell = document.createElement("div");
-          cell.className = "cell";
-          cell.textContent = arr[k];
+          const bar = document.createElement("div");
+          bar.className = "bar";
+          bar.style.height = barHeightFor(arr[k], maxVal) + "px";
 
-          if (sortedSet.has(k)) cell.classList.add("sorted");
+          const val = document.createElement("span");
+          val.className = "bar-value";
+          val.textContent = arr[k];
+          bar.appendChild(val);
+
+          if (sortedSet.has(k)) bar.classList.add("sorted");
 
           if (step.kind === "swap" || step.kind === "noswap") {
-            if (k === step.j) cell.classList.add("cmp-a");
-            if (k === step.j + 1) cell.classList.add("cmp-b");
+            if (k === step.j) bar.classList.add("cmp-a");
+            if (k === step.j + 1) bar.classList.add("cmp-b");
           }
 
           if (step.kind === "swap") {
             if (k === step.j) {
-              // cell at j now holds the smaller value (came from j+1, slid in from the right)
-              cell.classList.add("swapped");
-              cell.classList.add("slide-from-right");
+              // bar at j now holds the SMALLER value (came from j+1, slid LEFT in from the right)
+              bar.classList.add("swapped");
+              wrap.classList.add("slide-from-right");
             } else if (k === step.j + 1) {
-              // cell at j+1 now holds the larger value (came from j, slid in from the left)
-              cell.classList.add("swapped");
-              cell.classList.add("slide-from-left");
+              // bar at j+1 now holds the LARGER (bubbling) value, slid IN from the left, arcs HIGH
+              bar.classList.add("swapped");
+              wrap.classList.add("slide-from-left");
             }
-          }
-
-          if (step.kind === "earlyexit" || step.kind === "done") {
-            cell.classList.add("early-exit");
           }
 
           const idx = document.createElement("span");
           idx.className = "idx";
           idx.textContent = k;
 
-          wrap.appendChild(cell);
+          wrap.appendChild(bar);
           wrap.appendChild(idx);
-          cellsEl.appendChild(wrap);
-
-          // bottom pointer
-          const bot = document.createElement("div");
-          bot.className = "ptr-slot";
-          ptrBotEl.appendChild(bot);
+          barsEl.appendChild(wrap);
         }
 
         stepLabel.textContent = `Step ${stepIndex} / ${steps.length - 1}`;
@@ -685,6 +888,7 @@
 
         compareLine.innerHTML = step.compare || "";
         setApproachActive(step.approach);
+        setCodeHighlight(step.kind);
 
         if (step.kind === "done" || step.kind === "earlyexit") {
           resultBar.className = "result-bar done";
@@ -693,7 +897,7 @@
         } else {
           resultBar.className = "result-bar";
           const sortedCount = step.sortedIndices.length;
-          resultBar.innerHTML = `Sorting... <strong>${sortedCount}</strong> of ${n} elements locked in place &middot; swaps so far: ${step.swapCount} &middot; array: [${arr.join(", ")}]`;
+          resultBar.innerHTML = `Sorting&hellip; <strong>${sortedCount}</strong> of ${n} elements locked &middot; swaps so far: ${step.swapCount} &middot; array: [${arr.join(", ")}]`;
         }
 
         btnPrev.disabled = stepIndex === 0;
